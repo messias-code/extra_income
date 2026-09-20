@@ -1,33 +1,35 @@
 Format: vertical 9:16, 720p, 24fps | Single continuous shot of 10s | Clip 1 of 2
-On camera: hands only, cropped at the wrist. NO faces, NO text.
+On camera: product only, no people. NO faces, NO captions, NO subtitles.
 
 Style & Lighting:
-High-end UGC kitchen film, warm morning mood, soft golden window light from the left, gentle falloff into shadow, amber and dark metal palette, photoreal, textless, no text, no subtitles.
+Minimalist clean high-end UGC kitchen film, soft window light from the left, smooth shadows, clean white and dark grey palette, photoreal, no captions, no subtitles, no on-screen graphics.
 
 Textures to Highlight:
-matte black plastic, brushed stainless steel accents, glossy black digital touch panel, honed marble counter.
+glossy black exterior, brushed silver control panel, transparent glass window, glowing digital displays, honed white marble.
 
 Scene:
-A lived-in modern kitchen counter in honed white marble. A wooden chopping board with fresh herbs and a folded linen towel beside it, blurred modern kitchen cabinets in the background.
+A minimalist and clean modern kitchen counter in honed white marble without distractions. The environment is extremely simple and empty, with just a faint blur of bright window frames in the background.
 
 Subject:
-A digital air fryer and indoor grill: matte black exterior finish, glossy black touch panel on the upper front, large pull-out drawer with a robust brushed steel handle. Panel artwork kept soft-focus and non-legible.
+A black and silver indoor grill and air fryer with a front glass viewing window. It has a glossy black rectangular body, a thick top handle, and a silver control panel at the bottom featuring a central dial and glowing digital displays.
+
+Label & Brand:
+The brand name printed on the appliance reads exactly "Wap", spelled W-A-P. Keep the lettering sharp, correctly spelled, in the same typeface and the same position as in the reference photos. Do not invent, translate, shorten or restyle any word printed on the product. This is the only text allowed anywhere in the frame.
 
 Camera & Framing:
-50mm lens, shallow depth of field, gimbal-smooth motion: a slow 180° orbit around the product on the counter.
+50mm lens, shallow depth of field, gimbal-smooth motion: a slow 90-degree orbit that descends gradually toward the front of the appliance.
 
 Continuity Anchors:
-NOTE: The 6-panel storyboard is provided ONLY as a structural reference for timing and camera movements. The product in the video MUST NOT look like the simplified storyboard version. It MUST match the original reference photos exactly (exact colors, labels, shapes, and details). Same product, same matte black variant, same marble counter, same lighting direction and same lens in this clip and in the next one. The air fryer stays in the exact same position on the counter.
+NOTE: The 6-panel storyboard is provided ONLY as a structural reference for timing and camera movements. The product in the video MUST NOT look like the simplified storyboard version. It MUST match the original reference photos exactly (exact colors, labels, shapes, and details). Same product, same black and silver variant, same surface, same lighting direction and same lens in this clip and in the next one. The steam keeps rising steadily from the top vents.
 
 Action Timeline:
-[Clip 1 - Orbit Reveal | 0s-10s | Shot: slow 180° orbit]
-VISUAL: The matte black air fryer sits on the marble counter, golden light catching its edges as the camera glides around it, revealing the sleek design and the glowing digital panel.
-ACTION: 0-2s camera already orbiting from the side / 2-7s the orbit reveals the front profile and the handle / 7-10s the camera settles on a clear view of the front panel and handle, stopping its movement.
-SFX: kitchen room tone, gentle hum of the appliance.
-END FRAME: Camera at a slightly low angle facing the front of the air fryer, the large steel handle in the centre of the frame, the glowing panel just above it, the marble counter below, blurred kitchen background.
+[Clip 1 - Orbit Reveal | 0s-10s | Shot: slow 90-degree orbit descending]
+VISUAL: The black indoor grill sits on the clean marble counter, steam rising from its top vents, internal amber light glowing through the front glass window.
+ACTION: 0-2s steam rises as the camera begins orbiting from a high side angle / 2-7s the descent reveals the front glass window and the silver control panel / 7-10s the camera settles close to the top front edge, holding steady.
+END FRAME: Camera close to the front top edge of the black grill, steam curling upwards, the top handle sharp, the silver control panel slightly out of focus below, clean marble counter soft in the foreground.
 
-Audio Design:
-Warm acoustic lo-fi at a mid tempo, instrumental only, no lyrics, no vocals. Diegetic SFX: room tone, gentle fan hum. STRICTLY NO VOICEOVER, NO SPEECH.
+Audio:
+No audio. Silent clip: no music, no sound effects, no ambience, no voiceover, no speech.
 
 Negative Prompt:
-text, typography, letters, words, captions, subtitles, title cards, watermarks, logos, invented brand names, UI overlays, emojis, human faces, heads, facial features, eyes, mouths, crowds, people reflected in surfaces, morphing product, melting geometry, changing product design between shots, altering proportions, duplicated product, extra handles, invented compartments, floating parts, object inside object, surreal physics, jump cuts, split screen, flicker, strobing, jitter, plastic CGI look, oversaturation, blown highlights, low resolution, blurry footage, horizontal framing, letterboxing, full arms, forearms, human bodies, mannequins, extra fingers, fused fingers, deformed hands, legible packaging text, readable labels, gibberish text
+captions, subtitles, title cards, on-screen text, overlay text, watermarks, UI overlays, emojis, invented logos, invented brand names, misspelled label, altered brand name, gibberish lettering, distorted typography on the packaging, blurred out label, music, sound effects, voiceover, speech, human faces, heads, facial features, eyes, mouths, crowds, people reflected in surfaces, morphing product, melting geometry, changing product design between shots, altering proportions, duplicated product, extra handles, invented compartments, floating parts, object inside object, surreal physics, jump cuts, split screen, flicker, strobing, jitter, plastic CGI look, oversaturation, blown highlights, low resolution, blurry footage, horizontal framing, letterboxing, hands, arms, fingers, human bodies, wrong letters on the label, extra words on the packaging, translated packaging, unreadable label, detached parts, bending metal, warping frame geometry

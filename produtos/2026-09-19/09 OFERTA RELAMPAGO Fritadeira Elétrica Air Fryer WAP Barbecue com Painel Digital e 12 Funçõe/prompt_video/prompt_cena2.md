@@ -1,34 +1,36 @@
 Format: vertical 9:16, 720p, 24fps | Single continuous shot of 10s | Clip 2 of 2 - direct continuation of clip 1
-On camera: hands only, cropped at the wrist. NO faces, NO text.
+On camera: product only, no people. NO faces, NO captions, NO subtitles.
 
-START FRAME: CONTINUES FROM THE FINAL FRAME OF THE PREVIOUS CLIP - Camera at a slightly low angle facing the front of the air fryer, the large steel handle in the centre of the frame, the glowing panel just above it, the marble counter below, blurred kitchen background. No cut, no new establishing shot, no time jump: the same take simply carries on.
+START FRAME: CONTINUES FROM THE FINAL FRAME OF THE PREVIOUS CLIP - Camera close to the front top edge of the black grill, steam curling upwards, the top handle sharp, the silver control panel slightly out of focus below, clean marble counter soft in the foreground. No cut, no new establishing shot, no time jump: the same take simply carries on.
 
 Style & Lighting:
-High-end UGC kitchen film, warm morning mood, soft golden window light from the left, gentle falloff into shadow, amber and dark metal palette, photoreal, textless, no text, no subtitles.
+Minimalist clean high-end UGC kitchen film, soft window light from the left, smooth shadows, clean white and dark grey palette, photoreal, no captions, no subtitles, no on-screen graphics.
 
 Textures to Highlight:
-matte black plastic, brushed stainless steel accents, glossy black digital touch panel, honed marble counter.
+glossy black exterior, brushed silver control panel, transparent glass window, glowing digital displays, honed white marble.
 
 Scene:
-A lived-in modern kitchen counter in honed white marble. A wooden chopping board with fresh herbs and a folded linen towel beside it, blurred modern kitchen cabinets in the background.
+A minimalist and clean modern kitchen counter in honed white marble without distractions. The environment is extremely simple and empty, with just a faint blur of bright window frames in the background.
 
 Subject:
-A digital air fryer and indoor grill: matte black exterior finish, glossy black touch panel on the upper front, large pull-out drawer with a robust brushed steel handle. Panel artwork kept soft-focus and non-legible.
+A black and silver indoor grill and air fryer with a front glass viewing window. It has a glossy black rectangular body, a thick top handle, and a silver control panel at the bottom featuring a central dial and glowing digital displays.
+
+Label & Brand:
+The brand name printed on the appliance reads exactly "Wap", spelled W-A-P. Keep the lettering sharp, correctly spelled, in the same typeface and the same position as in the reference photos. Do not invent, translate, shorten or restyle any word printed on the product. This is the only text allowed anywhere in the frame.
 
 Camera & Framing:
-50mm lens, shallow depth of field, gimbal-smooth motion: the stationary shot transitions into a macro tilt down over the front texture, moving from the panel to the handle.
+50mm lens, shallow depth of field, gimbal-smooth motion: the camera executes a slow macro tilt down across the front of the appliance, finishing on the silver control panel.
 
 Continuity Anchors:
-NOTE: The 6-panel storyboard is provided ONLY as a structural reference for timing and camera movements. The product in the video MUST NOT look like the simplified storyboard version. It MUST match the original reference photos exactly (exact colors, labels, shapes, and details). Same product, same matte black variant, same marble counter, same lighting direction and same lens as the previous clip. The air fryer stays in the exact same position on the counter.
+NOTE: The 6-panel storyboard is provided ONLY as a structural reference for timing and camera movements. The product in the video MUST NOT look like the simplified storyboard version. It MUST match the original reference photos exactly (exact colors, labels, shapes, and details). Same product, same black and silver variant, same surface, same lighting direction and same lens as the previous clip. The steam keeps rising steadily from the top vents.
 
 Action Timeline:
-[Clip 2 - Texture Detail | 0s-10s | Shot: macro tilt down]
-VISUAL: STRICT CONTINUATION FROM THE PREVIOUS CLIP - same set, same light, same digital air fryer. The camera pushes in and tilts down slowly, tracing the sleek matte finish and the metallic sheen of the handle. A hand enters and rests gently beside the handle.
-ACTION: 0-2s the camera begins its macro tilt down over the front / 2-8s the tilt reveals the smooth transition from the glossy panel to the matte drawer and brushed handle / 8-10s a hand rests smoothly beside the handle as the camera holds.
-SFX: close-up fan hum, soft hand touch on plastic.
+[Clip 2 - Detail Tilt Down | 0s-10s | Shot: slow macro tilt down]
+VISUAL: STRICT CONTINUATION FROM THE PREVIOUS CLIP - same set, same light, same black indoor grill. The camera slides down from the top handle, across the illuminated glass window, and stops on the silver control panel.
+ACTION: 0-2s the camera is already moving downwards from the top edge / 2-8s the tilt reveals the interior amber light through the glass / 8-10s the camera settles on the silver control panel, the central dial sharp in focus.
 
-Audio Design:
-Warm acoustic lo-fi at a mid tempo, same instrumental track continuing from the previous clip, no restart, instrumental only, no lyrics, no vocals. Diegetic SFX: gentle fan hum, subtle plastic touch. STRICTLY NO VOICEOVER, NO SPEECH.
+Audio:
+No audio. Silent clip: no music, no sound effects, no ambience, no voiceover, no speech.
 
 Negative Prompt:
-text, typography, letters, words, captions, subtitles, title cards, watermarks, logos, invented brand names, UI overlays, emojis, human faces, heads, facial features, eyes, mouths, crowds, people reflected in surfaces, morphing product, melting geometry, changing product design between shots, altering proportions, duplicated product, extra handles, invented compartments, floating parts, object inside object, surreal physics, jump cuts, split screen, flicker, strobing, jitter, plastic CGI look, oversaturation, blown highlights, low resolution, blurry footage, horizontal framing, letterboxing, full arms, forearms, human bodies, mannequins, extra fingers, fused fingers, deformed hands, legible packaging text, readable labels, gibberish text
+captions, subtitles, title cards, on-screen text, overlay text, watermarks, UI overlays, emojis, invented logos, invented brand names, misspelled label, altered brand name, gibberish lettering, distorted typography on the packaging, blurred out label, music, sound effects, voiceover, speech, human faces, heads, facial features, eyes, mouths, crowds, people reflected in surfaces, morphing product, melting geometry, changing product design between shots, altering proportions, duplicated product, extra handles, invented compartments, floating parts, object inside object, surreal physics, jump cuts, split screen, flicker, strobing, jitter, plastic CGI look, oversaturation, blown highlights, low resolution, blurry footage, horizontal framing, letterboxing, hands, arms, fingers, human bodies, wrong letters on the label, extra words on the packaging, translated packaging, unreadable label, detached parts, bending metal, warping frame geometry
