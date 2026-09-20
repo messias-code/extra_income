@@ -1,33 +1,35 @@
 Format: vertical 9:16, 720p, 24fps | Single continuous shot of 10s | Clip 1 of 2
-On camera: hands only, cropped at the wrist. NO faces, NO text.
+On camera: hands only, cropped at the wrist. NO faces, NO captions, NO subtitles.
 
 Style & Lighting:
-High-end UGC grooming film, clean morning mood, diffused cool window light with a warm highlight, gentle falloff into shadow, clean palette, photoreal, textless, no text, no subtitles.
+Minimalist male grooming aesthetic, clean and empty mood, cool diffused overhead light with subtle golden reflections, dark high-contrast palette, photoreal, no captions, no subtitles, no on-screen graphics.
 
 Textures to Highlight:
-amber glass, matte black plastic nozzle, honed light marble, water droplets, fluffy cotton towel.
+matte black plastic, reflective gold foil typography, smooth honed black marble.
 
 Scene:
-A lived-in modern bathroom counter in honed light marble. A neatly folded white hand towel, scattered water droplets, and a small green potted plant, blurred subway tiles behind.
+A completely clean, minimalist and empty bathroom counter made of honed black marble. No extra objects, no distractions, completely bare aside from the product.
 
 Subject:
-A set of two beard and hair spray bottles: amber glass cylindrical body, matte black plastic finger pump nozzle, transparent protective cap. Label artwork kept soft-focus and non-legible.
+A 2-bottle kit of hair and beard tonic spray: two identical 120ml cylindrical bottles, matte black finish, black spray nozzles with black caps, black labels featuring gold borders and gold typography.
+
+Label & Brand:
+The brand name printed on the label reads exactly "BRAVENZA", spelled B-R-A-V-E-N-Z-A. Keep the label artwork, wording and spelling identical to the reference photos, in focus and correctly spelled. Do not invent, translate, shorten or restyle any word printed on the product. This is the only text allowed anywhere in the frame.
 
 Camera & Framing:
-60mm macro lens, very shallow depth of field, gimbal-smooth motion: a top-down flat-lay push-in descending toward the counter.
+60mm macro lens, very shallow depth of field, gimbal-smooth motion: a top-down flat-lay push-in descending toward the bottles.
 
 Continuity Anchors:
-NOTE: The 6-panel storyboard is provided ONLY as a structural reference for timing and camera movements. The product in the video MUST NOT look like the simplified storyboard version. It MUST match the original reference photos exactly (exact colors, labels, shapes, and details). Same product, same amber glass variant, same marble counter, same lighting direction and same lens in this clip and in the next one. The two bottles stay in the same position on the marble.
+NOTE: The 6-panel storyboard is provided ONLY as a structural reference for timing and camera movements. The product in the video MUST NOT look like the simplified storyboard version. It MUST match the original reference photos exactly (exact colors, labels, shapes, and details). Same product, same black color variant, same black marble surface, same lighting direction and same lens in this clip and in the next one. The two bottles lie flat, side by side, perfectly aligned.
 
 Action Timeline:
-[Clip 1 - Set Reveal | 0s-10s | Shot: top-down flat-lay push-in]
-VISUAL: Overhead view of the two amber glass bottles arranged on the wet marble, light catching the water droplets as the camera descends.
-ACTION: 0-2s the camera is already moving down towards the counter / 2-7s the push-in reveals the bottles' amber finish and the black spray nozzles / 7-10s a hand enters from the frame edge and hovers just beside the bottles, pausing.
-SFX: bathroom room tone, water dripping, soft fabric rustle.
-END FRAME: Camera at a steep three-quarter angle just above the counter, the two bottles centred in the lower two thirds of the frame, one hand hovering just beside them, marble counter and folded towel soft behind.
+[Clip 1 - Flat-Lay Push-In | 0s-10s | Shot: top-down flat-lay push-in]
+VISUAL: Overhead view of the two matte black bottles lying side-by-side perfectly flat on the empty black marble counter, golden light catching the labels as the camera descends.
+ACTION: 0-2s the camera is already pushing in from above / 2-7s the push-in tightens on the gold typography and matte black finish / 7-10s the descent stops to hold a steady overhead frame.
+END FRAME: Camera directly overhead in a top-down angle, closely framing the two matte black bottles lying flat on the minimalist dark marble counter, the gold brand name sharp and in focus.
 
-Audio Design:
-Calm ambient spa track at a mid tempo, instrumental only, no lyrics, no vocals. Diegetic SFX: water dripping, fabric rustle. STRICTLY NO VOICEOVER, NO SPEECH.
+Audio:
+No audio. Silent clip: no music, no sound effects, no ambience, no voiceover, no speech.
 
 Negative Prompt:
-text, typography, letters, words, captions, subtitles, title cards, watermarks, logos, invented brand names, UI overlays, emojis, human faces, heads, facial features, eyes, mouths, crowds, people reflected in surfaces, morphing product, melting geometry, changing product design between shots, altering proportions, duplicated product, extra handles, invented compartments, floating parts, object inside object, surreal physics, jump cuts, split screen, flicker, strobing, jitter, plastic CGI look, oversaturation, blown highlights, low resolution, blurry footage, horizontal framing, letterboxing, full arms, forearms, human bodies, mannequins, extra fingers, fused fingers, deformed hands, legible packaging text, readable labels, gibberish text
+captions, subtitles, title cards, on-screen text, overlay text, watermarks, UI overlays, emojis, invented logos, invented brand names, misspelled label, altered brand name, gibberish lettering, distorted typography on the packaging, blurred out label, music, sound effects, voiceover, speech, human faces, heads, facial features, eyes, mouths, crowds, people reflected in surfaces, morphing product, melting geometry, changing product design between shots, altering proportions, duplicated product, extra handles, invented compartments, floating parts, object inside object, surreal physics, jump cuts, split screen, flicker, strobing, jitter, plastic CGI look, oversaturation, blown highlights, low resolution, blurry footage, horizontal framing, letterboxing, full arms, forearms, human bodies, mannequins, extra fingers, fused fingers, deformed hands, wrong letters on the label, extra words on the packaging, translated packaging, unreadable label
