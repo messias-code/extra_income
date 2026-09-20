@@ -25,7 +25,7 @@ O usuário **já rodou** o `scraper.py`. Você **NUNCA** invoca o scraper e **NU
 
 Cada prompt sai **vertical 9:16, 720p, 24fps, um único take contínuo de 10s** (os dois
 juntos fazem 20s), com **tempo local `0s-10s` nos dois arquivos**,
-**sem nenhuma voz** (nada de voiceover, fala, narração ou vocal na trilha) e
+**mudo** (bloco `Audio` pedindo silêncio, sem trilha, sem SFX, sem voz) e
 **sem nenhum texto na tela** (nada de legenda, letreiro, número ou marca d'água).
 Esses três pontos não se negociam com o produto: se algo no roteiro conflitar, o roteiro muda.
 
@@ -70,11 +70,13 @@ Cada produto recebe um par inicial: **par sugerido = (índice mod 8) + 1** de `p
 3. **Travar uma variante de cor** e mantê-la nos dois clipes e na foto.
 4. **Escrever `raciocinio.md`** com as 8 seções exigidas em `formato_de_saida`.
 5. **Escrever `prompt_cena1.md`** seguindo o `gabarito_cena1` ao pé da letra: linha `Format`
-   (`Clip 1 of 2`), linha `On camera`, as 9 seções, `[Clip 1 ... | 0s-10s | Shot: ...]` com
-   VISUAL/ACTION/SFX, a linha `END FRAME` descrevendo o último quadro, e o Negative Prompt =
+   (`Clip 1 of 2`), linha `On camera`, as 9 seções (incluindo `Label & Brand` com o nome da
+   marca soletrado com hifens), `[Clip 1 ... | 0s-10s | Shot: ...]` com VISUAL/ACTION (sem
+   linha SFX), a linha `END FRAME` descrevendo o último quadro, e o Negative Prompt =
    BASE completa + condicionais do modo escolhido.
 6. **Escrever `prompt_cena2.md`** seguindo o `gabarito_cena2`: `Style & Lighting`, `Textures`,
-   `Scene` e `Subject` são **copiados e colados** do clipe 1 sem trocar uma palavra; o
+   `Scene`, `Subject` e `Label & Brand` são **copiados e colados** do clipe 1 sem trocar uma
+   palavra; o
    `START FRAME` repete o `END FRAME` do clipe 1 palavra por palavra; só `Camera & Framing` e a
    `Action Timeline` (`0s-10s`, beats `0-2s / 2-8s / 8-10s`) são novos.
 7. **Escrever `prompt_imagem.md`** seguindo o `gabarito_prompt_imagem`: é a foto que vai

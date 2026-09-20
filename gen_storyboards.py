@@ -28,7 +28,8 @@ TENTATIVAS = 4
 BACKOFF_INICIAL_S = 30
 
 # "numbers"/"numerals" NAO entram: os numerais dos paineis sao o unico texto permitido
-NEGATIVO = ("letters, words, captions, sentences, labels, titles, watermarks, logos, "
+NEGATIVO = ("captions, sentences, titles, subtitles, overlay text, watermarks, "
+            "invented logos, misspelled label, gibberish lettering, "
             "faces, heads, eyes, extra fingers, deformed hands, morphing product, "
             "different product between panels, empty panels, duplicated panels, "
             "sketch, cartoon, illustration, 3D render, oversaturation, blurry")
@@ -67,9 +68,9 @@ def visual_do_clipe(texto):
 
 
 def estilo(texto):
-    """Estetica e paleta do roteiro. O rabicho anti-texto ('textless, no text...') fica
-    de fora: na prancha os numerais dos paineis sao texto desejado."""
-    bruto = secao(texto, "Style & Lighting:").split("textless")[0]
+    """Estetica e paleta do roteiro. O rabicho anti-texto ('no captions, no subtitles...')
+    fica de fora: na prancha os numerais dos paineis sao texto desejado."""
+    bruto = secao(texto, "Style & Lighting:").split("no captions")[0]
     return cortar(bruto, 25)
 
 
@@ -116,7 +117,8 @@ def montar_prompt(prompt_cena1, prompt_cena2):
         f"All six panels: same set, same lighting, same product, {on_camera}. "
         "Product centered in each panel.",
         "The product must match the reference photos exactly: same shape, same color "
-        "variant, same finish, same proportions.",
+        "variant, same finish, same proportions, and every word printed on it spelled "
+        "exactly as in the references.",
         "Style: high-end commercial product photography, photoreal, cinematic lighting, "
         f"shallow depth of field, {estilo(prompt_cena1)}, vertical 9:16.",
         f"Negative: {NEGATIVO}.",

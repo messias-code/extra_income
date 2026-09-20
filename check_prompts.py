@@ -29,10 +29,11 @@ SECOES_OBRIGATORIAS = [
     "Textures to Highlight:",
     "Scene:",
     "Subject:",
+    "Label & Brand:",
     "Camera & Framing:",
     "Continuity Anchors:",
     "Action Timeline:",
-    "Audio Design:",
+    "Audio:",
     "Negative Prompt:",
 ]
 
@@ -44,6 +45,7 @@ ARQUIVO_IMAGEM = "prompt_imagem.md"
 # a foto estatica que vai postada junto com os dois videos
 SECOES_IMAGEM = [
     "Subject:",
+    "Label & Brand:",
     "New Angle & Framing:",
     "Scene:",
     "Light & Mood:",
@@ -54,29 +56,38 @@ SECOES_IMAGEM = [
     "Negative Prompt:",
 ]
 NEGATIVE_IMAGEM_OBRIGATORIO = [
-    "text", "watermarks", "logos", "faces", "collage",
+    "captions", "watermarks", "misspelled label", "faces", "collage",
     "duplicated product", "catalogue white background",
 ]
-PALAVRAS_IMAGEM_MIN, PALAVRAS_IMAGEM_MAX = 200, 330
+PALAVRAS_IMAGEM_MIN, PALAVRAS_IMAGEM_MAX = 250, 410
 
 # os 3 beats de cada clipe (tempo local, cada clipe comeca em 0s);
 # juntos viram os 6 paineis numerados do storyboard
 BEATS = {1: ["0-2s", "2-7s", "7-10s"], 2: ["0-2s", "2-8s", "8-10s"]}
 
 # blocos que o clipe 2 copia palavra por palavra do clipe 1
-SECOES_COMPARTILHADAS = ["Style & Lighting:", "Textures to Highlight:", "Scene:", "Subject:"]
+SECOES_COMPARTILHADAS = ["Style & Lighting:", "Textures to Highlight:", "Scene:", "Subject:",
+                         "Label & Brand:"]
 
 MARCA_START = "CONTINUES FROM THE FINAL FRAME OF THE PREVIOUS CLIP"
 MARCA_VISUAL_2 = "STRICT CONTINUATION FROM THE PREVIOUS CLIP"
 RABICHO_START = "No cut, no new establishing shot, no time jump"
 
-# tokens que a BASE do negative prompt precisa conter
+# tokens que a BASE do negative prompt precisa conter.
+# "text", "typography" e "logos" soltos saíram de proposito: apagavam o rotulo do
+# proprio produto e faziam o modelo inventar letras (o caso "Vedatudo" -> "Vecatudo")
 NEGATIVE_OBRIGATORIO = [
-    "text", "typography", "captions", "watermarks", "logos",
+    "captions", "watermarks", "misspelled label", "altered brand name",
     "faces", "morphing product", "horizontal framing",
+    "music", "sound effects", "voiceover",
 ]
 
-PALAVRAS_MIN, PALAVRAS_MAX = 330, 480  # corpo de CADA arquivo, sem o Negative Prompt
+# frases que mandam o modelo borrar o rotulo: sao elas que produzem letra embaralhada
+PROIBIDO_NO_ROTULO = ("non-legible", "not legible", "illegible", "soft-focus label",
+                      "label kept soft", "blurred label", "blurred out label",
+                      "unreadable label", "no legible text on the label")
+
+PALAVRAS_MIN, PALAVRAS_MAX = 380, 540  # corpo de CADA arquivo, sem o Negative Prompt
 
 
 # --------------------------------------------------------------------------- #
@@ -219,7 +230,7 @@ def validar_clipe(texto, numero):
         if MARCA_VISUAL_2 not in texto:
             erros.append(f"VISUAL do clipe 2 nao comeca com '{MARCA_VISUAL_2}'")
 
-    for marcador in ("VISUAL:", "ACTION:", "SFX:"):
+    for marcador in ("VISUAL:", "ACTION:"):
         if marcador not in texto:
             erros.append(f"falta a linha '{marcador}'")
 
@@ -228,18 +239,27 @@ def validar_clipe(texto, numero):
         if beat not in texto:
             erros.append(f"falta o beat '{beat}' na linha ACTION")
 
-    # 6. regras de texto e voz
-    estilo = extrair_secao(texto, "Style & Lighting:")
-    if "textless" not in estilo.lower():
-        erros.append("Style & Lighting sem 'textless'")
+    # 6. texto de overlay proibido, rotulo do produto obrigatorio e exato
+    estilo = extrair_secao(texto, "Style & Lighting:").lower()
+    if "no captions" not in estilo:
+        erros.append("Style & Lighting sem 'no captions, no subtitles'")
 
-    audio = extrair_secao(texto, "Audio Design:")
-    if "no voiceover" not in audio.lower():
-        erros.append("Audio Design sem 'STRICTLY NO VOICEOVER'")
-    if "no lyrics" not in audio.lower():
-        erros.append("Audio Design sem 'instrumental only, no lyrics'")
-    if numero == 2 and "continuing from the previous clip" not in audio.lower():
-        avisos.append("Audio Design sem 'same instrumental track continuing from the previous clip'")
+    rotulo = extrair_secao(texto, "Label & Brand:")
+    if not re.search(r"\b(?:[A-Za-z]-){2,}[A-Za-z]\b", rotulo):
+        erros.append("Label & Brand sem a marca soletrada com hifens (ex: V-E-D-A-T-U-D-O): "
+                     "sem soletrar, o modelo troca as letras")
+    if "exactly" not in rotulo.lower():
+        avisos.append("Label & Brand sem 'reads exactly': a exigencia precisa ser literal")
+
+    # 6b. o clipe e mudo
+    audio = extrair_secao(texto, "Audio:").lower()
+    if "no audio" not in audio:
+        erros.append("bloco Audio sem 'No audio. Silent clip'")
+    for som in ("no music", "no sound effects", "no voiceover"):
+        if som not in audio:
+            erros.append(f"bloco Audio sem '{som}'")
+    if "SFX:" in texto:
+        erros.append("sobrou linha 'SFX:': o clipe e mudo, nada de som descrito")
 
     # 7. negative prompt
     negativo = extrair_secao(texto, "Negative Prompt:").lower()
@@ -254,9 +274,14 @@ def validar_clipe(texto, numero):
     # 8. nada de voz nem texto vazando para dentro do roteiro
     corpo = texto.split("Negative Prompt:")[0].lower()
     for proibido in ("narrator", "voice-over:", "voiceover:", "dialogue:",
-                     "on-screen text", "caption reads", "title card"):
+                     "on-screen text", "caption reads", "title card",
+                     "instrumental", "soundtrack", "background music"):
         if proibido in corpo:
-            erros.append(f"o roteiro pede voz ou texto na tela: '{proibido}'")
+            erros.append(f"o roteiro pede voz, musica ou texto na tela: '{proibido}'")
+    for frase in PROIBIDO_NO_ROTULO:
+        if frase in corpo:
+            erros.append(f"o roteiro manda borrar o rotulo ('{frase}'): e exatamente isso "
+                         "que faz o modelo embaralhar as letras da marca")
 
     # 9. sujeira de geracao
     if "```" in texto:
@@ -309,6 +334,13 @@ def validar_imagem(texto):
     corpo = texto.split("Negative Prompt:")[0]
     # so a parte criativa: os blocos Product Fidelity e Originality citam o fundo branco
     # justamente para PROIBI-lo, e nao podem disparar o alarme
+    rotulo = extrair_secao(texto, "Label & Brand:")
+    if not re.search(r"\b(?:[A-Za-z]-){2,}[A-Za-z]\b", rotulo):
+        erros.append("Label & Brand sem a marca soletrada com hifens")
+    for frase in PROIBIDO_NO_ROTULO:
+        if frase in corpo.lower():
+            erros.append(f"a foto manda borrar o rotulo ('{frase}')")
+
     criativo = corpo.split("Product Fidelity:")[0].lower()
     for fundo in ("white background", "plain background", "studio backdrop",
                   "seamless backdrop", "grey background", "gray background"):

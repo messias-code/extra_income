@@ -113,7 +113,8 @@ Aciona uma *Skill* nativa do Antigravity. A IA varre os produtos recém-baixados
 **Regras de Roteiro (`prompt_sistema.yaml`):**
 - **Duração:** 20 segundos em **dois prompts separados** de 10s — o clipe 2 é escrito como continuação exata do clipe 1, para ser colado no Google Flow em cima do último frame gerado.
 - **Formato:** Vídeo focado apenas em interações visuais orgânicas (mãos ou *headless models* para roupas).
-- **Sem Fakes:** Zero voiceover/falas e zero textos na tela, focando em trilha sonora e efeitos.
+- **Sem áudio:** Os clipes saem **mudos** — sem trilha, sem efeito sonoro, sem voz. O som entra depois, na edição.
+- **Sem texto na tela:** Zero legenda, letreiro ou marca d'água. O **rótulo do produto**, ao contrário, vai legível e escrito **exatamente** como nas fotos (bloco `Label & Brand`, com a marca soletrada letra a letra).
 - **Foto do post:** um terceiro prompt (`prompt_imagem.md`) gera **uma imagem estática** do mesmo produto para postar junto com os vídeos — mesmo produto das fotos reais, mas outro ângulo, outro cenário e outra pessoa em quadro, para não reproduzir a foto do anúncio.
 **Resultado:** Os arquivos `prompt_video/prompt_cena1.md`, `prompt_cena2.md` e `prompt_imagem.md` (os três prompts prontos para colar) e `raciocinio.md` (a justificativa das escolhas do diretor) em cada produto.
 *(Nota: O script `check_prompts.py` garante a qualidade e impede que a IA repita os mesmos enquadramentos de câmera o tempo todo).*

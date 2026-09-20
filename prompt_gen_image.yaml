@@ -66,8 +66,10 @@ regras_absolutas:
     Cada painel leva um numeral pequeno e limpo (1 a 6) no canto superior esquerdo.
     É o ÚNICO texto permitido na imagem inteira. Peça assim:
     "a small plain numeral from 1 to 6 in the top-left corner of each panel, and no other text anywhere."
-    Por isso o bloco Negative lista letters/words/captions/labels mas **NUNCA** lista
+    Por isso o bloco Negative lista captions/titles/overlay text mas **NUNCA** lista
     "numbers" ou "numerals" — senão o modelo apaga a numeração que você acabou de pedir.
+    E também não lista "letters", "words", "labels" nem "logos": esses apagariam o rótulo
+    impresso no próprio produto e o modelo devolveria letras sem sentido.
 
   R3_TRADUCAO_NAO_COPIA: |
     NUNCA cole os prompts de vídeo dentro do prompt de imagem. Resuma cada beat em UMA frase visual
@@ -88,7 +90,9 @@ regras_absolutas:
     - Fora os numerais dos painéis: nada de legenda, título, seta, rótulo ou marca d'água.
     - Nada de rosto: repita o modo dos prompts ("hands only, cropped at the wrist",
       "headless model cropped at the neck" ou "product only, no people").
-    - Rótulo do produto: "label artwork soft-focus and non-legible".
+    - Rótulo do produto: legível e CORRETO. Copie o nome da marca do bloco "Label & Brand"
+      dos prompts e repita a exigência: "every word printed on the product spelled exactly
+      as in the reference photos". Nunca peça rótulo borrado — é o que embaralha as letras.
 
   R7_FOTOGRAFICO_NAO_ILUSTRADO: |
     Storyboard aqui não é desenho. Peça fotografia comercial real:
@@ -113,7 +117,7 @@ formato_do_prompt_de_imagem: |
   All six panels: same set, same <direção/temperatura da luz>, same <cor/variante> product, <modo de câmera>. Product centered in each panel.
   The product MUST match the reference photos exactly: keeping the exact original labels, brand artwork, colors, design details, and proportions. Do not generate generic bottles or plain packaging.
   Style: high-end commercial product photography, photoreal, cinematic lighting, shallow depth of field, <paleta>, vertical 9:16.
-  Negative: letters, words, captions, sentences, labels, titles, watermarks, logos, faces, heads, eyes, extra fingers, deformed hands, morphing product, different product between panels, empty panels, duplicated panels, sketch, cartoon, illustration, 3D render, oversaturation, blurry.
+  Negative: captions, sentences, titles, subtitles, overlay text, watermarks, invented logos, misspelled label, gibberish lettering, faces, heads, eyes, extra fingers, deformed hands, morphing product, different product between panels, empty panels, duplicated panels, sketch, cartoon, illustration, 3D render, oversaturation, blurry.
 
 exemplo:
   input_prompts: "roteiro do jogo de panelas de cerâmica cobre (Clipe 1: top-down push-in sobre o set no mármore com vapor, mão levanta a tampa; Clipe 2: crane down até a bancada, mão inclina a panela e o ovo desliza)"
@@ -128,13 +132,14 @@ exemplo:
     All six panels: same set, same warm golden window light from the left, same copper product, hands only cropped at the wrist. Product centered in each panel.
     The product MUST match the reference photos exactly: keeping the exact original labels, brand artwork, colors, design details, and proportions. Do not generate generic bottles or plain packaging.
     Style: high-end commercial product photography, photoreal, cinematic lighting, shallow depth of field, amber and dark metal palette, vertical 9:16.
-    Negative: letters, words, captions, sentences, labels, titles, watermarks, logos, faces, heads, eyes, extra fingers, deformed hands, morphing product, different product between panels, empty panels, duplicated panels, sketch, cartoon, illustration, 3D render, oversaturation, blurry.
+    Negative: captions, sentences, titles, subtitles, overlay text, watermarks, invented logos, misspelled label, gibberish lettering, faces, heads, eyes, extra fingers, deformed hands, morphing product, different product between panels, empty panels, duplicated panels, sketch, cartoon, illustration, 3D render, oversaturation, blurry.
 
 checklist_final: |
   Antes de chamar generate_image, confira:
   [ ] Pediu 6 painéis em uma única imagem, 2 colunas x 3 linhas
   [ ] Pediu os numerais 1 a 6 no canto de cada painel, e nenhum outro texto
-  [ ] O bloco Negative NÃO contém "numbers" nem "numerals"
+  [ ] O bloco Negative NÃO contém "numbers", "numerals", "letters", "words" nem "labels"
+  [ ] Pediu o rótulo do produto legível e escrito exatamente como nas fotos
   [ ] Cada painel corresponde ao beat certo (1-3 = Clipe 1, 4-6 = Clipe 2), na ordem
   [ ] Os 6 painéis progridem (distância, ângulo ou estágio da ação mudam a cada painel)
   [ ] Mesma luz, mesmo cenário e mesma variante de cor nos seis

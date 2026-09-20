@@ -6,7 +6,7 @@
 #                      <pasta_do_produto>/prompt_video/raciocinio.md
 # Validação automática: python check_prompts.py check
 
-versao: "3.0"
+versao: "3.1"
 
 # ---------------------------------------------------------------------------
 # 0. PARÂMETROS TÉCNICOS (fonte única da verdade - mude aqui, não no gabarito)
@@ -123,19 +123,27 @@ regras_absolutas:
     - Produto grande/pesado (bicicleta, motosserra, máquina): partes móveis em funcionamento
       (roda girando, vapor saindo) com a câmera se movendo ao redor.
 
-  R5_ZERO_TEXTO: |
-    O vídeo não pode conter NENHUM texto, legenda, letreiro, marca d'água, logo inventado,
-    emoji ou elemento de UI gerado na imagem.
-    - "textless, no text, no subtitles" é obrigatório em Style & Lighting.
-    - O bloco Negative Prompt precisa ser agressivo nos termos de texto (ver negative_prompt).
-    - Texto impresso no PRÓPRIO produto (rótulo de frasco, painel de bike) é inevitável, mas
-      o modelo alucina letras sem sentido: escreva "label artwork kept soft-focus and
-      non-legible" no Subject sempre que o produto tiver rótulo.
+  R5_TEXTO: |
+    Existem DOIS tipos de texto e eles têm regras opostas. Não confunda.
 
-  R6_ZERO_VOZ: |
-    Showcase estritamente visual. NÃO existe fala, voiceover, diálogo, narração ou vocal na
-    trilha. Áudio = música instrumental sem direitos autorais + SFX diegéticos sutis.
-    Vocais na música induzem o modelo a gerar legendas: peça "instrumental only, no lyrics".
+    a) TEXTO DE OVERLAY (legenda, letreiro, marca d'água, emoji, elemento de UI, logo
+       inventado): PROIBIDO. Nada disso é desenhado por cima da imagem.
+
+    b) O RÓTULO IMPRESSO NO PRÓPRIO PRODUTO: OBRIGATÓRIO e EXATO. É a marca que o cliente
+       precisa ler. Vai no bloco "Label & Brand", com o nome copiado LETRA POR LETRA das
+       fotos de referência e soletrado com hifens ("VEDATUDO - V-E-D-A-T-U-D-O").
+       Soletrar é o que impede o modelo de escrever "Vecatudo".
+       - NUNCA escreva "label non-legible", "soft-focus label" ou equivalente: é isso que
+         faz o modelo embaralhar as letras.
+       - O Negative Prompt ataca o rótulo ERRADO ("misspelled label", "altered brand name",
+         "gibberish lettering"), nunca o rótulo em si.
+
+  R6_SEM_AUDIO: |
+    O clipe é MUDO. Zero áudio: sem trilha, sem efeito sonoro, sem ambiência, sem voz.
+    O som entra depois, na edição, fora deste pipeline.
+    - O bloco "Audio" pede silêncio explicitamente.
+    - Nada de linha SFX na Action Timeline: som descrito no prompt é som gerado.
+    - O Negative Prompt lista music, sound effects, voiceover, speech.
 
   R7_DURACAO: |
     Cada prompt descreve EXATAMENTE 10s em UM único take contínuo — proibido corte,
@@ -184,61 +192,43 @@ regras_absolutas:
 # ---------------------------------------------------------------------------
 presets_por_categoria: |
   O cenário DEVE SER EXTREMAMENTE MINIMALISTA E SIMPLES, focando 100% no produto. Geradores de vídeo alucinam com cenários cheios de objetos. Use "clean", "minimalist", "empty" sempre que possível.
-  Formato: cenário | luz | lente/paleta | trilha | SFX diegético
+  Formato: cenário | luz | lente/paleta
   - cozinha / utilidades:
       bancada lisa de mármore claro, ambiente clean e minimalista sem distrações
       | luz de janela macia, sombras suaves
       | 50mm macro, DOF raso, paleta clean
-      | acústica calma em ritmo lento
-      | água sutil, toque de louça
   - moda / vestuário:
       fundo neutro e liso, parede de estúdio claro
       | luz difusa suave e uniforme
       | 50mm, DOF raso, paleta neutra
-      | house suave e elegante
-      | roçar de tecido muito leve
   - beleza / skincare:
       bancada lisa de banheiro, mármore ou vidro, completamente limpa
       | luz difusa fria, clean
       | macro 60mm, DOF muito raso, paleta branca/limpa
-      | ambient/spa minimalista
-      | vidro tocando pedra suavemente
   - suplemento / saúde:
       mesa branca lisa, ambiente ensolarado mas minimalista
       | luz natural limpa
       | 50mm, paleta clara
-      | ambient otimista
-      | chacoalhar suave
   - fitness pesado:
       piso emborrachado liso, parede cinza vazia, academia clean
       | luz lateral com contraste
       | 35mm, paleta escura/aço
-      | eletrônica de batida firme
-      | zunido sutil
   - ferramentas / DIY:
       chão de concreto liso e limpo, ou bancada de madeira limpa e vazia
       | luz suave de topo, sombras limpas
       | 50mm macro, paleta ardósia e âmbar
-      | eletrônica minimalista
-      | toque sutil em metal
   - eletrônicos / gadget:
       mesa escura e limpa, fundo preto ou cinza escuro
       | luz de recorte clean e minimalista
       | 50mm macro, paleta escura
-      | eletrônica minimalista
-      | toque em vidro ou plástico
   - limpeza:
       superfície lisa antes/depois, foco puramente na textura do material
       | luz clara e uniforme
       | 50mm macro
-      | som limpo e progressivo
-      | espuma, água, som de deslizar
   - casa / decoração:
       chão de madeira limpo ou mesa lisa, ambiente clean
       | luz indireta suave
       | 50mm, paleta terrosa macia
-      | acústica calma
-      | som de ambiente sutil
 
 vocabulario_de_camera: |
   Movimentos permitidos (use o nome técnico, não "câmera se move"):
@@ -288,15 +278,14 @@ maos_e_corpo: |
   - Vestuário: headless model cortado no pescoço, corpo permitido, rosto nunca.
 
 audio: |
-  Estrutura obrigatória do bloco Audio Design:
-  1. gênero + humor + andamento da trilha, casando com o preset da categoria;
-  2. "instrumental only, no lyrics, no vocals";
-  3. a MESMA trilha descrita com as mesmas palavras nos dois arquivos; no Clipe 2 acrescente
-     "same instrumental track continuing from the previous clip, no restart" (a costura
-     dos dois clipes depende disso);
-  4. 2 ou 3 SFX diegéticos ancorados nas ações descritas na timeline;
-  5. "STRICTLY NO VOICEOVER, NO SPEECH."
-  SFX precisa corresponder ao que está na tela. Som sem imagem correspondente é ruído.
+  Não existe desenho de som. Os dois clipes saem do Flow MUDOS, e o bloco "Audio" é sempre
+  a mesma frase, idêntica nos dois arquivos:
+
+  Audio:
+  No audio. Silent clip: no music, no sound effects, no ambience, no voiceover, no speech.
+
+  Motivo: a trilha gerada pelo modelo é genérica, às vezes traz vocal (que puxa legenda na
+  tela) e some na hora de emendar os dois clipes. O som certo entra na edição.
 
 # ---------------------------------------------------------------------------
 # 4. NEGATIVE PROMPT (determinístico)
@@ -306,8 +295,10 @@ negative_prompt: |
   condicionais aplicáveis, na ordem, separados por vírgula.
 
   BASE (sempre):
-  text, typography, letters, words, captions, subtitles, title cards, watermarks, logos,
-  invented brand names, UI overlays, emojis, human faces, heads, facial features, eyes,
+  captions, subtitles, title cards, on-screen text, overlay text, watermarks, UI overlays,
+  emojis, invented logos, invented brand names, misspelled label, altered brand name,
+  gibberish lettering, distorted typography on the packaging, blurred out label,
+  music, sound effects, voiceover, speech, human faces, heads, facial features, eyes,
   mouths, crowds, people reflected in surfaces, morphing product, melting geometry,
   changing product design between shots, altering proportions, duplicated product,
   extra handles, invented compartments, floating parts, object inside object,
@@ -315,13 +306,18 @@ negative_prompt: |
   oversaturation, blown highlights, low resolution, blurry footage, horizontal framing,
   letterboxing
 
+  ATENÇÃO: a BASE NÃO contém "text", "typography", "letters", "words" nem "logos" soltos.
+  Esses termos apagavam o rótulo do produto e faziam o modelo inventar letras. O que se
+  proíbe é o texto SOBREPOSTO e o rótulo ERRADO, nunca o rótulo real.
+
   CONDICIONAIS:
   - modo "product only"     -> + hands, arms, fingers, human bodies
   - modo "hands only"       -> + full arms, forearms, human bodies, mannequins,
                                  extra fingers, fused fingers, deformed hands
   - modo "headless model"   -> + face, head, hair, chin, neck above the shoulders,
                                  mannequin joints, distorted body proportions
-  - produto com rótulo/tela -> + legible packaging text, readable labels, gibberish text
+  - produto com rótulo/tela -> + wrong letters on the label, extra words on the packaging,
+                                 translated packaging, unreadable label
   - produto com líquido     -> + spills, dripping mess, foam overflow
   - produto com partes móveis -> + detached parts, bending metal, warping frame geometry
 
@@ -330,10 +326,10 @@ negative_prompt: |
 # ---------------------------------------------------------------------------
 limites_de_tamanho: |
   Prompt denso vence prompt longo. Alvos POR ARQUIVO (cada um é um prompt completo):
-  - corpo do arquivo (tudo menos o Negative Prompt): 330 a 480 palavras. Os dois arquivos
+  - corpo do arquivo (tudo menos o Negative Prompt): 380 a 540 palavras. Os dois arquivos
     repetem os blocos compartilhados, então a conta é POR ARQUIVO, não somada.
   - Style & Lighting: até 40 palavras.  Scene: até 45.  Subject: até 60.
-  - VISUAL: até 55 palavras.  ACTION: até 45.  SFX: até 15.
+  - VISUAL: até 55 palavras.  ACTION: até 45.  Label & Brand: até 60.
   - END FRAME / START FRAME: até 45 palavras (e iguais entre os dois arquivos).
   Corte adjetivo antes de cortar direção técnica.
 
@@ -346,9 +342,12 @@ erros_comuns_dos_modelos: |
   - Interações complexas derretem o vídeo: Evite que a mão abra frascos, aperte pumps ou pegue conteúdo. Em vez disso, a mão toca suavemente o frasco, desliza pela textura ou a câmera apenas faz um movimento dramático sobre o produto intocado.
   - Produto muda de forma/cor entre as cenas -> Continuity Anchors + repetir a descrição
     curta do produto no VISUAL da Cena 2.
-  - Letras alucinadas em rótulo -> "label artwork soft-focus and non-legible" + negative.
+  - Letras alucinadas em rótulo -> bloco "Label & Brand" com a marca soletrada com hifens
+    + "misspelled label, altered brand name, gibberish lettering" no negative.
+    (o antigo "soft-focus and non-legible" era a CAUSA do problema, não a cura)
   - Mãos com dedos a mais -> uma ação muito simples (apenas tocar ou deslizar), mão cortada no pulso, negative específico.
-  - Legenda aparecendo sozinha -> "textless" no Style, música sem vocal, negative agressivo.
+  - Legenda aparecendo sozinha -> "no captions, no subtitles" no Style e clipe mudo:
+    sem trilha não há vocal, e sem vocal o modelo não inventa legenda.
   - Cena virando estúdio branco genérico -> props concretos e nomeados no Scene.
   - Movimento "flutuante" irreal -> declarar lente, velocidade e apoio ("gimbal", "handheld").
   - Produto grande em cenário pequeno -> checar escala antes de escolher o preset.
@@ -374,7 +373,8 @@ formato_de_saida: |
      ÂNGULO DE VENDA: o benefício que o vídeo prova.
      PAR DE PLANOS: qual dos 8 e por quê.
      CONFORMIDADE: modo de câmera (product only / hands / headless), 2 clipes de 10s,
-     zero voz, zero texto, variante única travada.
+     clipe mudo, zero texto de overlay, variante única travada.
+     MARCA NO RÓTULO: o nome exato lido nas fotos e como ele foi soletrado.
      HANDOFF: em uma frase, qual é o quadro final do Clipe 1 que o Clipe 2 retoma.
      IMAGEM DE POST: qual ângulo novo e qual recorte de cenário a foto usa, e por que ele é
      diferente do quadro da foto do anúncio.
@@ -392,10 +392,10 @@ formato_de_saida: |
 
 gabarito_cena1: |
   Format: vertical 9:16, 720p, 24fps | Single continuous shot of 10s | Clip 1 of 2
-  On camera: <product only, no people | hands only, cropped at the wrist | headless model, cropped at the neck>. NO faces, NO text.
+  On camera: <product only, no people | hands only, cropped at the wrist | headless model, cropped at the neck>. NO faces, NO captions, NO subtitles.
 
   Style & Lighting:
-  <estética + humor + direção/temperatura de luz + contraste + paleta>, photoreal, textless, no text, no subtitles.
+  <estética + humor + direção/temperatura de luz + contraste + paleta>, photoreal, no captions, no subtitles, no on-screen graphics.
 
   Textures to Highlight:
   <3 a 5 texturas concretas observadas nas imagens>
@@ -404,7 +404,10 @@ gabarito_cena1: |
   <ambiente real, funcional e ATIVO, com props nomeados e fundo desfocado>
 
   Subject:
-  <descrição densa do produto ancorada nas imagens: forma, cor/variante única, acabamento, peças visíveis. Se tiver rótulo: label artwork kept soft-focus and non-legible. Se for roupa: worn by a headless model, describing fit and drape.>
+  <descrição densa do produto ancorada nas imagens: forma, cor/variante única, acabamento, peças visíveis. Se for roupa: worn by a headless model, describing fit and drape.>
+
+  Label & Brand:
+  The packaging reads exactly "<NOME DA MARCA EM MAIÚSCULAS, copiado das fotos>", spelled <N-O-M-E soletrado com hifens>. Keep the label artwork, wording and spelling identical to the reference photos, in focus and correctly spelled. Do not invent, translate, shorten or restyle any word printed on the product. This is the only text allowed anywhere in the frame.
 
   Camera & Framing:
   <lente + profundidade de campo + apoio (gimbal/handheld) + o PRIMEIRO plano do par escolhido>
@@ -416,11 +419,10 @@ gabarito_cena1: |
   [Clip 1 - <título curto> | 0s-10s | Shot: <um único movimento contínuo>]
   VISUAL: <o que se vê, do hook ao fim do take>
   ACTION: 0-2s <hook já em movimento> / 2-7s <revelação> / 7-10s <ponte para o Clipe 2, terminando em quadro estável>
-  SFX: <2 ou 3 sons diegéticos das ações descritas>
   END FRAME: <o último quadro com precisão: posição do produto, posição das mãos, altura e ângulo da câmera, o que está nítido e o que está desfocado>
 
-  Audio Design:
-  <gênero + humor + andamento>, instrumental only, no lyrics, no vocals. Diegetic SFX: <2 ou 3>. STRICTLY NO VOICEOVER, NO SPEECH.
+  Audio:
+  No audio. Silent clip: no music, no sound effects, no ambience, no voiceover, no speech.
 
   Negative Prompt:
   <BASE + condicionais aplicáveis>
@@ -430,7 +432,7 @@ gabarito_cena2: |
   uma palavra. Só Camera & Framing e a Action Timeline são reescritos.
 
   Format: vertical 9:16, 720p, 24fps | Single continuous shot of 10s | Clip 2 of 2 - direct continuation of clip 1
-  On camera: <idêntico ao Clipe 1>. NO faces, NO text.
+  On camera: <idêntico ao Clipe 1>. NO faces, NO captions, NO subtitles.
 
   START FRAME: CONTINUES FROM THE FINAL FRAME OF THE PREVIOUS CLIP - <o END FRAME do Clipe 1, palavra por palavra>. No cut, no new establishing shot, no time jump: the same take simply carries on.
 
@@ -446,6 +448,9 @@ gabarito_cena2: |
   Subject:
   <idêntico ao Clipe 1>
 
+  Label & Brand:
+  <idêntico ao Clipe 1>
+
   Camera & Framing:
   <mesma lente, mesma profundidade de campo e mesmo apoio do Clipe 1 + o SEGUNDO plano do par, descrito como continuação do movimento anterior>
 
@@ -456,10 +461,9 @@ gabarito_cena2: |
   [Clip 2 - <título curto> | 0s-10s | Shot: <um único movimento contínuo>]
   VISUAL: STRICT CONTINUATION FROM THE PREVIOUS CLIP - same set, same light, same <produto em 3 palavras>. <o que se vê>
   ACTION: 0-2s <retomada: a câmera já está em movimento, ninguém reposiciona nada> / 2-8s <payoff da demonstração> / 8-10s <beauty shot final>
-  SFX: <sons da nova ação>
 
-  Audio Design:
-  <mesmo gênero + humor + andamento do Clipe 1>, same instrumental track continuing from the previous clip, no restart, instrumental only, no lyrics, no vocals. Diegetic SFX: <2 ou 3>. STRICTLY NO VOICEOVER, NO SPEECH.
+  Audio:
+  No audio. Silent clip: no music, no sound effects, no ambience, no voiceover, no speech.
 
   Negative Prompt:
   <idêntico ao Clipe 1>
@@ -484,17 +488,21 @@ imagem_de_post: |
   paleta dos dois clipes — o post inteiro precisa parecer o mesmo ensaio. O bloco Subject é
   COPIADO PALAVRA POR PALAVRA do prompt_cena1.md; ângulo, composição e cenário é que mudam.
 
-  Valem as mesmas regras absolutas: R1 (grounding), R3 (sem rostos), R5 (zero texto),
+  Valem as mesmas regras absolutas: R1 (grounding), R3 (sem rostos), R5 (rótulo exato,
+  zero overlay),
   R11 (inglês) e R12 (autossuficiência).
 
-  Tamanho: 200 a 330 palavras no corpo (sem contar o Negative Prompt).
+  Tamanho: 250 a 410 palavras no corpo (sem contar o Negative Prompt).
 
 gabarito_prompt_imagem: |
   Format: single still photograph, vertical 9:16, photoreal product photography
-  On camera: <product only, no people | hands only, cropped at the wrist | headless model, cropped at the neck>. NO faces, NO text, NO logos.
+  On camera: <product only, no people | hands only, cropped at the wrist | headless model, cropped at the neck>. NO faces, NO captions, NO overlay text.
 
   Subject:
   <copiado palavra por palavra do bloco Subject do prompt_cena1.md>
+
+  Label & Brand:
+  <copiado palavra por palavra do bloco Label & Brand do prompt_cena1.md>
 
   New Angle & Framing:
   <ângulo declaradamente diferente do anúncio: altura da câmera, rotação do produto, lente, posição no quadro, profundidade de campo>
@@ -512,17 +520,17 @@ gabarito_prompt_imagem: |
   <quando houver pessoa: descreva alguém DIFERENTE do das fotos de referência — outra roupa, outro tom de pele, unhas naturais — sempre cortada no pulso ou no pescoço. No modo "product only" escreva apenas: no people in frame.>
 
   Product Fidelity:
-  The product must match the reference photos exactly: same shape, same colour variant, same finish, same proportions, same visible parts. Only the camera angle, the surroundings, the hands and the composition change. Do not redesign, restyle or simplify the product. <se tiver rótulo: Label artwork kept soft-focus and non-legible.>
+  The product must match the reference photos exactly: same shape, same colour variant, same finish, same proportions, same visible parts. Only the camera angle, the surroundings, the hands and the composition change. Do not redesign, restyle or simplify the product, and keep every word printed on it exactly as in the reference photos.
 
   Originality:
-  This is a NEW photograph of the same object, not a copy of the reference images. Do not reproduce their background, layout, crop, pose or props. No catalogue white background, no collage, no panels, no badges, no text of any kind.
+  This is a NEW photograph of the same object, not a copy of the reference images. Do not reproduce their background, layout, crop, pose or props. No catalogue white background, no collage, no panels, no badges, no added text or graphics of any kind. The only readable words in the photo are the ones printed on the product itself.
 
   Negative Prompt:
   <negative_prompt_imagem + condicionais aplicáveis do negative_prompt de vídeo>
 
 negative_prompt_imagem: |
   BASE da imagem (sempre, integralmente):
-  text, typography, letters, words, captions, watermarks, logos, invented brand names, UI overlays, emojis, price badges, discount stickers, infographic elements, arrows, measurement charts, collage, multi-panel layout, product grid, duplicated product, mirrored copy of the reference photo, plain catalogue white background, cut-out product on flat backdrop, borders, frames, human faces, heads, facial features, eyes, mouths, crowds, people reflected in surfaces, morphing product, melting geometry, redesigned packaging, altered proportions, extra handles, invented compartments, floating parts, object inside object, surreal physics, plastic CGI look, oversaturation, blown highlights, low resolution, blurry, horizontal framing, letterboxing
+  captions, overlay text, watermarks, UI overlays, emojis, invented logos, invented brand names, misspelled label, altered brand name, gibberish lettering, blurred out label, price badges, discount stickers, infographic elements, arrows, measurement charts, collage, multi-panel layout, product grid, duplicated product, mirrored copy of the reference photo, plain catalogue white background, cut-out product on flat backdrop, borders, frames, human faces, heads, facial features, eyes, mouths, crowds, people reflected in surfaces, morphing product, melting geometry, redesigned packaging, altered proportions, extra handles, invented compartments, floating parts, object inside object, surreal physics, plastic CGI look, oversaturation, blown highlights, low resolution, blurry, horizontal framing, letterboxing
 
   CONDICIONAIS: os mesmos do negative_prompt dos vídeos, conforme o modo escolhido
   (product only / hands only / headless model) e o tipo de produto (rótulo, líquido,
@@ -546,8 +554,9 @@ exemplos_few_shot:
       MÉTRICAS: preço alto + volume alto -> cozinha real e aspiracional, ritmo médio, não estúdio.
       ÂNGULO DE VENDA: antiaderente de verdade — o ovo desliza sem óleo.
       PAR DE PLANOS: 2 (top-down push-in -> crane down + mão aciona), evitando o orbit padrão.
-      CONFORMIDADE: hands only cortadas no pulso; 2 clipes de 10s; zero voz; zero texto;
-      variante cobre travada nos dois clipes.
+      CONFORMIDADE: hands only cortadas no pulso; 2 clipes de 10s; clipe mudo; zero texto de
+      overlay; variante cobre travada nos dois clipes.
+      MARCA NO RÓTULO: "COPPERLUX" gravado nos cabos, soletrado C-O-P-P-E-R-L-U-X.
       HANDOFF: o Clipe 1 acaba com a câmera junto ao cooktop e a mão segurando a tampa de vidro
       erguida; o Clipe 2 retoma exatamente aí.
       IMAGEM DE POST: foto na altura da bancada, panela girada em três quartos sobre a tábua de
@@ -555,10 +564,10 @@ exemplos_few_shot:
       cozinha real, com outra mão em quadro.
     prompt_cena1_md: |
       Format: vertical 9:16, 720p, 24fps | Single continuous shot of 10s | Clip 1 of 2
-      On camera: hands only, cropped at the wrist. NO faces, NO text.
+      On camera: hands only, cropped at the wrist. NO faces, NO captions, NO subtitles.
 
       Style & Lighting:
-      High-end UGC kitchen film, warm morning mood, soft golden window light from the left, gentle falloff into shadow, amber and dark metal palette, photoreal, textless, no text, no subtitles.
+      High-end UGC kitchen film, warm morning mood, soft golden window light from the left, gentle falloff into shadow, amber and dark metal palette, photoreal, no captions, no subtitles, no on-screen graphics.
 
       Textures to Highlight:
       diamond-embossed metallic copper, dark speckled ceramic interior, tempered glass lids, honed marble, rising steam.
@@ -568,6 +577,9 @@ exemplos_few_shot:
 
       Subject:
       A 20-piece copper ceramic non-stick cookware set: diamond-embossed metallic copper exterior, dark speckled non-stick interior, copper-rimmed tempered glass lids, three pan sizes nested on the counter.
+
+      Label & Brand:
+      The brand name stamped on the pan handles reads exactly "COPPERLUX", spelled C-O-P-P-E-R-L-U-X. Keep the lettering sharp, correctly spelled, in the same typeface and the same position as in the reference photos. Do not invent, translate, shorten or restyle any word printed on the cookware. This is the only text allowed anywhere in the frame.
 
       Camera & Framing:
       50mm lens, shallow depth of field, gimbal-smooth motion: a top-down flat-lay push-in descending toward the counter.
@@ -579,22 +591,21 @@ exemplos_few_shot:
       [Clip 1 - Set Reveal | 0s-10s | Shot: top-down flat-lay push-in]
       VISUAL: Overhead view of the copper set arranged on the marble, steam already curling from the pan on the cooktop, light sliding across the diamond embossing as the camera descends.
       ACTION: 0-2s steam rises and the camera is already moving down / 2-7s the push-in reveals the full set and its copper finish / 7-10s a hand enters from the frame edge and lifts the glass lid off the pan, steam swelling upward.
-      SFX: kitchen room tone, low sizzle, glass lid clinking.
       END FRAME: Camera at a steep three-quarter angle just above the cooktop, the copper pan centred in the lower two thirds of the frame, steam curling to the right, one hand holding the lifted glass lid just above the pan, marble counter and folded linen towel soft behind.
 
-      Audio Design:
-      Warm acoustic lo-fi at a mid tempo, instrumental only, no lyrics, no vocals. Diegetic SFX: sizzle, glass lid, pan on cooktop. STRICTLY NO VOICEOVER, NO SPEECH.
+      Audio:
+      No audio. Silent clip: no music, no sound effects, no ambience, no voiceover, no speech.
 
       Negative Prompt:
-      text, typography, letters, words, captions, subtitles, title cards, watermarks, logos, invented brand names, UI overlays, emojis, human faces, heads, facial features, eyes, mouths, crowds, people reflected in surfaces, morphing product, melting geometry, changing product design between shots, altering proportions, duplicated product, extra handles, invented compartments, floating parts, object inside object, surreal physics, jump cuts, split screen, flicker, strobing, jitter, plastic CGI look, oversaturation, blown highlights, low resolution, blurry footage, horizontal framing, letterboxing, full arms, forearms, human bodies, mannequins, extra fingers, fused fingers, deformed hands, spills, dripping mess
+      captions, subtitles, title cards, on-screen text, overlay text, watermarks, UI overlays, emojis, invented logos, invented brand names, misspelled label, altered brand name, gibberish lettering, distorted typography on the packaging, blurred out label, music, sound effects, voiceover, speech, human faces, heads, facial features, eyes, mouths, crowds, people reflected in surfaces, morphing product, melting geometry, changing product design between shots, altering proportions, duplicated product, extra handles, invented compartments, floating parts, object inside object, surreal physics, jump cuts, split screen, flicker, strobing, jitter, plastic CGI look, oversaturation, blown highlights, low resolution, blurry footage, horizontal framing, letterboxing, full arms, forearms, human bodies, mannequins, extra fingers, fused fingers, deformed hands, spills, dripping mess
     prompt_cena2_md: |
       Format: vertical 9:16, 720p, 24fps | Single continuous shot of 10s | Clip 2 of 2 - direct continuation of clip 1
-      On camera: hands only, cropped at the wrist. NO faces, NO text.
+      On camera: hands only, cropped at the wrist. NO faces, NO captions, NO subtitles.
 
       START FRAME: CONTINUES FROM THE FINAL FRAME OF THE PREVIOUS CLIP - Camera at a steep three-quarter angle just above the cooktop, the copper pan centred in the lower two thirds of the frame, steam curling to the right, one hand holding the lifted glass lid just above the pan, marble counter and folded linen towel soft behind. No cut, no new establishing shot, no time jump: the same take simply carries on.
 
       Style & Lighting:
-      High-end UGC kitchen film, warm morning mood, soft golden window light from the left, gentle falloff into shadow, amber and dark metal palette, photoreal, textless, no text, no subtitles.
+      High-end UGC kitchen film, warm morning mood, soft golden window light from the left, gentle falloff into shadow, amber and dark metal palette, photoreal, no captions, no subtitles, no on-screen graphics.
 
       Textures to Highlight:
       diamond-embossed metallic copper, dark speckled ceramic interior, tempered glass lids, honed marble, rising steam.
@@ -604,6 +615,9 @@ exemplos_few_shot:
 
       Subject:
       A 20-piece copper ceramic non-stick cookware set: diamond-embossed metallic copper exterior, dark speckled non-stick interior, copper-rimmed tempered glass lids, three pan sizes nested on the counter.
+
+      Label & Brand:
+      The brand name stamped on the pan handles reads exactly "COPPERLUX", spelled C-O-P-P-E-R-L-U-X. Keep the lettering sharp, correctly spelled, in the same typeface and the same position as in the reference photos. Do not invent, translate, shorten or restyle any word printed on the cookware. This is the only text allowed anywhere in the frame.
 
       Camera & Framing:
       50mm lens, shallow depth of field, gimbal-smooth motion: the descent finishes into a counter-level macro slide along the pan rim.
@@ -615,20 +629,22 @@ exemplos_few_shot:
       [Clip 2 - Non-Stick Proof | 0s-10s | Shot: crane down into counter-level macro slide]
       VISUAL: STRICT CONTINUATION FROM THE PREVIOUS CLIP - same set, same light, same copper pan. The camera settles at counter level as the hand tilts the pan and a fried egg glides across the speckled ceramic without leaving a trace.
       ACTION: 0-2s the camera keeps descending while the hand lowers the lid onto the marble / 2-8s the hand tilts the pan and the egg slides edge to edge / 8-10s the pan settles flat, camera holds on the gleaming copper rim.
-      SFX: egg sizzling, soft slide of the egg, pan settling on the cooktop.
 
-      Audio Design:
-      Warm acoustic lo-fi at a mid tempo, same instrumental track continuing from the previous clip, no restart, instrumental only, no lyrics, no vocals. Diegetic SFX: sizzle, egg slide, pan on cooktop. STRICTLY NO VOICEOVER, NO SPEECH.
+      Audio:
+      No audio. Silent clip: no music, no sound effects, no ambience, no voiceover, no speech.
 
       Negative Prompt:
-      text, typography, letters, words, captions, subtitles, title cards, watermarks, logos, invented brand names, UI overlays, emojis, human faces, heads, facial features, eyes, mouths, crowds, people reflected in surfaces, morphing product, melting geometry, changing product design between shots, altering proportions, duplicated product, extra handles, invented compartments, floating parts, object inside object, surreal physics, jump cuts, split screen, flicker, strobing, jitter, plastic CGI look, oversaturation, blown highlights, low resolution, blurry footage, horizontal framing, letterboxing, full arms, forearms, human bodies, mannequins, extra fingers, fused fingers, deformed hands, spills, dripping mess
+      captions, subtitles, title cards, on-screen text, overlay text, watermarks, UI overlays, emojis, invented logos, invented brand names, misspelled label, altered brand name, gibberish lettering, distorted typography on the packaging, blurred out label, music, sound effects, voiceover, speech, human faces, heads, facial features, eyes, mouths, crowds, people reflected in surfaces, morphing product, melting geometry, changing product design between shots, altering proportions, duplicated product, extra handles, invented compartments, floating parts, object inside object, surreal physics, jump cuts, split screen, flicker, strobing, jitter, plastic CGI look, oversaturation, blown highlights, low resolution, blurry footage, horizontal framing, letterboxing, full arms, forearms, human bodies, mannequins, extra fingers, fused fingers, deformed hands, spills, dripping mess
 
     prompt_imagem_md: |
       Format: single still photograph, vertical 9:16, photoreal product photography
-      On camera: hands only, cropped at the wrist. NO faces, NO text, NO logos.
+      On camera: hands only, cropped at the wrist. NO faces, NO captions, NO overlay text.
 
       Subject:
       A 20-piece copper ceramic non-stick cookware set: diamond-embossed metallic copper exterior, dark speckled non-stick interior, copper-rimmed tempered glass lids, three pan sizes nested on the counter.
+
+      Label & Brand:
+      The brand name stamped on the pan handles reads exactly "COPPERLUX", spelled C-O-P-P-E-R-L-U-X. Keep the lettering sharp, correctly spelled, in the same typeface and the same position as in the reference photos. Do not invent, translate, shorten or restyle any word printed on the cookware. This is the only text allowed anywhere in the frame.
 
       New Angle & Framing:
       Counter-height three-quarter view on a 35mm lens, the largest pan turned about 30 degrees to the left and placed in the lower right third of the vertical frame, its handle leading into the shot, shallow depth of field falling off toward the back of the kitchen.
@@ -649,10 +665,10 @@ exemplos_few_shot:
       The product must match the reference photos exactly: same shape, same colour variant, same finish, same proportions, same visible parts. Only the camera angle, the surroundings, the hands and the composition change. Do not redesign, restyle or simplify the product.
 
       Originality:
-      This is a NEW photograph of the same object, not a copy of the reference images. Do not reproduce their background, layout, crop, pose or props. No catalogue white background, no collage, no panels, no badges, no text of any kind.
+      This is a NEW photograph of the same object, not a copy of the reference images. Do not reproduce their background, layout, crop, pose or props. No catalogue white background, no collage, no panels, no badges, no added text or graphics of any kind. The only readable words in the photo are the ones printed on the product itself.
 
       Negative Prompt:
-      text, typography, letters, words, captions, watermarks, logos, invented brand names, UI overlays, emojis, price badges, discount stickers, infographic elements, arrows, measurement charts, collage, multi-panel layout, product grid, duplicated product, mirrored copy of the reference photo, plain catalogue white background, cut-out product on flat backdrop, borders, frames, human faces, heads, facial features, eyes, mouths, crowds, people reflected in surfaces, morphing product, melting geometry, redesigned packaging, altered proportions, extra handles, invented compartments, floating parts, object inside object, surreal physics, plastic CGI look, oversaturation, blown highlights, low resolution, blurry, horizontal framing, letterboxing, full arms, forearms, human bodies, mannequins, extra fingers, fused fingers, deformed hands
+      captions, overlay text, watermarks, UI overlays, emojis, invented logos, invented brand names, misspelled label, altered brand name, gibberish lettering, blurred out label, price badges, discount stickers, infographic elements, arrows, measurement charts, collage, multi-panel layout, product grid, duplicated product, mirrored copy of the reference photo, plain catalogue white background, cut-out product on flat backdrop, borders, frames, human faces, heads, facial features, eyes, mouths, crowds, people reflected in surfaces, morphing product, melting geometry, redesigned packaging, altered proportions, extra handles, invented compartments, floating parts, object inside object, surreal physics, plastic CGI look, oversaturation, blown highlights, low resolution, blurry, horizontal framing, letterboxing, full arms, forearms, human bodies, mannequins, extra fingers, fused fingers, deformed hands
 
   exemplo_2_vestuario_headless:
     input:
@@ -667,18 +683,19 @@ exemplos_few_shot:
       MÉTRICAS: preço baixo + volume muito alto -> cenário cotidiano e real, energia de UGC.
       ÂNGULO DE VENDA: opacidade e sustentação do cós — o teste do agachamento e o bolso útil.
       PAR DE PLANOS: 4 (tracking shot -> rack focus no detalhe do bolso).
-      CONFORMIDADE: headless model cortada no pescoço; 2 clipes de 10s; zero voz; zero texto;
-      variante preta travada.
+      CONFORMIDADE: headless model cortada no pescoço; 2 clipes de 10s; clipe mudo; zero texto
+      de overlay; variante preta travada.
+      MARCA NO RÓTULO: "AERFIT" na etiqueta do cós, soletrado A-E-R-F-I-T.
       HANDOFF: o Clipe 1 acaba no fundo do agachamento, bolso da coxa centralizado; o Clipe 2
       retoma nesse quadro e sobe com a modelo.
       IMAGEM DE POST: três quartos traseiro de corpo parcial junto à janela, com a modelo em
       outra roupa de cima — o anúncio é frontal em fundo liso, aqui é perfil em quarto real.
     prompt_cena1_md: |
       Format: vertical 9:16, 720p, 24fps | Single continuous shot of 10s | Clip 1 of 2
-      On camera: headless model, cropped at the neck. NO faces, NO text.
+      On camera: headless model, cropped at the neck. NO faces, NO captions, NO subtitles.
 
       Style & Lighting:
-      Clean athletic UGC film, bright late-morning mood, soft diffused daylight from a tall window, low contrast, neutral grey and black palette, photoreal, textless, no text, no subtitles.
+      Clean athletic UGC film, bright late-morning mood, soft diffused daylight from a tall window, low contrast, neutral grey and black palette, photoreal, no captions, no subtitles, no on-screen graphics.
 
       Textures to Highlight:
       smooth matte black performance fabric with a faint satin sheen, thick ribbed high waistband, flat-lock seams, rubber flooring.
@@ -688,6 +705,9 @@ exemplos_few_shot:
 
       Subject:
       High-waisted black training leggings worn by a headless model cropped at the neck: wide supportive waistband, opaque smooth fabric, a flat side pocket on the right thigh, a center back seam shaping the fit.
+
+      Label & Brand:
+      The woven tag on the waistband reads exactly "AERFIT", spelled A-E-R-F-I-T. Keep the wording, spelling, typeface and placement identical to the reference photos, in focus whenever it is in frame. Do not invent, translate, shorten or restyle any word printed or stitched on the garment. This is the only text allowed anywhere in the frame.
 
       Camera & Framing:
       35mm lens, medium depth of field, handheld-smooth lateral tracking shot alongside the model.
@@ -699,22 +719,21 @@ exemplos_few_shot:
       [Clip 1 - Fit in Motion | 0s-10s | Shot: lateral tracking shot]
       VISUAL: The camera tracks alongside the headless model walking slowly across the training corner, daylight raking across the leggings so the fabric stays opaque and the waistband holds its shape.
       ACTION: 0-2s the model is already mid-step and the camera is already tracking / 2-7s the walk reveals the full silhouette from hip to ankle / 7-10s the model stops and sinks into a slow squat as the camera settles at hip height.
-      SFX: soft footsteps on rubber, faint fabric rustle, quiet room tone.
       END FRAME: Camera at hip height in a three-quarter rear angle, the headless model at the bottom of a slow squat, the right thigh pocket centred in frame, daylight raking from the left, rolled yoga mat and water bottle blurred behind.
 
-      Audio Design:
-      Mellow house with a steady mid tempo, instrumental only, no lyrics, no vocals. Diegetic SFX: footsteps, fabric rustle, room tone. STRICTLY NO VOICEOVER, NO SPEECH.
+      Audio:
+      No audio. Silent clip: no music, no sound effects, no ambience, no voiceover, no speech.
 
       Negative Prompt:
-      text, typography, letters, words, captions, subtitles, title cards, watermarks, logos, invented brand names, UI overlays, emojis, human faces, heads, facial features, eyes, mouths, crowds, people reflected in surfaces, morphing product, melting geometry, changing product design between shots, altering proportions, duplicated product, extra handles, invented compartments, floating parts, object inside object, surreal physics, jump cuts, split screen, flicker, strobing, jitter, plastic CGI look, oversaturation, blown highlights, low resolution, blurry footage, horizontal framing, letterboxing, face, head, hair, chin, neck above the shoulders, mannequin joints, distorted body proportions, see-through fabric
+      captions, subtitles, title cards, on-screen text, overlay text, watermarks, UI overlays, emojis, invented logos, invented brand names, misspelled label, altered brand name, gibberish lettering, distorted typography on the packaging, blurred out label, music, sound effects, voiceover, speech, human faces, heads, facial features, eyes, mouths, crowds, people reflected in surfaces, morphing product, melting geometry, changing product design between shots, altering proportions, duplicated product, extra handles, invented compartments, floating parts, object inside object, surreal physics, jump cuts, split screen, flicker, strobing, jitter, plastic CGI look, oversaturation, blown highlights, low resolution, blurry footage, horizontal framing, letterboxing, face, head, hair, chin, neck above the shoulders, mannequin joints, distorted body proportions, see-through fabric
     prompt_cena2_md: |
       Format: vertical 9:16, 720p, 24fps | Single continuous shot of 10s | Clip 2 of 2 - direct continuation of clip 1
-      On camera: headless model, cropped at the neck. NO faces, NO text.
+      On camera: headless model, cropped at the neck. NO faces, NO captions, NO subtitles.
 
       START FRAME: CONTINUES FROM THE FINAL FRAME OF THE PREVIOUS CLIP - Camera at hip height in a three-quarter rear angle, the headless model at the bottom of a slow squat, the right thigh pocket centred in frame, daylight raking from the left, rolled yoga mat and water bottle blurred behind. No cut, no new establishing shot, no time jump: the same take simply carries on.
 
       Style & Lighting:
-      Clean athletic UGC film, bright late-morning mood, soft diffused daylight from a tall window, low contrast, neutral grey and black palette, photoreal, textless, no text, no subtitles.
+      Clean athletic UGC film, bright late-morning mood, soft diffused daylight from a tall window, low contrast, neutral grey and black palette, photoreal, no captions, no subtitles, no on-screen graphics.
 
       Textures to Highlight:
       smooth matte black performance fabric with a faint satin sheen, thick ribbed high waistband, flat-lock seams, rubber flooring.
@@ -724,6 +743,9 @@ exemplos_few_shot:
 
       Subject:
       High-waisted black training leggings worn by a headless model cropped at the neck: wide supportive waistband, opaque smooth fabric, a flat side pocket on the right thigh, a center back seam shaping the fit.
+
+      Label & Brand:
+      The woven tag on the waistband reads exactly "AERFIT", spelled A-E-R-F-I-T. Keep the wording, spelling, typeface and placement identical to the reference photos, in focus whenever it is in frame. Do not invent, translate, shorten or restyle any word printed or stitched on the garment. This is the only text allowed anywhere in the frame.
 
       Camera & Framing:
       35mm lens, medium depth of field, handheld-smooth motion that holds at hip height and racks focus into the thigh pocket.
@@ -735,20 +757,22 @@ exemplos_few_shot:
       [Clip 2 - Pocket & Waistband | 0s-10s | Shot: rack focus into macro]
       VISUAL: STRICT CONTINUATION FROM THE PREVIOUS CLIP - same set, same light, same black leggings. Focus racks from the stretched waistband to the thigh pocket as a hand slides a phone into it and the fabric closes flat.
       ACTION: 0-2s the model rises out of the squat, fabric recovering, camera still at hip height / 2-8s focus racks to the side pocket and a hand slides the phone in and taps it flat / 8-10s the model turns slightly, camera holds on the smooth seam line.
-      SFX: fabric stretch, phone sliding into the pocket, light footstep.
 
-      Audio Design:
-      Mellow house with a steady mid tempo, same instrumental track continuing from the previous clip, no restart, instrumental only, no lyrics, no vocals. Diegetic SFX: footsteps, fabric stretch, phone slide. STRICTLY NO VOICEOVER, NO SPEECH.
+      Audio:
+      No audio. Silent clip: no music, no sound effects, no ambience, no voiceover, no speech.
 
       Negative Prompt:
-      text, typography, letters, words, captions, subtitles, title cards, watermarks, logos, invented brand names, UI overlays, emojis, human faces, heads, facial features, eyes, mouths, crowds, people reflected in surfaces, morphing product, melting geometry, changing product design between shots, altering proportions, duplicated product, extra handles, invented compartments, floating parts, object inside object, surreal physics, jump cuts, split screen, flicker, strobing, jitter, plastic CGI look, oversaturation, blown highlights, low resolution, blurry footage, horizontal framing, letterboxing, face, head, hair, chin, neck above the shoulders, mannequin joints, distorted body proportions, see-through fabric
+      captions, subtitles, title cards, on-screen text, overlay text, watermarks, UI overlays, emojis, invented logos, invented brand names, misspelled label, altered brand name, gibberish lettering, distorted typography on the packaging, blurred out label, music, sound effects, voiceover, speech, human faces, heads, facial features, eyes, mouths, crowds, people reflected in surfaces, morphing product, melting geometry, changing product design between shots, altering proportions, duplicated product, extra handles, invented compartments, floating parts, object inside object, surreal physics, jump cuts, split screen, flicker, strobing, jitter, plastic CGI look, oversaturation, blown highlights, low resolution, blurry footage, horizontal framing, letterboxing, face, head, hair, chin, neck above the shoulders, mannequin joints, distorted body proportions, see-through fabric
 
     prompt_imagem_md: |
       Format: single still photograph, vertical 9:16, photoreal product photography
-      On camera: headless model, cropped at the neck. NO faces, NO text, NO logos.
+      On camera: headless model, cropped at the neck. NO faces, NO captions, NO overlay text.
 
       Subject:
       High-waisted black training leggings worn by a headless model cropped at the neck: wide supportive waistband, opaque smooth fabric, a flat side pocket on the right thigh, a center back seam shaping the fit.
+
+      Label & Brand:
+      The woven tag on the waistband reads exactly "AERFIT", spelled A-E-R-F-I-T. Keep the wording, spelling, typeface and placement identical to the reference photos, in focus whenever it is in frame. Do not invent, translate, shorten or restyle any word printed or stitched on the garment. This is the only text allowed anywhere in the frame.
 
       New Angle & Framing:
       Rear three-quarter view on a 50mm lens from hip height, the model standing side-on to the window with the weight on one leg, body filling the left two thirds of the vertical frame from ribcage to mid-calf, shallow depth of field.
@@ -769,10 +793,10 @@ exemplos_few_shot:
       The product must match the reference photos exactly: same shape, same colour variant, same finish, same proportions, same visible parts. Only the camera angle, the surroundings, the hands and the composition change. Do not redesign, restyle or simplify the product.
 
       Originality:
-      This is a NEW photograph of the same object, not a copy of the reference images. Do not reproduce their background, layout, crop, pose or props. No catalogue white background, no collage, no panels, no badges, no text of any kind.
+      This is a NEW photograph of the same object, not a copy of the reference images. Do not reproduce their background, layout, crop, pose or props. No catalogue white background, no collage, no panels, no badges, no added text or graphics of any kind. The only readable words in the photo are the ones printed on the product itself.
 
       Negative Prompt:
-      text, typography, letters, words, captions, watermarks, logos, invented brand names, UI overlays, emojis, price badges, discount stickers, infographic elements, arrows, measurement charts, collage, multi-panel layout, product grid, duplicated product, mirrored copy of the reference photo, plain catalogue white background, cut-out product on flat backdrop, borders, frames, human faces, heads, facial features, eyes, mouths, crowds, people reflected in surfaces, morphing product, melting geometry, redesigned packaging, altered proportions, extra handles, invented compartments, floating parts, object inside object, surreal physics, plastic CGI look, oversaturation, blown highlights, low resolution, blurry, horizontal framing, letterboxing, face, head, hair, chin, neck above the shoulders, mannequin joints, distorted body proportions, see-through fabric
+      captions, overlay text, watermarks, UI overlays, emojis, invented logos, invented brand names, misspelled label, altered brand name, gibberish lettering, blurred out label, price badges, discount stickers, infographic elements, arrows, measurement charts, collage, multi-panel layout, product grid, duplicated product, mirrored copy of the reference photo, plain catalogue white background, cut-out product on flat backdrop, borders, frames, human faces, heads, facial features, eyes, mouths, crowds, people reflected in surfaces, morphing product, melting geometry, redesigned packaging, altered proportions, extra handles, invented compartments, floating parts, object inside object, surreal physics, plastic CGI look, oversaturation, blown highlights, low resolution, blurry, horizontal framing, letterboxing, face, head, hair, chin, neck above the shoulders, mannequin joints, distorted body proportions, see-through fabric
 
 contraexemplos: |
   Nunca escreva assim:
@@ -811,23 +835,25 @@ checklist_final: |
   [ ] VISUAL do Clipe 2 começa com "STRICT CONTINUATION FROM THE PREVIOUS CLIP"
   [ ] ACTION do Clipe 1 em 0-2s / 2-7s / 7-10s; do Clipe 2 em 0-2s / 2-8s / 8-10s
   [ ] Hook em movimento nos 2 primeiros segundos do Clipe 1
-  [ ] "textless, no text, no subtitles" no Style & Lighting dos dois
-  [ ] "instrumental only, no lyrics" e "STRICTLY NO VOICEOVER, NO SPEECH" no Audio Design
-      dos dois; o Clipe 2 ainda com "same instrumental track continuing from the previous clip"
+  [ ] "no captions, no subtitles" no Style & Lighting dos dois
+  [ ] Bloco "Label & Brand" nos dois, com o nome da marca soletrado com hifens e idêntico
+      palavra por palavra entre os dois arquivos
+  [ ] Nenhum dos dois pede rótulo ilegível ("non-legible", "soft-focus label", "blurred label")
+  [ ] Bloco "Audio" nos dois com a frase de silêncio, e nenhuma linha SFX na Action Timeline
   [ ] Negative Prompt = BASE completa + condicionais, igual nos dois arquivos
   [ ] Nada descrito que não esteja nas imagens ou no nome do produto
   [ ] Uma única variante de cor travada nos dois clipes
-  [ ] Entre 330 e 480 palavras no corpo de CADA prompt de vídeo (sem o Negative Prompt)
+  [ ] Entre 380 e 540 palavras no corpo de CADA prompt de vídeo (sem o Negative Prompt)
   [ ] Par de planos não repetido mais de 2x no lote do dia
 
   E no prompt_imagem.md:
   [ ] Linha Format: single still photograph, vertical 9:16
   [ ] Linha "On camera" no MESMO modo dos vídeos
-  [ ] Seções presentes: Subject, New Angle & Framing, Scene, Light & Mood, Textures to
-      Highlight, Model & Hands, Product Fidelity, Originality, Negative Prompt
-  [ ] Subject copiado palavra por palavra do prompt_cena1.md
+  [ ] Seções presentes: Subject, Label & Brand, New Angle & Framing, Scene, Light & Mood,
+      Textures to Highlight, Model & Hands, Product Fidelity, Originality, Negative Prompt
+  [ ] Subject e Label & Brand copiados palavra por palavra do prompt_cena1.md
   [ ] Ângulo, enquadramento e recorte de cenário declaradamente diferentes da foto do anúncio
   [ ] Mãos/modelo descritos como pessoa diferente da das fotos de referência
   [ ] Mesma variante de cor e mesma paleta dos dois clipes
   [ ] Negative Prompt = BASE da imagem + condicionais do modo escolhido
-  [ ] Entre 200 e 330 palavras no corpo (sem contar o Negative Prompt)
+  [ ] Entre 250 e 410 palavras no corpo (sem contar o Negative Prompt)
