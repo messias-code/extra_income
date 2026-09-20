@@ -1,34 +1,36 @@
 Format: vertical 9:16, 720p, 24fps | Single continuous shot of 10s | Clip 2 of 2 - direct continuation of clip 1
-On camera: hands only, cropped at the wrist. NO faces, NO text.
+On camera: hands only, cropped at the wrist. NO faces, NO captions, NO subtitles.
 
-START FRAME: CONTINUES FROM THE FINAL FRAME OF THE PREVIOUS CLIP - Camera at a low angle near counter level, the matte white case and a translucent mint-green strip in sharp focus in the lower half of the frame, a hand resting relaxed beside them, soft daylight falling across the marble, glass and plant blurred behind. No cut, no new establishing shot, no time jump: the same take simply carries on.
+START FRAME: CONTINUES FROM THE FINAL FRAME OF THE PREVIOUS CLIP - Camera at table level holding steady, the upright white box and the flat metallic blue sachet centered, crisp morning sunlight from the right, one hand resting gently beside the sachet, blurred mint leaf softly in the background. No cut, no new establishing shot, no time jump: the same take simply carries on.
 
 Style & Lighting:
-High-end UGC health film, fresh morning mood, high and clean natural daylight, soft shadows, bright white and mint green palette, photoreal, textless, no text, no subtitles.
+High-end UGC health supplement film, bright morning mood, clean natural sunlight from the right, soft bright shadows, crisp white and light blue palette, photoreal, no captions, no subtitles, no on-screen graphics.
 
 Textures to Highlight:
-matte white pocket case, translucent mint-green supplement film, honed white marble, smooth glass.
+smooth matte white cardboard, metallic blue foil sachet, glossy white table surface, soft green mint leaf.
 
 Scene:
-A clean modern bathroom vanity in honed white marble. A small glass of water and a blurred potted plant in the background, daylight spilling in from the side.
+A smooth white table in a sunny, minimalist and completely clean environment. A single blurred green mint leaf rests softly in the background, out of focus. No clutter.
 
 Subject:
-A mint-flavoured orodispersible supplement film: a small matte white pocket case containing translucent mint-green dissolvable strips. Label artwork kept soft-focus and non-legible.
+An orodispersible film supplement: a small white matte cardboard box with blue accents, standing upright, next to an individual metallic blue foil sachet lying flat on the white table.
+
+Label & Brand:
+The packaging reads exactly "DURAZUL", spelled D-U-R-A-Z-U-L. Keep the label artwork, wording and spelling identical to the reference photos, in focus and correctly spelled. Do not invent, translate, shorten or restyle any word printed on the product. This is the only text allowed anywhere in the frame.
 
 Camera & Framing:
-50mm lens, shallow depth of field, gimbal-smooth motion: a slow gimbal float pushing in and tilting up slightly toward the translucent strip.
+50mm lens, shallow depth of field, gimbal-smooth motion: the camera gently floats upward and pushes in slightly, settling into a front-facing macro view of the label.
 
 Continuity Anchors:
-NOTE: The 6-panel storyboard is provided ONLY as a structural reference for timing and camera movements. The product in the video MUST NOT look like the simplified storyboard version. It MUST match the original reference photos exactly (exact colors, labels, shapes, and details). Same product, same white and mint-green variant, same marble counter, same lighting direction and same lens as the previous clip. The pocket case remains on the counter.
+NOTE: The 6-panel storyboard is provided ONLY as a structural reference for timing and camera movements. The product in the video MUST NOT look like the simplified storyboard version. It MUST match the original reference photos exactly (exact colors, labels, shapes, and details). Same product, same blue and white variant, same white table, same lighting direction and same lens as the previous clip. The white box stays upright.
 
 Action Timeline:
-[Clip 2 - Film Detail | 0s-10s | Shot: gimbal float pushing in]
-VISUAL: STRICT CONTINUATION FROM THE PREVIOUS CLIP - same set, same light, same mint-flavoured orodispersible film. The camera floats closer, emphasizing the delicate, translucent texture of the mint-green strip as the hand gently slides it across the smooth marble.
-ACTION: 0-2s the camera begins its forward float, holding focus on the strip / 2-8s the hand slowly slides the translucent strip an inch forward, revealing its glossy texture under the daylight / 8-10s the hand withdraws, camera settles on a tight macro shot of the strip next to the white case.
-SFX: soft finger sliding on marble, faint room tone.
+[Clip 2 - Label Focus | 0s-10s | Shot: upward float into macro]
+VISUAL: STRICT CONTINUATION FROM THE PREVIOUS CLIP - same set, same light, same white supplement box. The hand gently taps the metallic sachet once as the camera smoothly floats up and in, bringing the crisp DURAZUL label into sharp, heroic focus.
+ACTION: 0-2s the camera begins its gentle upward float while the hand gently taps the sachet / 2-8s the float settles precisely onto the front face of the white box / 8-10s the camera holds entirely steady on the sharp brand lettering.
 
-Audio Design:
-Upbeat ambient acoustic at a mid tempo, same instrumental track continuing from the previous clip, no restart, instrumental only, no lyrics, no vocals. Diegetic SFX: room tone, slide on marble. STRICTLY NO VOICEOVER, NO SPEECH.
+Audio:
+No audio. Silent clip: no music, no sound effects, no ambience, no voiceover, no speech.
 
 Negative Prompt:
-text, typography, letters, words, captions, subtitles, title cards, watermarks, logos, invented brand names, UI overlays, emojis, human faces, heads, facial features, eyes, mouths, crowds, people reflected in surfaces, morphing product, melting geometry, changing product design between shots, altering proportions, duplicated product, extra handles, invented compartments, floating parts, object inside object, surreal physics, jump cuts, split screen, flicker, strobing, jitter, plastic CGI look, oversaturation, blown highlights, low resolution, blurry footage, horizontal framing, letterboxing, full arms, forearms, human bodies, mannequins, extra fingers, fused fingers, deformed hands, legible packaging text, readable labels, gibberish text
+captions, subtitles, title cards, on-screen text, overlay text, watermarks, UI overlays, emojis, invented logos, invented brand names, misspelled label, altered brand name, gibberish lettering, distorted typography on the packaging, blurred out label, music, sound effects, voiceover, speech, human faces, heads, facial features, eyes, mouths, crowds, people reflected in surfaces, morphing product, melting geometry, changing product design between shots, altering proportions, duplicated product, extra handles, invented compartments, floating parts, object inside object, surreal physics, jump cuts, split screen, flicker, strobing, jitter, plastic CGI look, oversaturation, blown highlights, low resolution, blurry footage, horizontal framing, letterboxing, full arms, forearms, human bodies, mannequins, extra fingers, fused fingers, deformed hands, wrong letters on the label, extra words on the packaging, translated packaging, unreadable label
