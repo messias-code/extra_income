@@ -183,62 +183,62 @@ regras_absolutas:
 # 3. DIREÇÃO: CATEGORIA, CÂMERA, RITMO
 # ---------------------------------------------------------------------------
 presets_por_categoria: |
-  O cenário precisa ser fisicamente plausível para o tamanho e o uso do produto.
+  O cenário DEVE SER EXTREMAMENTE MINIMALISTA E SIMPLES, focando 100% no produto. Geradores de vídeo alucinam com cenários cheios de objetos. Use "clean", "minimalist", "empty" sempre que possível.
   Formato: cenário | luz | lente/paleta | trilha | SFX diegético
   - cozinha / utilidades:
-      bancada de mármore ou madeira, cooktop em uso, pano de prato, ingrediente real
-      | luz de janela quente da manhã, sombras suaves
-      | 35mm, DOF raso, paleta âmbar e metal
-      | acústica calorosa em ritmo médio
-      | chiado de fritura, tampa de vidro, água correndo
+      bancada lisa de mármore claro, ambiente clean e minimalista sem distrações
+      | luz de janela macia, sombras suaves
+      | 50mm macro, DOF raso, paleta clean
+      | acústica calma em ritmo lento
+      | água sutil, toque de louça
   - moda / vestuário:
-      quarto claro, arara de madeira, parede neutra, cortina de voil, cama arrumada
-      | luz difusa lateral ou golden hour
-      | 50mm, DOF raso, paleta neutra e quente
-      | neo-soul ou house suave
-      | roçar de tecido, passos abafados
+      fundo neutro e liso, parede de estúdio claro
+      | luz difusa suave e uniforme
+      | 50mm, DOF raso, paleta neutra
+      | house suave e elegante
+      | roçar de tecido muito leve
   - beleza / skincare:
-      bancada de banheiro, mármore claro, azulejo, toalha, respingos, planta pequena
-      | luz difusa fria com um realce quente
-      | macro 60mm, DOF muito raso, paleta clean
-      | ambient/spa
-      | vidro tocando pedra, conta-gotas, gota densa
+      bancada lisa de banheiro, mármore ou vidro, completamente limpa
+      | luz difusa fria, clean
+      | macro 60mm, DOF muito raso, paleta branca/limpa
+      | ambient/spa minimalista
+      | vidro tocando pedra suavemente
   - suplemento / saúde:
-      bancada clara, copo d'água, fruta, tábua de madeira, manhã
-      | luz natural alta e limpa
-      | 50mm, paleta branca e verde
+      mesa branca lisa, ambiente ensolarado mas minimalista
+      | luz natural limpa
+      | 50mm, paleta clara
       | ambient otimista
-      | chacoalhar de cápsulas, tampa abrindo
+      | chacoalhar suave
   - fitness pesado:
-      canto de treino, piso emborrachado, parede de concreto, janela alta, toalha na barra
-      | luz dura lateral + contraluz
-      | 24mm em ângulo baixo heroico, paleta preto/aço/vermelho
+      piso emborrachado liso, parede cinza vazia, academia clean
+      | luz lateral com contraste
+      | 35mm, paleta escura/aço
       | eletrônica de batida firme
-      | zunido mecânico, clique de trava
+      | zunido sutil
   - ferramentas / DIY:
-      bancada de oficina, madeira gasta, serragem, morsa, peça a ser reparada
-      | luz dura lateral com sombra marcada
-      | 35mm, contraste alto, paleta aço e âmbar
-      | percussão rítmica
-      | catraca, metal, spray, motor
-  - eletrônicos / gadget:
-      mesa de madeira escura, fundo desfocado com LED, caderno, fone ao lado
-      | luz de recorte com reflexo controlado
-      | 50mm macro, paleta escura com neon frio
+      chão de concreto liso e limpo, ou bancada de madeira limpa e vazia
+      | luz suave de topo, sombras limpas
+      | 50mm macro, paleta ardósia e âmbar
       | eletrônica minimalista
-      | toque em vidro, clique tátil, pulseira de silicone
+      | toque sutil em metal
+  - eletrônicos / gadget:
+      mesa escura e limpa, fundo preto ou cinza escuro
+      | luz de recorte clean e minimalista
+      | 50mm macro, paleta escura
+      | eletrônica minimalista
+      | toque em vidro ou plástico
   - limpeza:
-      superfície real suja (rejunte, fogão, sofá), banheiro ou cozinha
-      | luz fria uniforme que evidencia a sujeira
-      | 35mm, alto contraste
-      | eletrônica limpa e progressiva
-      | vapor, escova, água
+      superfície lisa antes/depois, foco puramente na textura do material
+      | luz clara e uniforme
+      | 50mm macro
+      | som limpo e progressivo
+      | espuma, água, som de deslizar
   - casa / decoração:
-      sala com luz natural, mesa de madeira, planta, tapete texturizado
-      | golden hour indireto
-      | 35mm, paleta terrosa
+      chão de madeira limpo ou mesa lisa, ambiente clean
+      | luz indireta suave
+      | 50mm, paleta terrosa macia
       | acústica calma
-      | ambiente residencial sutil
+      | som de ambiente sutil
 
 vocabulario_de_camera: |
   Movimentos permitidos (use o nome técnico, não "câmera se move"):
