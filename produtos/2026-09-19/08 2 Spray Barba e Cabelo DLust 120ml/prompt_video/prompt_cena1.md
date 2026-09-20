@@ -1,33 +1,35 @@
 Format: vertical 9:16, 720p, 24fps | Single continuous shot of 10s | Clip 1 of 2
-On camera: hands only, cropped at the wrist. NO faces, NO text.
+On camera: hands only, cropped at the wrist. NO faces, NO captions, NO subtitles.
 
 Style & Lighting:
-Men's grooming UGC, clean morning mood, soft cool window light with a warm highlight, dark marble palette, photoreal, textless, no text, no subtitles.
+Minimalist grooming UGC film, clean morning mood, soft cold diffused light, bright and airy, pure white and black palette, completely clean background, photoreal, no captions, no subtitles, no on-screen graphics.
 
 Textures to Highlight:
-matte dark plastic bottle, ribbed spray nozzle, dark honed marble, wooden comb teeth, water droplets.
+clear transparent liquid, matte black plastic pump, smooth glass-like bottle surface, black label with sharp white illustrations, honed white marble.
 
 Scene:
-A lived-in bathroom counter in dark honed marble. A wooden beard comb sits in the foreground, water droplets splashed around, a folded dark towel in the blurred background.
+An extremely minimalist and empty bathroom counter in honed white marble. Completely clean surface, zero clutter, no extra objects, just a smooth pale wall blurred softly in the background.
 
 Subject:
-A 120ml beard and hair spray bottle: cylindrical matte dark body, ribbed spray nozzle, simple modern grooming design. Label artwork kept soft-focus and non-legible.
+Two identical clear spray bottles of hair and beard tonic: matte black pump caps, clear transparent liquid inside, black label featuring a bearded skull and crossed razors illustration, standing side by side.
+
+Label & Brand:
+The label reads exactly "TÔNICO ULTRA D'LUST ORIGINAL", spelled T-O-N-I-C-O U-L-T-R-A D-L-U-S-T O-R-I-G-I-N-A-L. Keep the lettering sharp, correctly spelled, in the same typeface and the same position as in the reference photos. Do not invent, translate, shorten or restyle any word printed on the bottles. This is the only text allowed anywhere in the frame.
 
 Camera & Framing:
-60mm macro lens, very shallow depth of field, smooth tripod slide: a rack focus reveal shifting from the foreground wooden comb to the spray bottle behind it.
+60mm macro lens, very shallow depth of field, smooth gimbal motion: a low-angle dolly-in approaching the bottles on the counter.
 
 Continuity Anchors:
-NOTE: The 6-panel storyboard is provided ONLY as a structural reference for timing and camera movements. The product in the video MUST NOT look like the simplified storyboard version. It MUST match the original reference photos exactly (exact colors, labels, shapes, and details). Same product, same matte dark bottle variant, same marble counter, same lighting direction and same lens in this clip and in the next one. The wooden comb stays in the same blurred foreground position.
+NOTE: The 6-panel storyboard is provided ONLY as a structural reference for timing and camera movements. The product in the video MUST NOT look like the simplified storyboard version. It MUST match the original reference photos exactly (exact colors, labels, shapes, and details). Same product, same clear variant, same empty marble counter, same lighting direction and same lens in this clip and in the next one. The two bottles stay perfectly aligned side by side.
 
 Action Timeline:
-[Clip 1 - Rack Focus Reveal | 0s-10s | Shot: rack focus shift]
-VISUAL: Extreme close-up of a wooden comb's teeth filling the foreground out of focus, shifting focus to reveal the matte dark spray bottle resting on the marble counter, water droplets catching the light.
-ACTION: 0-2s the wooden comb is sharp in the foreground, the bottle blurred behind / 2-7s focus slowly racks to make the bottle crisp and clear / 7-10s a hand enters from the left edge and gently rests next to the spray bottle.
-SFX: bathroom room tone, fabric rustle, soft hand touch on stone.
-END FRAME: Camera at counter height, the matte dark spray bottle in sharp focus in the centre, a blurred wooden comb in the lower right foreground, one hand resting on the marble to the left of the bottle, water droplets shining on the surface.
+[Clip 1 - Minimalist Reveal | 0s-10s | Shot: low-angle dolly-in]
+VISUAL: The camera slowly glides forward at counter height toward the two clear spray bottles, the soft cold light passing through the transparent liquid and illuminating the black skull label.
+ACTION: 0-2s the camera is already dollying in smoothly / 2-7s the push-in reveals the sharp details of the skull illustration and the matte black pump / 7-10s a hand enters from the frame edge and gently rests its fingertips against the clear base of the right bottle, without moving it.
+END FRAME: Camera at a low angle near the marble counter, the two bottles filling the center, one hand resting gently against the clear base of the right bottle, soft pale wall blurred behind.
 
-Audio Design:
-Ambient spa electronic at a slow tempo, instrumental only, no lyrics, no vocals. Diegetic SFX: room tone, fabric rustle, hand on stone. STRICTLY NO VOICEOVER, NO SPEECH.
+Audio:
+No audio. Silent clip: no music, no sound effects, no ambience, no voiceover, no speech.
 
 Negative Prompt:
-text, typography, letters, words, captions, subtitles, title cards, watermarks, logos, invented brand names, UI overlays, emojis, human faces, heads, facial features, eyes, mouths, crowds, people reflected in surfaces, morphing product, melting geometry, changing product design between shots, altering proportions, duplicated product, extra handles, invented compartments, floating parts, object inside object, surreal physics, jump cuts, split screen, flicker, strobing, jitter, plastic CGI look, oversaturation, blown highlights, low resolution, blurry footage, horizontal framing, letterboxing, full arms, forearms, human bodies, mannequins, extra fingers, fused fingers, deformed hands, legible packaging text, readable labels, gibberish text
+captions, subtitles, title cards, on-screen text, overlay text, watermarks, UI overlays, emojis, invented logos, invented brand names, misspelled label, altered brand name, gibberish lettering, distorted typography on the packaging, blurred out label, music, sound effects, voiceover, speech, human faces, heads, facial features, eyes, mouths, crowds, people reflected in surfaces, morphing product, melting geometry, changing product design between shots, altering proportions, duplicated product, extra handles, invented compartments, floating parts, object inside object, surreal physics, jump cuts, split screen, flicker, strobing, jitter, plastic CGI look, oversaturation, blown highlights, low resolution, blurry footage, horizontal framing, letterboxing, full arms, forearms, human bodies, mannequins, extra fingers, fused fingers, deformed hands, spills, dripping mess, wrong letters on the label, extra words on the packaging, translated packaging, unreadable label
