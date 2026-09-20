@@ -1,9 +1,10 @@
-GROUNDING: jogo de panelas de aço inox, acabamento polido brilhante, fundo triplo espesso, alças e tampas também em aço inox; 6 peças visíveis (panelas e tampas); escala de bancada de cozinha.
+GROUNDING: Jogo de panelas de aço inox, 6 peças, acabamento polido brilhante, fundo triplo, alças retas de inox, tampas de inox. Escala de bancada de cozinha.
 NOME LIMPO: 6-piece stainless steel cookware set.
-CATEGORIA + CENÁRIO: cozinha -> cooktop de indução preto, bancada de mármore claro, luz de janela.
-MÉTRICAS: preço alto (R$440) -> cenário sofisticado, luz controlada e elegante, ritmo suave.
-ÂNGULO DE VENDA: qualidade térmica e beleza do inox em uso real — fervura uniforme e retenção de calor.
-PAR DE PLANOS: 6 (handheld drift em altura de olhar -> tilt down para o resultado da ação). O drift apresenta o conjunto brilhante no ambiente, e o tilt down revela a fervura intensa ao levantar a tampa.
-CONFORMIDADE: hands only cortadas no pulso; 2 clipes de 10s; zero voz; zero texto; variante aço inox brilhante travada em ambos.
-HANDOFF: o Clipe 1 acaba com a câmera em altura de olhar, olhando levemente para baixo, e uma mão repousando na alça da tampa de aço da panela frontal; o Clipe 2 retoma exatamente aí.
-IMAGEM DE POST: foto na altura da bancada, panela girada em ângulo com uma das tampas apoiada ao lado, em um recorte diferente da bancada de mármore, com ingredientes frescos desfocados.
+CATEGORIA + CENÁRIO: cozinha / utilidades -> bancada lisa de mármore claro, ambiente clean e minimalista sem distrações, exigido pela nova regra.
+MÉTRICAS: Preço alto (R$436.68) e alta taxa de conversão indicam um produto aspiracional. Cenário liso, clean, destacando o brilho do inox e o design premium.
+ÂNGULO DE VENDA: Alta qualidade do material, brilho do acabamento inox e compatibilidade com indução num uso limpo e minimalista.
+PAR DE PLANOS: 6 (handheld drift em altura de olhar -> tilt down para o resultado da ação). O par atribuído foi o 6.
+CONFORMIDADE: hands only cortadas no pulso; 2 clipes de 10s; clipe mudo; zero texto de overlay; variante aço inox travada.
+MARCA NO RÓTULO: "TRAMONTINA", soletrado T-R-A-M-O-N-T-I-N-A gravado no metal.
+HANDOFF: O Clipe 1 termina com a câmera à altura dos olhos focando a panela de inox, com uma mão tocando suavemente a alça, ambiente limpo e desfocado ao fundo.
+IMAGEM DE POST: Foto na altura da bancada em macro, destacando o acabamento do fundo triplo e o reflexo metálico, com uma mão de pele clara e unhas curtas repousando perto, em um ângulo diferente da foto canônica.
