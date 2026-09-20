@@ -8,3 +8,6 @@ __pycache__/
 # screenshots de depuracao do scraper
 debug_login.png
 debug_erro.png
+
+# credenciais locais (GEMINI_API_KEY) - nunca versionar
+.env
