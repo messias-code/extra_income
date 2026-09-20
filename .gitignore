@@ -1,0 +1,10 @@
+# ambiente virtual local (236 MB, especifico desta maquina) - use requirements.txt
+venv/
+
+# cache do Python
+__pycache__/
+*.py[cod]
+
+# screenshots de depuracao do scraper
+debug_login.png
+debug_erro.png
