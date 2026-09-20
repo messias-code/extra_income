@@ -1,9 +1,10 @@
-GROUNDING: Lata preta redonda (120g) de revitalizador de plástico automotivo, rótulo com carro amarelo em fundo vermelho, acompanha esponja aplicadora redonda amarela. Imagens mostram aplicação em plásticos ressecados (cinza) que voltam a ficar pretos e com brilho.
-NOME LIMPO: automotive plastic trim restorer wax.
-CATEGORIA + CENÁRIO: limpeza / automotivo -> garagem real, luz fria e uniforme, textura de plástico ressecado de para-choque de carro.
-MÉTRICAS: preço baixo, alto volume de vendas -> cenário cotidiano e real de garagem, energia de UGC focado na demonstração prática.
-ÂNGULO DE VENDA: renovação imediata do plástico desbotado devolvendo a cor preta original e o brilho.
-PAR DE PLANOS: 8 (pan across sobre a superfície suja/antes -> macro push-in no resultado limpo/depois). O par 4 foi sugerido, mas para revitalizadores que dependem de um forte contraste de "antes e depois", o par 8 é nativamente a melhor escolha visual.
-CONFORMIDADE: hands only cortadas no pulso; 2 clipes de 10s; zero voz; zero texto; lata preta e esponja amarela travadas.
-HANDOFF: o Clipe 1 termina com a câmera focada na mão pressionando a esponja amarela sobre o para-choque, metade cinza desbotado e metade preto brilhante; o Clipe 2 retoma exatamente desse ponto.
-IMAGEM DE POST: foto macro em ângulo baixo mostrando a lata preta aberta ao lado da esponja amarela usada, apoiadas sobre o para-choque recém-restaurado, com luz natural de garagem.
+GROUNDING: Embalagem de cera revitalizadora automotiva "Matrix", usada para restaurar plástico desgastado de veículos. Cera e painéis de plástico visíveis. Escala de objeto pequeno.
+NOME LIMPO: automotive plastic revitalizer wax.
+CATEGORIA + CENÁRIO: limpeza -> um painel automotivo de plástico liso, extremamente clean e minimalista, sem ambiente de garagem bagunçado. Apenas fundo liso e limpo.
+MÉTRICAS: preço R$18.76, alto volume de vendas (11.62k). Apelo em demonstrar o antes e depois da superfície.
+ÂNGULO DE VENDA: renovação instantânea do plástico de forma evidente.
+PAR DE PLANOS: 4 (tracking shot seguindo o produto -> pousa na superfície + rack focus no detalhe limpo).
+CONFORMIDADE: hands only cortadas no pulso, 2 clipes de 10s, mudo, sem texto de overlay, produto único travado.
+MARCA NO RÓTULO: "MATRIX", soletrado M-A-T-R-I-X.
+HANDOFF: o Clipe 1 termina com a câmera ao nível da superfície, o pote apoiado no painel, a mão já fora de quadro, foco nítido no pote e fundo desfocado.
+IMAGEM DE POST: foto top-down do pote descansando sobre a divisão entre a parte desgastada e a restaurada do painel, com uma mão apoiada sutilmente ao lado.
