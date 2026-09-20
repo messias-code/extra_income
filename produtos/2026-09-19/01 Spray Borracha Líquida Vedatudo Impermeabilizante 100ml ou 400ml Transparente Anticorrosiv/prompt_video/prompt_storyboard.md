@@ -1,0 +1,11 @@
+A 6-panel storyboard sheet, one single image, 2 columns by 3 rows, thin clean gutters, read left to right and top to bottom. A small plain numeral from 1 to 6 in the top-left corner of each panel, and no other text anywhere.
+PANEL 1 (0-1.5s, hook): low-angle wide shot, the blue DRYKO VEDATUDO spray can stands on the concrete next to a sealed tile covered in beaded water.
+PANEL 2 (1.5-3s, reveal): low-angle medium shot, the low dolly-in brings the full blue DRYKO VEDATUDO spray can into sharp view.
+PANEL 3 (3-5s, approach): medium close-up, a hand enters the frame and touches the blue DRYKO VEDATUDO spray can.
+PANEL 4 (5-7s, proof): close-up, the hand slowly turns the blue DRYKO VEDATUDO spray can to reveal the full front label.
+PANEL 5 (7-8.5s, detail): macro, light runs along the glossy label and clear cap of the blue DRYKO VEDATUDO spray can.
+PANEL 6 (8.5-10s, beauty shot): medium close-up, the hand withdraws, leaving the blue DRYKO VEDATUDO spray can perfectly still and sharp against the concrete (low-angle medium shot)..
+All six panels: same set, same Clean DIY UGC film, bright outdoor mood, soft top daylight, clean shadows, slate and amber palette, the same blue DRYKO VEDATUDO spray can, hands only, cropped at the wrist. Product centered in each panel. The colour, the shape and every word printed on the product are identical in all six panels.
+The product MUST match the reference photos exactly: keeping the exact original labels, brand artwork, colors, design details, and proportions. The same single product appears in all six panels, never a simplified, restyled or generic version of it. Do not generate generic bottles or plain packaging.
+Style: high-end commercial product photography, photoreal, cinematic lighting, shallow depth of field, vertical 9:16.
+Negative: captions, sentences, titles, subtitles, overlay text, watermarks, invented logos, misspelled label, gibberish lettering, faces, heads, eyes, extra fingers, deformed hands, morphing product, different product between panels, empty panels, duplicated panels, sketch, cartoon, illustration, 3D render, oversaturation, blurry.

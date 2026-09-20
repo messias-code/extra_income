@@ -1,7 +1,8 @@
-GROUNDING: Jogo de lençol de 3 peças (1 lençol de elástico, 2 fronhas), tecido liso e opaco (micro percal), detalhe de "ponto palito" (costura decorativa vazada) nas fronhas. Variante escolhida: lilás claro (lavender) da capa. Escala de cama de casal.
-NOME LIMPO: 3-piece micro percale bed sheet set.
-CATEGORIA + CENÁRIO: moda / vestuário e casa / decoração (mesclado) -> quarto claro, cama de madeira, luz natural suave, ambiente real.
-MÉTRICAS: Preço muito baixo e volume muito alto -> cenário cotidiano, aspiracional mas acessível, energia de UGC.
-ÂNGULO DE VENDA: A maciez do tecido (anti-pilling) e a elegância do detalhe em ponto palito.
-PAR DE PLANOS: 5 (rack focus reveal -> macro push-in). A ação manual no tecido substitui a "parte móvel".
-CONFORMIDADE: hands only cortadas no pulso; 20s em 2x10s; zero voz; zero texto; variante lilás travada nas duas cenas.
+GROUNDING: Jogo de lençol 3 peças, destaque para o lençol de elástico e fronha com detalhe de ponto palito. Cor escolhida da capa: lilás suave (soft lilac). Escala: cama real.
+NOME LIMPO: 3-piece micro-percale bed sheet set.
+CATEGORIA + CENÁRIO: casa / decoração -> cama simples em quarto minimalista com luz de janela.
+MÉTRICAS: preço baixo + volume alto -> quarto real e cotidiano, foco no produto em uso.
+ÂNGULO DE VENDA: a facilidade de colocar o elástico e a textura macia sem bolinhas.
+ARCO DE CÂMERA: 5 (rack focus reveal) - desfoca prop em primeiro plano para focar no lençol esticado no colchão, seguido de aproximação.
+CONFORMIDADE: hands only cortadas no pulso; 1 clipe de 10s com 6 beats; clipe mudo; zero texto de overlay; variante soft lilac travada.
+MARCA NO RÓTULO: sem marca visível nas imagens, bloco declara ausência de branding.

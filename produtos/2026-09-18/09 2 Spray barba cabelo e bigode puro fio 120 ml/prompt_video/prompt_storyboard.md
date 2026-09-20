@@ -1,0 +1,11 @@
+A 6-panel storyboard sheet, one single image, 2 columns by 3 rows, thin clean gutters, read left to right and top to bottom. A small plain numeral from 1 to 6 in the top-left corner of each panel, and no other text anywhere.
+PANEL 1 (0-1.5s, hook): medium wide shot, a hand is already rotating the black PURO FIO spray bottle on the slate vanity as the camera orbits.
+PANEL 2 (1.5-3s, reveal): medium shot, the rotation stops smoothly, revealing the full front profile and gold label of the black PURO FIO spray bottle.
+PANEL 3 (3-5s, approach): medium close-up, the hand glides lightly down the side of the black PURO FIO spray bottle catching the side light.
+PANEL 4 (5-7s, proof): close-up, the hand rests beside the base as the camera tilts down toward the black PURO FIO spray bottle.
+PANEL 5 (7-8.5s, detail): macro, the black PURO FIO spray bottle fills the frame as light shifts.
+PANEL 6 (8.5-10s, beauty shot): medium close-up, the hand withdraws from frame, leaving the black PURO FIO spray bottle standing perfectly still and sharp against the dark background (medium close-up)..
+All six panels: same set, same Clean masculine grooming UGC film, moody morning bathroom vibe, strong directional side light, deep shadows, dark slate and warm gold palette, the same black PURO FIO spray bottle, hands only, cropped at the wrist. Product centered in each panel. The colour, the shape and every word printed on the product are identical in all six panels.
+The product MUST match the reference photos exactly: keeping the exact original labels, brand artwork, colors, design details, and proportions. The same single product appears in all six panels, never a simplified, restyled or generic version of it. Do not generate generic bottles or plain packaging.
+Style: high-end commercial product photography, photoreal, cinematic lighting, shallow depth of field, vertical 9:16.
+Negative: captions, sentences, titles, subtitles, overlay text, watermarks, invented logos, misspelled label, gibberish lettering, faces, heads, eyes, extra fingers, deformed hands, morphing product, different product between panels, empty panels, duplicated panels, sketch, cartoon, illustration, 3D render, oversaturation, blurry.

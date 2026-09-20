@@ -1,0 +1,11 @@
+A 6-panel storyboard sheet, one single image, 2 columns by 3 rows, thin clean gutters, read left to right and top to bottom. A small plain numeral from 1 to 6 in the top-left corner of each panel, and no other text anywhere.
+PANEL 1 (0-1.5s, hook): wide table-level shot, light runs along the polished side of the TRAMONTINA stainless steel pot.
+PANEL 2 (1.5-3s, reveal): medium shot, the pan settles and the whole TRAMONTINA stainless steel pot stands gleaming against the blurred wall.
+PANEL 3 (3-5s, approach): medium close-up, a hand enters from the frame edge and gently tilts the TRAMONTINA stainless steel pot.
+PANEL 4 (5-7s, proof): close-up, the hand holds the TRAMONTINA stainless steel pot tilted, exposing the thick tri-ply base.
+PANEL 5 (7-8.5s, detail): macro, the brushed texture of the induction bottom of the TRAMONTINA stainless steel pot settles into sharp focus.
+PANEL 6 (8.5-10s, beauty shot): medium close-up, the hand lowers the TRAMONTINA stainless steel pot back onto the marble and withdraws from frame (medium shot)..
+All six panels: same set, same Sophisticated culinary UGC film, bright airy mood, soft diffused daylight, gentle shadows, clean neutral palette with steel accents, the same TRAMONTINA stainless steel pot, hands only, cropped at the wrist. Product centered in each panel. The colour, the shape and every word printed on the product are identical in all six panels.
+The product MUST match the reference photos exactly: keeping the exact original labels, brand artwork, colors, design details, and proportions. The same single product appears in all six panels, never a simplified, restyled or generic version of it. Do not generate generic bottles or plain packaging.
+Style: high-end commercial product photography, photoreal, cinematic lighting, shallow depth of field, vertical 9:16.
+Negative: captions, sentences, titles, subtitles, overlay text, watermarks, invented logos, misspelled label, gibberish lettering, faces, heads, eyes, extra fingers, deformed hands, morphing product, different product between panels, empty panels, duplicated panels, sketch, cartoon, illustration, 3D render, oversaturation, blurry.

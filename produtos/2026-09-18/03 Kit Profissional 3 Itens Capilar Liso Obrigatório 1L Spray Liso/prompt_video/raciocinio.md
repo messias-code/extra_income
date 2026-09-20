@@ -1,7 +1,8 @@
-GROUNDING: kit capilar de 4 peças: 2 frascos grandes brancos com tampas pretas, 1 pote branco com tampa preta, 1 frasco de spray preto. Todos possuem tipografia rosa vibrante. A capa define o design oficial.
-NOME LIMPO: 4-piece straight hair maintenance set.
-CATEGORIA + CENÁRIO: Beleza / Skincare -> bancada de banheiro moderno, mármore claro, ambiente iluminado e realista.
-MÉTRICAS: preço acessível (R$77) e alto volume de vendas (5.86k) -> cenário cotidiano e real de banheiro, energia autêntica e não estúdio asséptico.
-ÂNGULO DE VENDA: qualidade de salão em casa e a textura cremosa rica da máscara capilar.
-PAR DE PLANOS: 3 (low-angle dolly-in heroico -> macro slide ao longo da aresta/acabamento) para dar imponência ao conjunto de 1L e focar na textura do creme.
-CONFORMIDADE: modo product only, no people; 20s em 2x10s; zero voz; zero texto; variante branca dos frascos travada nas duas cenas.
+GROUNDING: Kit de produtos capilares (frascos de 1L e máscara) com frascos brancos e pretos e rótulos em rosa metálico e preto, contendo texto em branco.
+NOME LIMPO: professional hair smoothing kit
+CATEGORIA + CENÁRIO: cabelo -> bancada lisa de banheiro, ambiente minimalista e claro.
+MÉTRICAS: preço médio com alto volume (5.86k) -> cenário cotidiano real, focado na rotina de banho, energia de UGC.
+ÂNGULO DE VENDA: a imponência e o aspecto profissional do kit completo de tratamento liso em casa.
+ARCO DE CÂMERA: 3 (low-angle dolly-in heroico) solicitado, avançando para revelar a textura metálica dos rótulos.
+CONFORMIDADE: hands only cortadas no pulso; 1 clipe de 10s com 6 beats; clipe mudo; zero texto de overlay; kit completo travado na cena.
+MARCA NO RÓTULO: "LISO OBRIGATÓRIO" impresso na embalagem, soletrado L-I-S-O-O-B-R-I-G-A-T-O-R-I-O.

@@ -1,10 +1,8 @@
-GROUNDING: frasco de spray de 120ml para cabelo e barba, design cilíndrico liso, acabamento fosco, com bico pulverizador e tampa.
-NOME LIMPO: hair and beard drying spray.
-CATEGORIA + CENÁRIO: beleza / skincare -> bancada lisa de banheiro em mármore ou vidro, ambiente extremamente limpo e minimalista (sem distrações, fundos lisos). Pedido expresso por cenário extremo minimalista.
-MÉTRICAS: preço médio/baixo com alto volume (981 vendas), apelo para uso cotidiano.
-ÂNGULO DE VENDA: embalagem elegante e textura suave, produto de uso simples e direto.
-PAR DE PLANOS: 5 (rack focus reveal -> macro push-in na parte móvel/textura).
-CONFORMIDADE: hands only (mão apenas repousa para evitar morphing), 2 clipes de 10s mudo, zero texto de overlay, variante preta fosca travada.
-MARCA NO RÓTULO: "ULTRADLUST", soletrada U-L-T-R-A-D-L-U-S-T.
-HANDOFF: O Clipe 1 termina na altura da bancada, com o frasco nítido no centro e a mão repousando suavemente na base, cenário puramente minimalista.
-IMAGEM DE POST: ângulo top-down descentralizado do frasco deitado sobre o vidro liso branco, mantendo a estética ultralimpa e sem a mão (product only).
+GROUNDING: frasco de spray cilíndrico de plástico transparente com líquido transparente, rótulo preto com ilustração de caveira e navalhas, válvula spray preta e tampa transparente; escala de mão. As imagens mostram dois, mas o foco da ação será em um.
+NOME LIMPO: hair and beard tonic spray.
+CATEGORIA + CENÁRIO: cabelo/barba -> bancada lisa de banheiro clara, mecha de cabelo ou toalha ao fundo, energia UGC.
+MÉTRICAS: preço baixo e volume alto -> ambiente de rotina diária real, ritmo dinâmico, uso prático.
+ÂNGULO DE VENDA: a aplicação prática do tônico, textura leve do líquido no frasco.
+ARCO DE CÂMERA: 7 (parallax slide lateral -> gimbal float subindo até a válvula spray).
+CONFORMIDADE: hands only cortadas no pulso; 1 clipe de 10s com 6 beats; clipe mudo; zero texto de overlay; variante frasco único transparente travada.
+MARCA NO RÓTULO: "ULTRA D'LUST ORIGINAL" impresso no rótulo, soletrado U-L-T-R-A- -D-'-L-U-S-T- -O-R-I-G-I-N-A-L.

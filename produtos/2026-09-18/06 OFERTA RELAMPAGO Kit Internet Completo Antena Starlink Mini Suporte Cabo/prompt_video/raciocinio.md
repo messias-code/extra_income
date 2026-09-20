@@ -1,7 +1,8 @@
-GROUNDING: O kit possui uma antena retangular branca e plana, um suporte branco com 4 ventosas transparentes e um carregador veicular metálico com visor digital LED e cabo grosso preto.
-NOME LIMPO: portable satellite internet kit.
-CATEGORIA + CENÁRIO: eletrônicos / gadget -> mesa de madeira escura ao ar livre, com power station portátil e motorhome desfocado, adaptando o preset para o uso outdoor esperado.
-MÉTRICAS: Preço alto (R$ 552) e alto volume de vendas (451), indicando um cenário de camping aspiracional porém real e de uso corriqueiro.
-ÂNGULO DE VENDA: Praticidade da conexão móvel, mostrando o design limpo da antena ligado a uma fonte de energia portátil (12V).
-PAR DE PLANOS: 6 (handheld drift em altura de olhar -> tilt down para o resultado da ação). A cena 1 revela a antena, e a cena 2 desce para a conexão na power station.
-CONFORMIDADE: Modo hands only (mãos cortadas no pulso); 20s em 2 takes de 10s; zero voz, zero texto legível (visor digital em soft-focus); negative prompt agressivo para evitar distorções de texto e mãos.
+GROUNDING: antena retangular branca (Starlink mini) com suporte traseiro (kickstand), acompanhada de cabo veicular (plug de acendedor com visor led azul) e peças de fixação brancas.
+NOME LIMPO: portable satellite internet dish kit.
+CATEGORIA + CENÁRIO: eletrônicos / gadget -> mesa escura e limpa, fundo escuro desfocado (remetendo a uso externo / acampamento clean).
+MÉTRICAS: preço considerável e receita altíssima -> cenário focado, luz controlada e ritmo limpo.
+ÂNGULO DE VENDA: portabilidade do kit para uso móvel/veicular.
+ARCO DE CÂMERA: 6 (handheld drift na altura do olhar -> tilt down até o resultado da ação).
+CONFORMIDADE: hands only cortadas no pulso; 1 clipe de 10s com 6 beats; clipe mudo; zero texto de overlay; variante antena branca travada.
+MARCA NO RÓTULO: sem marca visível clara na antena frontalmente; "no visible branding anywhere on the product; do not invent a logo, tag or lettering".

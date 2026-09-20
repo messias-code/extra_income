@@ -1,0 +1,11 @@
+A 6-panel storyboard sheet, one single image, 2 columns by 3 rows, thin clean gutters, read left to right and top to bottom. A small plain numeral from 1 to 6 in the top-left corner of each panel, and no other text anywhere.
+PANEL 1 (0-1.5s, hook): wide table-level shot, a hand is already turning the round tub of the red and white LIZZ ANTE haircare kit on the marble.
+PANEL 2 (1.5-3s, reveal): full shot, the hand pulls away, revealing all three pieces of the red and white LIZZ ANTE haircare kit standing together.
+PANEL 3 (3-5s, approach): medium shot, the hand re-enters and glides across the glossy surface of the pump bottle of the red and white LIZZ ANTE haircare kit.
+PANEL 4 (5-7s, proof): medium close-up, the hand gently rotates the spray bottle of the red and white LIZZ ANTE haircare kit to catch the light.
+PANEL 5 (7-8.5s, detail): macro, the red and white LIZZ ANTE haircare kit fills the frame as light shifts.
+PANEL 6 (8.5-10s, beauty shot): medium close-up, the hand withdraws entirely, leaving the red and white LIZZ ANTE haircare kit gleaming under the soft light (medium close-up)..
+All six panels: same set, same Clean bathroom UGC film, bright morning mood, soft diffused side light from a bathroom window, gentle shadows, white and metallic red palette, the same red and white LIZZ ANTE haircare kit, hands only, cropped at the wrist. Product centered in each panel. The colour, the shape and every word printed on the product are identical in all six panels.
+The product MUST match the reference photos exactly: keeping the exact original labels, brand artwork, colors, design details, and proportions. The same single product appears in all six panels, never a simplified, restyled or generic version of it. Do not generate generic bottles or plain packaging.
+Style: high-end commercial product photography, photoreal, cinematic lighting, shallow depth of field, vertical 9:16.
+Negative: captions, sentences, titles, subtitles, overlay text, watermarks, invented logos, misspelled label, gibberish lettering, faces, heads, eyes, extra fingers, deformed hands, morphing product, different product between panels, empty panels, duplicated panels, sketch, cartoon, illustration, 3D render, oversaturation, blurry.

@@ -1,0 +1,11 @@
+A 6-panel storyboard sheet, one single image, 2 columns by 3 rows, thin clean gutters, read left to right and top to bottom. A small plain numeral from 1 to 6 in the top-left corner of each panel, and no other text anywhere.
+PANEL 1 (0-1.5s, hook): wide table-level shot, the clear ULTRA D'LUST spray bottle turns a few degrees on the marble as light runs along the black label.
+PANEL 2 (1.5-3s, reveal): medium shot, the turn settles and the whole clear ULTRA D'LUST spray bottle stands upright against the blurred wall.
+PANEL 3 (3-5s, approach): medium close-up, a hand enters from the frame edge and grasps the clear ULTRA D'LUST spray bottle.
+PANEL 4 (5-7s, proof): close-up, the hand pulls the clear cap straight up from the matte black nozzle of the clear ULTRA D'LUST spray bottle.
+PANEL 5 (7-8.5s, detail): macro, the clear cap is lifted away, leaving the matte black nozzle of the clear ULTRA D'LUST spray bottle sharp and exposed.
+PANEL 6 (8.5-10s, beauty shot): medium close-up, the hand holds the clear ULTRA D'LUST spray bottle steady on the marble, ready for use (medium shot)..
+All six panels: same set, same Clean grooming UGC film, bright morning mood, soft diffused daylight from the front left, neutral white and black palette, the same clear ULTRA D'LUST spray bottle, hands only, cropped at the wrist. Product centered in each panel. The colour, the shape and every word printed on the product are identical in all six panels.
+The product MUST match the reference photos exactly: keeping the exact original labels, brand artwork, colors, design details, and proportions. The same single product appears in all six panels, never a simplified, restyled or generic version of it. Do not generate generic bottles or plain packaging.
+Style: high-end commercial product photography, photoreal, cinematic lighting, shallow depth of field, vertical 9:16.
+Negative: captions, sentences, titles, subtitles, overlay text, watermarks, invented logos, misspelled label, gibberish lettering, faces, heads, eyes, extra fingers, deformed hands, morphing product, different product between panels, empty panels, duplicated panels, sketch, cartoon, illustration, 3D render, oversaturation, blurry.

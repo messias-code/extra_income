@@ -3,15 +3,21 @@
 
 Dois comandos:
     python check_prompts.py status   -> o que ja existe / o que falta em cada produto
-    python check_prompts.py check    -> valida os prompt_cena1.md / prompt_cena2.md contra
-                                        as regras do prompt_sistema.yaml (checklist_final)
+    python check_prompts.py check    -> valida os prompts contra as regras dos YAMLs
 
-Cada produto tem DOIS prompts de 10s: o clipe 1 e o clipe 2, que e colado no Google Flow
-como continuacao do primeiro. Alem de validar cada arquivo, o check confere o par: os
-blocos compartilhados precisam ser identicos palavra por palavra e o START FRAME do clipe 2
-precisa repetir o END FRAME do clipe 1.
+O pipeline nao gera imagem nenhuma: ele gera PROMPT. Cada produto termina com tres
+arquivos de texto, um por comando do Antigravity:
 
-Por padrao olha so a pasta de data mais recente em produtos/. Use --all para todas.
+    prompt_cena.md        (/start_gen_prompts)  um clipe de 10s escrito em 6 beats
+    prompt_storyboard.md  (/start_gen_image)    o prompt da prancha de 6 paineis
+    prompt_capa.md        (/start_gen_buy)      o prompt da capa do produto
+
+Os tres precisam falar do mesmo produto: o storyboard traduz os 6 beats da cena em 6
+paineis, e a capa copia Subject e Label & Brand da cena palavra por palavra.
+
+Por padrao olha TODAS as datas em produtos/: dia nenhum pode ficar sem prompt, entao dia
+antigo com arquivo faltando aparece como pendencia ate ser gerado de novo. Use --ultima
+para olhar so a data mais recente.
 Sai com codigo 1 se algum prompt tiver erro (da para usar em loop de correcao).
 """
 
@@ -24,14 +30,20 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 RAIZ_PRODUTOS = os.path.join(BASE_DIR, "produtos")
 DATA_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 
+ARQUIVO_CENA = "prompt_cena.md"
+ARQUIVO_STORYBOARD = "prompt_storyboard.md"
+ARQUIVO_CAPA = "prompt_capa.md"
+
 SECOES_OBRIGATORIAS = [
     "Style & Lighting:",
     "Textures to Highlight:",
     "Scene:",
     "Subject:",
+    "Product Lock:",
     "Label & Brand:",
     "Camera & Framing:",
     "Continuity Anchors:",
+    "Storyboard Adherence:",
     "Action Timeline:",
     "Audio:",
     "Negative Prompt:",
@@ -39,14 +51,60 @@ SECOES_OBRIGATORIAS = [
 
 MODOS_DE_CAMERA = ["product only", "hands only", "headless model"]
 
-ARQUIVOS = ("prompt_cena1.md", "prompt_cena2.md")
-ARQUIVO_IMAGEM = "prompt_imagem.md"
+# a grade fixa dos 10s. Cada beat vira UM painel do storyboard: beat faltando e painel
+# sem mapa, beat sobrando e painel inventado.
+BEATS = ["0-1.5s", "1.5-3s", "3-5s", "5-7s", "7-8.5s", "8.5-10s"]
 
-# a foto estatica que vai postada junto com os dois videos
-SECOES_IMAGEM = [
+# sobras do pipeline antigo de dois clipes costurados: hoje e uma cena so
+RESQUICIOS_DE_DOIS_CLIPES = [
+    "Clip 1 of 2", "Clip 2 of 2", "END FRAME", "START FRAME",
+    "CONTINUES FROM THE FINAL FRAME", "STRICT CONTINUATION", "10s-20s",
+]
+
+# tokens que a BASE do negative prompt precisa conter.
+# "text", "typography" e "logos" soltos sairam de proposito: apagavam o rotulo do
+# proprio produto e faziam o modelo inventar letras (o caso "Vedatudo" -> "Vecatudo")
+NEGATIVE_OBRIGATORIO = [
+    "captions", "watermarks", "misspelled label", "altered brand name",
+    "faces", "morphing product", "horizontal framing",
+    "music", "sound effects", "voiceover",
+    # travas contra os dois defeitos que estragaram os primeiros videos:
+    # o modelo redesenhar o produto e devolver produto parado com a camera girando
+    "simplified packaging", "redesigned label artwork",
+    "static product with only camera movement",
+    "colour shifting product", "label text changing between frames",
+]
+
+# frases que mandam o modelo borrar o rotulo: sao elas que produzem letra embaralhada
+PROIBIDO_NO_ROTULO = ("non-legible", "not legible", "illegible", "soft-focus label",
+                      "label kept soft", "blurred label", "blurred out label",
+                      "unreadable label", "no legible text on the label")
+
+PALAVRAS_MIN, PALAVRAS_MAX = 480, 700  # corpo da cena, sem o Negative Prompt
+
+# --- prompt do storyboard --------------------------------------------------- #
+PALAVRAS_STORY_MIN, PALAVRAS_STORY_MAX = 200, 360
+STORY_OBRIGATORIO = [
+    "6-panel storyboard sheet",
+    "2 columns by 3 rows",
+    "left to right and top to bottom",
+    "numeral",
+    "no other text anywhere",
+    "product centered in each panel",
+    "match the reference photos",
+    "9:16",
+]
+# apagariam o proprio rotulo do produto ou a numeracao dos paineis
+NEGATIVO_PROIBIDO_STORY = {"numbers", "numerals", "letters", "words", "labels",
+                           "logos", "text", "typography"}
+
+# --- prompt da capa (peca de divulgacao, com texto em pt-BR) ---------------- #
+SECOES_CAPA = [
     "Subject:",
     "Label & Brand:",
-    "New Angle & Framing:",
+    "Layout & Composition:",
+    "Promo Copy",
+    "Text Style:",
     "Scene:",
     "Light & Mood:",
     "Textures to Highlight:",
@@ -55,39 +113,20 @@ SECOES_IMAGEM = [
     "Originality:",
     "Negative Prompt:",
 ]
-NEGATIVE_IMAGEM_OBRIGATORIO = [
-    "captions", "watermarks", "misspelled label", "faces", "collage",
+# aqui o texto e PEDIDO: o negative ataca texto errado, texto demais e texto em cima do
+# produto, nunca "captions"/"letters" soltos, que apagariam a chamada e o rotulo
+NEGATIVE_CAPA_OBRIGATORIO = [
+    "price tags", "currency symbols", "percentages", "discount badges",
+    "misspelled portuguese words", "gibberish lettering", "extra words",
+    "text on top of the product", "misspelled label", "faces", "collage",
     "duplicated product", "catalogue white background",
 ]
-PALAVRAS_IMAGEM_MIN, PALAVRAS_IMAGEM_MAX = 250, 410
-
-# os 3 beats de cada clipe (tempo local, cada clipe comeca em 0s);
-# juntos viram os 6 paineis numerados do storyboard
-BEATS = {1: ["0-2s", "2-7s", "7-10s"], 2: ["0-2s", "2-8s", "8-10s"]}
-
-# blocos que o clipe 2 copia palavra por palavra do clipe 1
-SECOES_COMPARTILHADAS = ["Style & Lighting:", "Textures to Highlight:", "Scene:", "Subject:",
-                         "Label & Brand:"]
-
-MARCA_START = "CONTINUES FROM THE FINAL FRAME OF THE PREVIOUS CLIP"
-MARCA_VISUAL_2 = "STRICT CONTINUATION FROM THE PREVIOUS CLIP"
-RABICHO_START = "No cut, no new establishing shot, no time jump"
-
-# tokens que a BASE do negative prompt precisa conter.
-# "text", "typography" e "logos" soltos saíram de proposito: apagavam o rotulo do
-# proprio produto e faziam o modelo inventar letras (o caso "Vedatudo" -> "Vecatudo")
-NEGATIVE_OBRIGATORIO = [
-    "captions", "watermarks", "misspelled label", "altered brand name",
-    "faces", "morphing product", "horizontal framing",
-    "music", "sound effects", "voiceover",
-]
-
-# frases que mandam o modelo borrar o rotulo: sao elas que produzem letra embaralhada
-PROIBIDO_NO_ROTULO = ("non-legible", "not legible", "illegible", "soft-focus label",
-                      "label kept soft", "blurred label", "blurred out label",
-                      "unreadable label", "no legible text on the label")
-
-PALAVRAS_MIN, PALAVRAS_MAX = 380, 540  # corpo de CADA arquivo, sem o Negative Prompt
+NEGATIVO_PROIBIDO_CAPA = {"captions", "overlay text", "letters", "words", "typography",
+                          "text", "labels"}
+# a chamada sai de uma lista fechada: frase inventada e frase que o modelo escreve errado
+CHAMADAS = ["COMPRE JÁ", "COMPRE AGORA", "OFERTA IMPERDÍVEL", "APROVEITE AGORA",
+            "GARANTA O SEU"]
+PALAVRAS_CAPA_MIN, PALAVRAS_CAPA_MAX = 300, 500
 
 
 # --------------------------------------------------------------------------- #
@@ -101,11 +140,11 @@ def pastas_de_data():
     return sorted(d for d in os.listdir(RAIZ_PRODUTOS) if DATA_RE.match(d))
 
 
-def listar_produtos(todas_as_datas=False):
+def listar_produtos(so_a_ultima=False):
     """Devolve (data, nome_do_produto, caminho_absoluto)."""
     produtos = []
     datas = pastas_de_data()
-    for data in (datas if todas_as_datas else datas[-1:]):
+    for data in (datas[-1:] if so_a_ultima else datas):
         raiz = os.path.join(RAIZ_PRODUTOS, data)
         for nome in sorted(os.listdir(raiz)):
             caminho = os.path.join(raiz, nome)
@@ -114,21 +153,17 @@ def listar_produtos(todas_as_datas=False):
     return produtos
 
 
-def caminho_do_prompt(caminho_produto, numero):
-    return os.path.join(caminho_produto, "prompt_video", ARQUIVOS[numero - 1])
+def caminho_do_prompt(caminho_produto, arquivo):
+    return os.path.join(caminho_produto, "prompt_video", arquivo)
 
 
-def caminho_da_imagem(caminho_produto):
-    return os.path.join(caminho_produto, "prompt_video", ARQUIVO_IMAGEM)
-
-
-def tem_os_clipes(caminho_produto):
-    """So os dois prompts de video: e o que o storyboard precisa."""
-    return all(os.path.exists(caminho_do_prompt(caminho_produto, n)) for n in (1, 2))
-
-
-def todos_os_prompts(caminho_produto):
-    return tem_os_clipes(caminho_produto) and os.path.exists(caminho_da_imagem(caminho_produto))
+def ler(caminho_produto, arquivo):
+    """Conteudo do prompt, ou None se o comando que o escreve ainda nao rodou."""
+    caminho = caminho_do_prompt(caminho_produto, arquivo)
+    if not os.path.exists(caminho):
+        return None
+    with open(caminho, encoding="utf-8") as fh:
+        return fh.read()
 
 
 def contar_imagens(caminho):
@@ -140,42 +175,95 @@ def contar_imagens(caminho):
 # comando: status
 # --------------------------------------------------------------------------- #
 def cmd_status(args):
-    produtos = listar_produtos(args.all)
+    produtos = listar_produtos(args.ultima)
     if not produtos:
         print("Nenhum produto encontrado. Rode o scraper.py primeiro.")
         return 0
 
-    print(f"{'PRODUTO':<52} {'IMGS':>4} {'META':>5} {'PROMPT':>7} {'STORY':>6}")
-    print("-" * 78)
-    faltando_prompt, faltando_story = [], []
+    print(f"{'DATA':<11}{'PRODUTO':<50} {'IMGS':>4} {'META':>5} {'CENA':>6} {'STORY':>6} {'CAPA':>5}")
+    print("-" * 93)
+    sem_cena, sem_story, sem_capa = [], [], []
+    pendentes_por_data = {}
     for data, nome, caminho in produtos:
         imgs = contar_imagens(caminho)
         meta = "sim" if os.path.exists(os.path.join(caminho, "metadata.json")) else "-"
-        story = os.path.join(caminho, "prompt_video", "storyboard.jpg")
-        tem_prompt = todos_os_prompts(caminho)
-        tem_story = os.path.exists(story)
-        if not tem_prompt:
-            faltando_prompt.append(nome)
-        elif not tem_story:
-            faltando_story.append(nome)
-        print(f"{nome[:52]:<52} {imgs:>4} {meta:>5} "
-              f"{'sim' if tem_prompt else 'FALTA':>7} {'sim' if tem_story else 'FALTA':>6}")
+        tem = {a: os.path.exists(caminho_do_prompt(caminho, a))
+               for a in (ARQUIVO_CENA, ARQUIVO_STORYBOARD, ARQUIVO_CAPA)}
+        if not tem[ARQUIVO_CENA]:
+            sem_cena.append(nome)
+        else:
+            # storyboard e capa leem a cena: so falta de verdade quem ja podia ter sido feito
+            if not tem[ARQUIVO_STORYBOARD]:
+                sem_story.append(nome)
+            if not tem[ARQUIVO_CAPA]:
+                sem_capa.append(nome)
+        if not all(tem.values()):
+            pendentes_por_data[data] = pendentes_por_data.get(data, 0) + 1
+        print(f"{data:<11}{nome[:50]:<50} {imgs:>4} {meta:>5} "
+              f"{'sim' if tem[ARQUIVO_CENA] else 'FALTA':>6} "
+              f"{'sim' if tem[ARQUIVO_STORYBOARD] else 'FALTA':>6} "
+              f"{'sim' if tem[ARQUIVO_CAPA] else 'FALTA':>5}")
 
-    print("-" * 78)
-    print(f"{len(produtos)} produtos | "
-          f"{len(faltando_prompt)} sem os 3 prompts | {len(faltando_story)} sem storyboard.jpg")
-    if faltando_prompt:
+    print("-" * 93)
+    print(f"{len(produtos)} produtos | {len(sem_cena)} sem {ARQUIVO_CENA} | "
+          f"{len(sem_story)} sem {ARQUIVO_STORYBOARD} | {len(sem_capa)} sem {ARQUIVO_CAPA}")
+    if sem_cena:
         print("  -> rode /start_gen_prompts")
-    if faltando_story:
+    if sem_story:
         print("  -> rode /start_gen_image")
+    if sem_capa:
+        print("  -> rode /start_gen_buy")
+    # dia nenhum pode ficar sem prompt: dia antigo incompleto volta para a fila
+    if pendentes_por_data:
+        print("dias com pendencia (gerar de novo, nao so o dia de hoje):")
+        for data in sorted(pendentes_por_data):
+            print(f"  {data}: {pendentes_por_data[data]} produto(s) incompleto(s)")
+    else:
+        print("todos os dias completos")
     return 0
 
 
 # --------------------------------------------------------------------------- #
 # comando: check
 # --------------------------------------------------------------------------- #
-def validar_clipe(texto, numero):
-    """Devolve (erros, avisos) de um prompt_cenaN.md isolado."""
+def extrair_secao(texto, titulo):
+    """Conteudo de uma secao ate a proxima secao/linha em branco dupla."""
+    if titulo not in texto:
+        return ""
+    resto = texto.split(titulo, 1)[1]
+    return resto.split("\n\n", 1)[0]
+
+
+def beats_da_acao(acao):
+    """Devolve (rotulo, texto) de cada beat da linha ACTION."""
+    partes = []
+    for trecho in acao.split(" / "):
+        trecho = trecho.strip()
+        for beat in BEATS:
+            if trecho.startswith(beat):
+                partes.append((beat, trecho[len(beat):].strip()))
+                break
+    return partes
+
+
+def normalizar(texto):
+    return " ".join(texto.split()).strip(" -.")
+
+
+def sujeira_de_geracao(texto):
+    """Lixo que o LLM deixa cair no arquivo e quebra o copiar-e-colar."""
+    erros = []
+    if "```" in texto:
+        erros.append("o arquivo contem cerca de codigo (```)")
+    if re.search(r"<[a-zA-Z][^>]{2,}>", texto):
+        erros.append("sobrou placeholder '<...>' do gabarito")
+    if "<IMAGE_" in texto.upper():
+        erros.append("referencia '<IMAGE_n>' proibida (o prompt precisa ser autossuficiente)")
+    return erros
+
+
+def validar_cena(texto):
+    """Devolve (erros, avisos) do prompt_cena.md: o unico clipe, de 10s em 6 beats."""
     erros, avisos = [], []
     linhas = [l.strip() for l in texto.strip().splitlines()]
     if not linhas:
@@ -186,7 +274,7 @@ def validar_clipe(texto, numero):
     if not f.startswith("Format:"):
         erros.append("primeira linha nao e a linha 'Format:'")
     else:
-        for exigido in ["9:16", "720p", "24fps", "10s", f"Clip {numero} of 2"]:
+        for exigido in ["9:16", "720p", "24fps", "10s", "Single clip"]:
             if exigido not in f:
                 erros.append(f"linha Format sem '{exigido}'")
 
@@ -202,56 +290,84 @@ def validar_clipe(texto, numero):
         if secao not in texto:
             erros.append(f"falta a secao '{secao}'")
 
-    # 4. cabecalho do clipe e tempo LOCAL (cada clipe comeca em 0s)
-    cabecalho = next((l for l in linhas if l.startswith(f"[Clip {numero}")), None)
+    # 4. cabecalho do clipe unico
+    cabecalho = next((l for l in linhas if l.startswith("[Clip")), None)
     if not cabecalho:
-        erros.append(f"falta o cabecalho '[Clip {numero} - ...]'")
+        erros.append("falta o cabecalho '[Clip - ... | 0s-10s | Shot: ...]'")
     else:
         if "0s-10s" not in cabecalho:
             erros.append("cabecalho sem a marcacao de tempo '0s-10s'")
         if "Shot:" not in cabecalho:
             erros.append("cabecalho sem 'Shot:'")
-    if "10s-20s" in texto:
-        erros.append("marcacao antiga '10s-20s': no Flow cada clipe tem tempo local 0s-10s")
 
-    # 5. handoff entre os clipes
-    if numero == 1:
-        if "END FRAME:" not in texto:
-            erros.append("falta a linha 'END FRAME:' (o clipe 2 retoma esse quadro)")
-    else:
-        inicio = extrair_secao(texto, "START FRAME:")
-        if not inicio:
-            erros.append("falta a linha 'START FRAME:'")
-        else:
-            if MARCA_START not in inicio:
-                erros.append(f"START FRAME sem '{MARCA_START}'")
-            if RABICHO_START not in inicio:
-                avisos.append("START FRAME sem o lembrete 'No cut, no new establishing shot...'")
-        if MARCA_VISUAL_2 not in texto:
-            erros.append(f"VISUAL do clipe 2 nao comeca com '{MARCA_VISUAL_2}'")
+    # 5. e uma cena so: nada de costura com um segundo clipe
+    for resquicio in RESQUICIOS_DE_DOIS_CLIPES:
+        if resquicio in texto:
+            erros.append(f"sobra do pipeline de dois clipes: '{resquicio}' (hoje e uma cena so)")
 
     for marcador in ("VISUAL:", "ACTION:"):
         if marcador not in texto:
             erros.append(f"falta a linha '{marcador}'")
 
-    # os 3 beats viram 3 dos 6 paineis do storyboard: sem eles o /start_gen_image nao tem mapa
-    for beat in BEATS[numero]:
-        if beat not in texto:
+    # 6. os 6 beats viram os 6 paineis do storyboard: sem eles o /start_gen_image nao tem mapa
+    acao = extrair_secao(texto, "ACTION:")
+    for beat in BEATS:
+        if beat not in acao:
             erros.append(f"falta o beat '{beat}' na linha ACTION")
+    if acao and len([p for p in acao.split("/") if p.strip()]) != len(BEATS):
+        avisos.append("a linha ACTION nao tem exatamente 6 trechos separados por ' / '")
 
-    # 6. texto de overlay proibido, rotulo do produto obrigatorio e exato
+    # cada beat e um EVENTO com enquadramento, nao um movimento de camera (R13).
+    # e daqui que vinha o video de produto parado com a camera girando em volta
+    for rotulo, corpo_do_beat in beats_da_acao(acao):
+        if not corpo_do_beat:
+            erros.append(f"beat '{rotulo}' vazio")
+            continue
+        if not re.search(r"\([^)]+\)\s*\.?$", corpo_do_beat):
+            erros.append(f"beat '{rotulo}' sem o enquadramento entre parenteses no fim")
+        if re.match(r"(?:the )?camera\b", corpo_do_beat, re.I):
+            erros.append(f"beat '{rotulo}' comeca pela camera: o beat descreve um evento "
+                         "fisico, nao o movimento da lente")
+
+    # 7. texto de overlay proibido, rotulo do produto obrigatorio e exato
+    trava = extrair_secao(texto, "Product Lock:")
+    token = re.search(r"the product is the same (.+?):", trava)
+    if not token:
+        erros.append("Product Lock sem o token do produto "
+                     "('the product is the same <cor + forma + tipo + marca>:')")
+    else:
+        token = token.group(1).strip().lower()
+        beats = beats_da_acao(acao)
+        com_token = [r for r, corpo in beats if token in corpo.lower()]
+        if len(com_token) < 4:
+            erros.append(f"o token '{token}' aparece em so {len(com_token)} dos 6 beats: "
+                         "sem repetir a identidade, o modelo troca cor e rotulo no meio do "
+                         "clipe (R14)")
+        if beats and BEATS[-1] not in com_token:
+            erros.append(f"o beauty shot ({BEATS[-1]}) nao nomeia o token '{token}'")
+        if token not in extrair_secao(texto, "VISUAL:").lower():
+            avisos.append(f"a linha VISUAL nao repete o token '{token}'")
+
+    adesao = extrair_secao(texto, "Storyboard Adherence:").lower()
+    if adesao and "stage them exactly as written" not in adesao:
+        avisos.append("Storyboard Adherence sem a ordem de encenar os beats como escritos")
+    ancoras = extrair_secao(texto, "Continuity Anchors:").lower()
+    if ancoras and "never restyled" not in ancoras and "restyled" not in ancoras:
+        avisos.append("Continuity Anchors sem a trava contra o produto ser redesenhado")
+
     estilo = extrair_secao(texto, "Style & Lighting:").lower()
     if "no captions" not in estilo:
         erros.append("Style & Lighting sem 'no captions, no subtitles'")
 
     rotulo = extrair_secao(texto, "Label & Brand:")
-    if not re.search(r"\b(?:[A-Za-z]-){2,}[A-Za-z]\b", rotulo):
+    sem_marca = "no visible branding" in rotulo.lower()
+    if not sem_marca and not re.search(r"\b(?:[A-Za-z]-){2,}[A-Za-z]\b", rotulo):
         erros.append("Label & Brand sem a marca soletrada com hifens (ex: V-E-D-A-T-U-D-O): "
                      "sem soletrar, o modelo troca as letras")
-    if "exactly" not in rotulo.lower():
+    if not sem_marca and "exactly" not in rotulo.lower():
         avisos.append("Label & Brand sem 'reads exactly': a exigencia precisa ser literal")
 
-    # 6b. o clipe e mudo
+    # 8. o clipe e mudo
     audio = extrair_secao(texto, "Audio:").lower()
     if "no audio" not in audio:
         erros.append("bloco Audio sem 'No audio. Silent clip'")
@@ -261,7 +377,7 @@ def validar_clipe(texto, numero):
     if "SFX:" in texto:
         erros.append("sobrou linha 'SFX:': o clipe e mudo, nada de som descrito")
 
-    # 7. negative prompt
+    # 9. negative prompt
     negativo = extrair_secao(texto, "Negative Prompt:").lower()
     faltantes = [x for x in NEGATIVE_OBRIGATORIO if x not in negativo]
     if faltantes:
@@ -271,7 +387,7 @@ def validar_clipe(texto, numero):
     if "headless model" in texto.lower() and "head" not in negativo:
         avisos.append("modo 'headless model' sem os condicionais de rosto no Negative Prompt")
 
-    # 8. nada de voz nem texto vazando para dentro do roteiro
+    # 10. nada de voz nem texto vazando para dentro do roteiro
     corpo = texto.split("Negative Prompt:")[0].lower()
     for proibido in ("narrator", "voice-over:", "voiceover:", "dialogue:",
                      "on-screen text", "caption reads", "title card",
@@ -283,15 +399,9 @@ def validar_clipe(texto, numero):
             erros.append(f"o roteiro manda borrar o rotulo ('{frase}'): e exatamente isso "
                          "que faz o modelo embaralhar as letras da marca")
 
-    # 9. sujeira de geracao
-    if "```" in texto:
-        erros.append("o arquivo contem cerca de codigo (```)")
-    if re.search(r"<[a-zA-Z][^>]{2,}>", texto):
-        erros.append("sobrou placeholder '<...>' do gabarito")
-    if "<IMAGE_" in texto.upper():
-        erros.append("referencia '<IMAGE_n>' proibida (o prompt precisa ser autossuficiente)")
+    erros += sujeira_de_geracao(texto)
 
-    # 10. tamanho (so o corpo criativo; o Negative Prompt e lista, nao prosa)
+    # 11. tamanho (so o corpo criativo; o Negative Prompt e lista, nao prosa)
     palavras = len(texto.split("Negative Prompt:")[0].split())
     if palavras < PALAVRAS_MIN:
         avisos.append(f"curto demais: {palavras} palavras (alvo {PALAVRAS_MIN}-{PALAVRAS_MAX})")
@@ -301,8 +411,101 @@ def validar_clipe(texto, numero):
     return erros, avisos
 
 
-def validar_imagem(texto):
-    """Devolve (erros, avisos) do prompt_imagem.md: a foto de post."""
+def validar_storyboard(texto):
+    """Devolve (erros, avisos) do prompt_storyboard.md: o prompt da prancha de 6 paineis."""
+    erros, avisos = [], []
+    if not texto.strip():
+        return ["arquivo vazio"], []
+
+    baixo = texto.lower()
+    for exigido in STORY_OBRIGATORIO:
+        if exigido.lower() not in baixo:
+            erros.append(f"o prompt nao pede '{exigido}'")
+
+    # um painel por beat, na ordem e com o rotulo de tempo certo
+    for numero, beat in enumerate(BEATS, start=1):
+        marcador = f"PANEL {numero}"
+        if marcador not in texto:
+            erros.append(f"falta o {marcador}")
+        elif beat not in texto.split(marcador, 1)[1].split("\n", 1)[0]:
+            erros.append(f"{marcador} sem o beat '{beat}' do prompt_cena.md")
+    if "PANEL 7" in texto:
+        erros.append("tem PANEL 7: a prancha e de 6 paineis, um por beat")
+
+    # o negative nao pode apagar a numeracao dos paineis nem o rotulo do produto
+    if "negative:" not in baixo and "negative prompt:" not in baixo:
+        erros.append("falta o bloco 'Negative:'")
+    else:
+        marca = "Negative:" if "Negative:" in texto else "Negative Prompt:"
+        negativo = texto.split(marca, 1)[1]
+        itens = {normalizar(i).lower().rstrip(".") for i in negativo.split(",")}
+        proibidos = sorted(itens & NEGATIVO_PROIBIDO_STORY)
+        if proibidos:
+            erros.append("Negative com termo que apaga a numeracao ou o rotulo do produto: "
+                         + ", ".join(proibidos))
+        if "faces" not in negativo.lower():
+            avisos.append("Negative sem 'faces'")
+
+    if any(m in baixo for m in ("sketch:", "cartoon style", "illustration style")):
+        erros.append("o prompt pede desenho: a prancha e fotografica")
+
+    for frase in PROIBIDO_NO_ROTULO:
+        if frase in baixo.split("negative")[0]:
+            erros.append(f"o prompt manda borrar o rotulo ('{frase}')")
+
+    erros += sujeira_de_geracao(texto)
+
+    palavras = len(texto.split())
+    if palavras < PALAVRAS_STORY_MIN:
+        avisos.append(f"curto demais: {palavras} palavras "
+                      f"(alvo {PALAVRAS_STORY_MIN}-{PALAVRAS_STORY_MAX})")
+    elif palavras > PALAVRAS_STORY_MAX:
+        avisos.append(f"longo demais: {palavras} palavras "
+                      f"(alvo {PALAVRAS_STORY_MIN}-{PALAVRAS_STORY_MAX})")
+
+    return erros, avisos
+
+
+def validar_texto_da_peca(texto):
+    """As 3 linhas em portugues: pouco texto, escrito exato, e preco nenhum."""
+    erros = []
+    copy = texto.split("Promo Copy", 1)[1].split("Text Style:", 1)[0] if "Promo Copy" in texto else ""
+    linhas = re.findall(r'"([^"]+)"', copy)
+    if not linhas:
+        erros.append("bloco Promo Copy sem nenhuma linha entre aspas")
+        return erros
+    if len(linhas) > 3:
+        erros.append(f"{len(linhas)} linhas de texto na peca: o limite e 3")
+    palavras = sum(len(l.split()) for l in linhas)
+    if palavras > 12:
+        erros.append(f"{palavras} palavras na arte: o limite e 12 (gerador erra texto longo)")
+
+    chamada = linhas[0].strip()
+    if chamada not in CHAMADAS:
+        erros.append(f"chamada '{chamada}' fora da lista fechada: " + " | ".join(CHAMADAS))
+    if len(linhas) > 1 and linhas[1].strip().isupper() and linhas[1].strip() == chamada:
+        erros.append("a linha 2 repete a chamada da linha 1")
+    if len(linhas[-1].split()) > 6:
+        erros.append("a descricao curta passa de 6 palavras")
+
+    # preco nunca: nem no texto da arte, nem pedido em outro lugar do prompt
+    corpo = texto.split("Negative Prompt:")[0]
+    for marca in ("R$", "%", "R $"):
+        if marca in corpo:
+            erros.append(f"o prompt pede '{marca}' na imagem: a peca nao mostra preco")
+    for l in linhas:
+        if re.search(r"\d", l):
+            erros.append(f"numero no texto da peca ('{l}'): proibido")
+    for termo in ("desconto", "off", "promoção", "promocao", "preço", "preco"):
+        if termo in " ".join(linhas).lower():
+            erros.append(f"o texto da peca fala de preco/desconto ('{termo}')")
+    if "spelled" not in copy:
+        erros.append("a chamada nao esta soletrada com hifens: sem isso o modelo escreve errado")
+    return erros
+
+
+def validar_capa(texto):
+    """Devolve (erros, avisos) do prompt_capa.md: a foto que abre o post."""
     erros, avisos = [], []
     linhas = [l.strip() for l in texto.strip().splitlines()]
     if not linhas:
@@ -312,170 +515,151 @@ def validar_imagem(texto):
     if not f.startswith("Format:"):
         erros.append("primeira linha nao e a linha 'Format:'")
     else:
-        for exigido in ["single still photograph", "9:16"]:
+        for exigido in ["single still photograph", "9:16", "promotional cover shot"]:
             if exigido not in f:
                 erros.append(f"linha Format sem '{exigido}'")
 
     on_camera = next((l for l in linhas[:4] if l.startswith("On camera:")), None)
     if not on_camera:
         erros.append("falta a linha 'On camera:'")
-    elif not any(m in on_camera.lower() for m in MODOS_DE_CAMERA):
-        erros.append("linha 'On camera:' sem um dos modos: product only / hands only / headless model")
+    else:
+        if not any(m in on_camera.lower() for m in MODOS_DE_CAMERA):
+            erros.append("linha 'On camera:' sem um dos modos de camera")
+        if "no price" not in on_camera.lower():
+            erros.append("linha 'On camera:' sem 'No price, no numbers, no percentages'")
 
-    for secao in SECOES_IMAGEM:
+    for secao in SECOES_CAPA:
         if secao not in texto:
             erros.append(f"falta a secao '{secao}'")
 
+    erros += validar_texto_da_peca(texto)
+
     negativo = extrair_secao(texto, "Negative Prompt:").lower()
-    faltantes = [x for x in NEGATIVE_IMAGEM_OBRIGATORIO if x not in negativo]
+    faltantes = [x for x in NEGATIVE_CAPA_OBRIGATORIO if x not in negativo]
     if faltantes:
         erros.append("Negative Prompt incompleto, falta: " + ", ".join(faltantes))
+    itens = {normalizar(i).lower().rstrip(".") for i in negativo.split(",")}
+    proibidos = sorted(itens & NEGATIVO_PROIBIDO_CAPA)
+    if proibidos:
+        erros.append("Negative com termo que apaga a chamada em portugues ou o rotulo: "
+                     + ", ".join(proibidos))
 
     corpo = texto.split("Negative Prompt:")[0]
-    # so a parte criativa: os blocos Product Fidelity e Originality citam o fundo branco
-    # justamente para PROIBI-lo, e nao podem disparar o alarme
     rotulo = extrair_secao(texto, "Label & Brand:")
-    if not re.search(r"\b(?:[A-Za-z]-){2,}[A-Za-z]\b", rotulo):
+    sem_marca = "no visible branding" in rotulo.lower()
+    if not sem_marca and not re.search(r"\b(?:[A-Za-z]-){2,}[A-Za-z]\b", rotulo):
         erros.append("Label & Brand sem a marca soletrada com hifens")
     for frase in PROIBIDO_NO_ROTULO:
         if frase in corpo.lower():
-            erros.append(f"a foto manda borrar o rotulo ('{frase}')")
+            erros.append(f"a capa manda borrar o rotulo ('{frase}')")
 
+    # so a parte criativa: os blocos Product Fidelity e Originality citam o fundo branco
+    # justamente para PROIBI-lo, e nao podem disparar o alarme
     criativo = corpo.split("Product Fidelity:")[0].lower()
     for fundo in ("white background", "plain background", "studio backdrop",
                   "seamless backdrop", "grey background", "gray background"):
         if fundo in criativo:
-            erros.append(f"a foto pede '{fundo}': o cenario tem que ser real e diferente do anuncio")
-    if "```" in texto:
-        erros.append("o arquivo contem cerca de codigo (```)")
-    if re.search(r"<[a-zA-Z][^>]{2,}>", texto):
-        erros.append("sobrou placeholder '<...>' do gabarito")
-    if "<IMAGE_" in texto.upper():
-        erros.append("referencia '<IMAGE_n>' proibida (o prompt precisa ser autossuficiente)")
+            erros.append(f"a capa pede '{fundo}': o cenario tem que ser real e diferente do anuncio")
+
+    erros += sujeira_de_geracao(texto)
 
     palavras = len(corpo.split())
-    if palavras < PALAVRAS_IMAGEM_MIN:
+    if palavras < PALAVRAS_CAPA_MIN:
         avisos.append(f"curto demais: {palavras} palavras "
-                      f"(alvo {PALAVRAS_IMAGEM_MIN}-{PALAVRAS_IMAGEM_MAX})")
-    elif palavras > PALAVRAS_IMAGEM_MAX:
+                      f"(alvo {PALAVRAS_CAPA_MIN}-{PALAVRAS_CAPA_MAX})")
+    elif palavras > PALAVRAS_CAPA_MAX:
         avisos.append(f"longo demais: {palavras} palavras "
-                      f"(alvo {PALAVRAS_IMAGEM_MIN}-{PALAVRAS_IMAGEM_MAX})")
+                      f"(alvo {PALAVRAS_CAPA_MIN}-{PALAVRAS_CAPA_MAX})")
 
     return erros, avisos
 
 
-def normalizar(texto):
-    return " ".join(texto.split()).strip(" -.")
-
-
-def validar_conjunto(texto1, texto2, texto_imagem=None):
+def validar_conjunto(cena, storyboard, capa):
     """O que so da para conferir com os arquivos lado a lado: a costura entre eles."""
     erros, avisos = [], []
+    modo_cena = next((m for m in MODOS_DE_CAMERA
+                      if m in extrair_secao(cena, "On camera:").lower()), None)
 
-    for secao in SECOES_COMPARTILHADAS:
-        a, b = normalizar(extrair_secao(texto1, secao)), normalizar(extrair_secao(texto2, secao))
+    if storyboard is not None and modo_cena and modo_cena not in storyboard.lower():
+        erros.append(f"storyboard: modo de camera diferente do da cena ('{modo_cena}')")
+
+    token = re.search(r"the product is the same (.+?):", extrair_secao(cena, "Product Lock:"))
+    token = token.group(1).strip().lower() if token else ""
+    if storyboard is not None and token and token not in storyboard.lower():
+        erros.append(f"storyboard: nao repete o token do produto ('{token}'): a prancha vai "
+                     "para o Flow junto com a cena e precisa descrever o mesmo objeto")
+
+    if capa is not None:
+        a = normalizar(extrair_secao(cena, "Subject:"))
+        b = normalizar(extrair_secao(capa, "Subject:"))
         if a and b and a != b:
-            erros.append(f"'{secao[:-1]}' diferente entre os clipes (precisa ser copia literal)")
-
-    a, b = normalizar(extrair_secao(texto1, "On camera:")), normalizar(extrair_secao(texto2, "On camera:"))
-    if a and b and a != b:
-        erros.append("linha 'On camera:' diferente entre os clipes")
-
-    fim = normalizar(extrair_secao(texto1, "END FRAME:"))
-    inicio = extrair_secao(texto2, "START FRAME:")
-    if RABICHO_START in inicio:
-        inicio = inicio.split(RABICHO_START)[0]
-    if MARCA_START in inicio:
-        inicio = inicio.split(MARCA_START, 1)[1]
-    inicio = normalizar(inicio)
-    if fim and inicio and fim != inicio:
-        erros.append("START FRAME do clipe 2 nao repete o END FRAME do clipe 1 palavra por palavra")
-
-    a, b = normalizar(extrair_secao(texto1, "Camera & Framing:")), normalizar(extrair_secao(texto2, "Camera & Framing:"))
-    if a and a == b:
-        erros.append("Camera & Framing igual nos dois clipes: o clipe 2 e o segundo plano do par")
-
-    a, b = normalizar(extrair_secao(texto1, "Negative Prompt:")), normalizar(extrair_secao(texto2, "Negative Prompt:"))
-    if a and b and a != b:
-        avisos.append("Negative Prompt diferente entre os clipes")
-
-    if texto_imagem is not None:
-        a, b = normalizar(extrair_secao(texto1, "Subject:")), normalizar(extrair_secao(texto_imagem, "Subject:"))
+            erros.append("capa: 'Subject' diferente do da cena (precisa ser copia literal)")
+        a = normalizar(extrair_secao(cena, "Label & Brand:").split("This is the only text")[0])
+        b = normalizar(extrair_secao(capa, "Label & Brand:").split("The product label and")[0])
         if a and b and a != b:
-            erros.append("imagem: 'Subject' diferente do clipe 1 (precisa ser copia literal)")
-        a = normalizar(extrair_secao(texto1, "On camera:"))
-        b = normalizar(extrair_secao(texto_imagem, "On camera:"))
-        if a and b and a.split(".")[0] != b.split(".")[0]:
-            avisos.append("imagem: modo da linha 'On camera:' diferente do dos videos")
-        cena_video = normalizar(extrair_secao(texto1, "Scene:"))
-        cena_foto = normalizar(extrair_secao(texto_imagem, "Scene:"))
-        if cena_video and cena_video == cena_foto:
-            erros.append("imagem: 'Scene' identica a do clipe 1 (a foto e outro recorte do ambiente)")
+            erros.append("capa: 'Label & Brand' diferente do da cena (precisa ser copia literal)")
+        if modo_cena and modo_cena not in extrair_secao(capa, "On camera:").lower():
+            avisos.append(f"capa: modo de camera diferente do da cena ('{modo_cena}')")
+        cena_video = normalizar(extrair_secao(cena, "Scene:"))
+        cena_capa = normalizar(extrair_secao(capa, "Scene:"))
+        if cena_video and cena_video == cena_capa:
+            erros.append("capa: 'Scene' identica a da cena (a capa e outro recorte do ambiente)")
 
     return erros, avisos
 
 
-def extrair_secao(texto, titulo):
-    """Conteudo de uma secao ate a proxima secao/linha em branco dupla."""
-    if titulo not in texto:
-        return ""
-    resto = texto.split(titulo, 1)[1]
-    return resto.split("\n\n", 1)[0]
-
-
-def planos_do_prompt(texto):
-    return [m.strip().rstrip("]").lower()
-            for m in re.findall(r"Shot:\s*([^\]]+)", texto)]
+def arco_do_prompt(texto):
+    """O movimento declarado no cabecalho, para caçar lote clonado."""
+    achados = re.findall(r"Shot:\s*([^\]]+)", texto)
+    return normalizar(achados[0]).lower() if achados else ""
 
 
 def cmd_check(args):
-    produtos = listar_produtos(args.all)
+    produtos = listar_produtos(args.ultima)
     total_erros = 0
     verificados = 0
-    pares_de_planos = {}
+    arcos = {}
 
     for _data, nome, caminho in produtos:
-        textos, faltando = {}, []
-        for numero in (1, 2):
-            arquivo = caminho_do_prompt(caminho, numero)
-            if os.path.exists(arquivo):
-                with open(arquivo, encoding="utf-8") as fh:
-                    textos[numero] = fh.read()
-            else:
-                faltando.append(ARQUIVOS[numero - 1])
+        cena = ler(caminho, ARQUIVO_CENA)
+        storyboard = ler(caminho, ARQUIVO_STORYBOARD)
+        capa = ler(caminho, ARQUIVO_CAPA)
 
-        imagem = None
-        arquivo_imagem = caminho_da_imagem(caminho)
-        if os.path.exists(arquivo_imagem):
-            with open(arquivo_imagem, encoding="utf-8") as fh:
-                imagem = fh.read()
-        else:
-            faltando.append(ARQUIVO_IMAGEM)
-
-        if not textos and imagem is None:
+        if cena is None and storyboard is None and capa is None:
             print(f"[ - ] {nome[:60]}: sem prompt")
             continue
 
         verificados += 1
-        erros = [f"falta o arquivo {a}" for a in faltando]
-        avisos = []
-        for numero in sorted(textos):
-            e, a = validar_clipe(textos[numero], numero)
-            erros += [f"clipe {numero}: {x}" for x in e]
-            avisos += [f"clipe {numero}: {x}" for x in a]
+        erros, avisos = [], []
 
-        if imagem is not None:
-            e, a = validar_imagem(imagem)
-            erros += [f"imagem: {x}" for x in e]
-            avisos += [f"imagem: {x}" for x in a]
+        if cena is None:
+            erros.append(f"falta o arquivo {ARQUIVO_CENA} (rode /start_gen_prompts)")
+        else:
+            e, a = validar_cena(cena)
+            erros += [f"cena: {x}" for x in e]
+            avisos += [f"cena: {x}" for x in a]
+            arco = arco_do_prompt(cena)
+            if arco:
+                arcos.setdefault(arco, []).append(nome)
 
-        if len(textos) == 2:
-            e, a = validar_conjunto(textos[1], textos[2], imagem)
+        if storyboard is None:
+            erros.append(f"falta o arquivo {ARQUIVO_STORYBOARD} (rode /start_gen_image)")
+        else:
+            e, a = validar_storyboard(storyboard)
+            erros += [f"storyboard: {x}" for x in e]
+            avisos += [f"storyboard: {x}" for x in a]
+
+        if capa is None:
+            erros.append(f"falta o arquivo {ARQUIVO_CAPA} (rode /start_gen_buy)")
+        else:
+            e, a = validar_capa(capa)
+            erros += [f"capa: {x}" for x in e]
+            avisos += [f"capa: {x}" for x in a]
+
+        if cena is not None:
+            e, a = validar_conjunto(cena, storyboard, capa)
             erros += e
             avisos += a
-            par = " -> ".join(planos_do_prompt(textos[1]) + planos_do_prompt(textos[2]))
-            if par:
-                pares_de_planos.setdefault(par, []).append(nome)
 
         if erros:
             total_erros += len(erros)
@@ -487,13 +671,13 @@ def cmd_check(args):
         for a in avisos:
             print(f"       ~ {a}")
 
-    for par, nomes in pares_de_planos.items():
+    for arco, nomes in arcos.items():
         if len(nomes) > 2:
-            print(f"[AVISO] par de planos repetido {len(nomes)}x no lote ({par}):")
+            print(f"[AVISO] arco de camera repetido {len(nomes)}x no lote ({arco}):")
             for n in nomes:
                 print(f"        - {n[:60]}")
 
-    print("-" * 78)
+    print("-" * 82)
     print(f"{verificados} produtos verificados | {total_erros} erros")
     return 1 if total_erros else 0
 
@@ -505,11 +689,13 @@ def main():
     sub = parser.add_subparsers(dest="comando")
 
     p_status = sub.add_parser("status", help="mostra o que falta em cada produto")
-    p_status.add_argument("--all", action="store_true", help="todas as datas, nao so a mais recente")
+    p_status.add_argument("--ultima", action="store_true",
+                          help="so a data mais recente (o padrao e o historico inteiro)")
     p_status.set_defaults(func=cmd_status)
 
-    p_check = sub.add_parser("check", help="valida os dois prompts de cada produto")
-    p_check.add_argument("--all", action="store_true", help="todas as datas, nao so a mais recente")
+    p_check = sub.add_parser("check", help="valida os tres prompts de cada produto")
+    p_check.add_argument("--ultima", action="store_true",
+                          help="so a data mais recente (o padrao e o historico inteiro)")
     p_check.set_defaults(func=cmd_check)
 
     args = parser.parse_args()

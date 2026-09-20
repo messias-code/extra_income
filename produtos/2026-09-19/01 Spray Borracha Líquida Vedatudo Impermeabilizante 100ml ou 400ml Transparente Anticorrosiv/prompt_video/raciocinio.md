@@ -1,10 +1,8 @@
-GROUNDING: lata de spray metálica com tampa de plástico, variante transparente, escala de bancada/chão.
-NOME LIMPO: transparent liquid rubber aerosol spray can.
-CATEGORIA + CENÁRIO: ferramentas / DIY -> chão de concreto liso e limpo, cenário extremamente minimalista e vazio.
-MÉTRICAS: preço acessível, alto volume (15.38k vendas) -> cenário cotidiano e real de DIY.
-ÂNGULO DE VENDA: textura emborrachada transparente perfeitamente selada contra água (gotas sobre a superfície).
-PAR DE PLANOS: 1 (slow 180° orbit -> macro tilt down sobre a textura) para focar na lata e depois na superfície isolada com o produto aplicado.
-CONFORMIDADE: hands only cortadas no pulso, 2 clipes de 10s, mudo, sem overlay de texto, variante única de lata travada.
-MARCA NO RÓTULO: "VEDATUDO" copiado das fotos, soletrado V-E-D-A-T-U-D-O.
-HANDOFF: Clipe 1 termina em ângulo baixo trinta e três graus na lente 50mm, a lata centralizada, com uma mão repousada no piso de concreto ao lado, sem movimento brusco.
-IMAGEM DE POST: Foto em ângulo de cima (top-down) mostrando a lata deitada sobre uma bancada de madeira limpa com a mão acariciando a textura de borracha na madeira, diferente do fundo de anúncio.
+GROUNDING: Lata de spray aerossol azul, rótulo com faixa amarela "VEDATUDO" e caixa vermelha "DRYKO", tampa plástica transparente com bico vermelho visível. Variante "Transparente" escolhida.
+NOME LIMPO: clear rubberized waterproof spray.
+CATEGORIA + CENÁRIO: ferramentas / DIY -> chão de concreto liso, azulejo de concreto selado ao lado com gotas de água.
+MÉTRICAS: Preço baixo (R$19.85), volume muito alto (15.38k vendidas) -> cenário cotidiano e real, energia de UGC, ritmo ágil.
+ÂNGULO DE VENDA: Efeito impermeabilizante (mostrado sutilmente com água sobre um azulejo de concreto selado ao lado do produto).
+ARCO DE CÂMERA: 3 (low-angle dolly-in heroico -> virando macro slide ao longo da aresta/acabamento), sugerido, que dá imponência à lata no chão.
+CONFORMIDADE: hands only cortadas no pulso; 1 clipe de 10s com 6 beats; clipe mudo; zero texto de overlay; variante transparente travada; nada de borrifar (proibido pela regra R4 de interações complexas).
+MARCA NO RÓTULO: "DRYKO VEDATUDO", soletrado D-R-Y-K-O V-E-D-A-T-U-D-O.

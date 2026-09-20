@@ -2,11 +2,13 @@
 
 Este projeto automatiza a pesquisa de produtos em alta no TikTok Shop e a roteirização de vídeos curtos de vendas (UGC) utilizando a inteligência artificial do **Antigravity (AGY)** para criar prompts perfeitos para geradores de vídeo de última geração (como Omni 1.1 Flash / Veo 3.1).
 
-O objetivo final é simples: no fim da rotina você tem, para cada produto, **as imagens do anúncio + a prancha de roteiro + o prompt pronto**. Daí é só levar para uma plataforma de geração de vídeo (Google Flow, por exemplo), jogar as imagens e colar o prompt.
+O objetivo final é simples: no fim da rotina você tem, para cada produto, **as imagens do anúncio + três prompts prontos**: a cena do vídeo, a prancha de storyboard e a capa. Daí é só levar para uma plataforma de geração (Google Flow, por exemplo), jogar as imagens e colar o prompt.
+
+**O pipeline só produz texto.** Nenhum comando gera imagem ou vídeo: tudo o que fazemos é criar prompts bons, que entregam ótimos resultados no gerador.
 
 ## 🚀 O Fluxo de Trabalho (Ordem de Execução)
 
-A rotina é composta de três grandes passos, executados em sequência.
+A rotina é composta de quatro grandes passos, executados em sequência. E **dia nenhum fica sem prompt**: a fila é o histórico inteiro de `produtos/`, então produto de dia passado que ficou sem algum arquivo volta para a fila e é gerado de novo.
 
 ### 1. Extração dos Produtos
 **Comando no Terminal:**
@@ -111,26 +113,42 @@ O `.env` aceita várias contas em `KALODATA_LOGINS` (separadas por vírgula, mes
 **O que faz:**
 Aciona uma *Skill* nativa do Antigravity. A IA varre os produtos recém-baixados, visualiza as fotos de cada um, e usa *Subagentes* em paralelo para criar os roteiros de vídeo profissionais.
 **Regras de Roteiro (`prompt_sistema.yaml`):**
-- **Duração:** 20 segundos em **dois prompts separados** de 10s — o clipe 2 é escrito como continuação exata do clipe 1, para ser colado no Google Flow em cima do último frame gerado.
+- **Duração:** **uma cena só** — um take contínuo de 10s, escrito em **6 beats cronometrados** (`0-1.5s / 1.5-3s / 3-5s / 5-7s / 7-8.5s / 8.5-10s`). Cada beat vira um painel do storyboard.
+- **Ação, não câmera:** cada beat descreve um **evento físico** (a mão entra e gira o frasco, o tecido cai, o swatch é riscado) e termina com o enquadramento entre parênteses. Produto parado com a câmera girando em volta é proibido.
+- **Identidade travada:** o bloco `Product Lock` define um **token** do produto (cor + forma + tipo + marca) repetido em todos os beats. É o que impede o gerador de trocar a cor ou reescrever a marca lá pelo segundo 5.
 - **Formato:** Vídeo focado apenas em interações visuais orgânicas (mãos ou *headless models* para roupas).
 - **Sem áudio:** Os clipes saem **mudos** — sem trilha, sem efeito sonoro, sem voz. O som entra depois, na edição.
 - **Sem texto na tela:** Zero legenda, letreiro ou marca d'água. O **rótulo do produto**, ao contrário, vai legível e escrito **exatamente** como nas fotos (bloco `Label & Brand`, com a marca soletrada letra a letra).
-- **Foto do post:** um terceiro prompt (`prompt_imagem.md`) gera **uma imagem estática** do mesmo produto para postar junto com os vídeos — mesmo produto das fotos reais, mas outro ângulo, outro cenário e outra pessoa em quadro, para não reproduzir a foto do anúncio.
-**Resultado:** Os arquivos `prompt_video/prompt_cena1.md`, `prompt_cena2.md` e `prompt_imagem.md` (os três prompts prontos para colar) e `raciocinio.md` (a justificativa das escolhas do diretor) em cada produto.
+**Resultado:** `prompt_video/prompt_cena.md` (o prompt pronto para colar) e `raciocinio.md` (a justificativa das escolhas do diretor) em cada produto.
 *(Nota: O script `check_prompts.py` garante a qualidade e impede que a IA repita os mesmos enquadramentos de câmera o tempo todo).*
 
-### 3. Geração de Storyboards de Visualização
+### 3. Prompt do Storyboard
 **Comando no chat do Antigravity:**
 ```text
 /start_gen_image
 ```
 **O que faz:**
-Aciona a segunda *Skill* nativa do Antigravity. Para cada produto que tem um roteiro gerado, a IA lê os dois prompts e usa as fotos originais do produto para invocar a ferramenta interna de geração de imagens.
+Lê o `prompt_cena.md` de cada produto e escreve **o prompt que gera a prancha** de storyboard. Não gera a imagem: entrega o texto, e você cola no gerador com as fotos do produto anexadas.
 **Regras de Imagem (`prompt_gen_image.yaml`):**
-- Cria uma única prancha (`storyboard.jpg`) com **6 painéis sequenciais numerados**.
-- Traduz cronologicamente os 6 "beats" do roteiro (3 do clipe 1 + 3 do clipe 2).
-**Resultado:** Um guia visual poderoso para validar a ideia antes de gastar cotas caras de geração de vídeo real.
-*(Plano B: Se a cota do Antigravity esgotar, coloque sua chave do Gemini em `.env` e rode `python3 gen_storyboards.py` no terminal).*
+- Uma única prancha, **6 painéis numerados**, 2 colunas x 3 linhas.
+- Um painel por beat do roteiro, no mesmo enquadramento declarado no beat.
+- Cada painel mostra **ação acontecendo**, não o produto parado em seis ângulos, e repete o token do `Product Lock` para o produto não mudar de painel para painel.
+**Resultado:** `prompt_video/prompt_storyboard.md`. No Google Flow a prancha entra **junto** com o `prompt_cena.md`: ela é o mapa da encenação.
+
+### 4. Prompt da Capa
+**Comando no chat do Antigravity:**
+```text
+/start_gen_buy
+```
+**O que faz:**
+Escreve **o prompt da capa do produto** — a imagem que abre o post. Também não gera imagem.
+**Regras da Capa (`prompt_gen_buy.yaml`):**
+- **Produto de um lado** da vertical, inteiro e nítido; **texto em português do outro lado**, na área limpa.
+- Texto curto: chamada da lista fechada (`COMPRE JÁ`, `OFERTA IMPERDÍVEL`, `GARANTA O SEU`…) + descrição de até 6 palavras. No máximo 3 linhas e 12 palavras, cada uma escrita exata e soletrada com hifens.
+- **Preço nunca**: sem "R$", sem número, sem porcentagem, sem selo de desconto.
+- Mesmo produto e mesmo rótulo do vídeo (`Subject` e `Label & Brand` copiados palavra por palavra do `prompt_cena.md`), mas **ângulo, enquadramento e cenário diferentes** dos do vídeo e da foto do anúncio.
+- Fundo branco de catálogo e colagem proibidos; texto nunca por cima do produto.
+**Resultado:** `prompt_video/prompt_capa.md`.
 
 ---
 
@@ -162,8 +180,10 @@ Os rótulos vêm dos `<th>` da tabela. Dois detalhes que o `scraper.py` trata e 
 - `.env`: Armazena credenciais da Kalodata e chaves de API externas.
 - `extracted_products.txt`: O histórico de deduplicação, um título por linha. **Não apague** — é ele que impede o script de baixar duas vezes o mesmo produto. Linhas antigas no formato `tabela<TAB>titulo` continuam sendo lidas normalmente.
 - `prompt_sistema.yaml`: O cérebro da direção de vídeo (tempo, proibições, formatação estrutural e estilos). Se o modelo do gerador de vídeos mudar de regras, é aqui que deve ser ajustado.
-- `prompt_gen_image.yaml`: As regras que ensinam o LLM a desenhar a prancha vertical com os 6 painéis de storyboard.
-- `.agents/skills/`: Contém as lógicas das skills `/start_gen_prompts` e `/start_gen_image` para o Antigravity interpretar.
+- `prompt_gen_image.yaml`: As regras do prompt da prancha vertical com os 6 painéis de storyboard.
+- `prompt_gen_buy.yaml`: As regras do prompt da capa do produto.
+- `.agents/skills/`: Contém as lógicas das skills `/start_gen_prompts`, `/start_gen_image` e `/start_gen_buy` para o Antigravity interpretar.
+- `check_prompts.py`: `status` mostra o que falta em **todos** os dias; `check` valida os três prompts e a costura entre eles, e só fecha com `0 erros`.
 
 ## 🛠️ Preparando o ambiente
 

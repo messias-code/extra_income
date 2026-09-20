@@ -1,7 +1,8 @@
-GROUNDING: Frasco preto cilíndrico opaco com válvula spray pump, rótulo em preto e dourado; escala pequena de bancada (120ml).
+GROUNDING: frasco cilíndrico preto fosco com válvula spray preta, rótulo em tons de dourado e preto contendo uma ilustração de perfil de homem barbudo e a marca "PURO FIO".
 NOME LIMPO: hair and beard tonic spray.
-CATEGORIA + CENÁRIO: beleza / skincare -> bancada de banheiro em mármore claro, toalha, respingos de água, planta pequena.
-MÉTRICAS: preço baixo (R$19,50) e alto volume de vendas (9,08 mil) -> cenário real cotidiano de rotina matinal masculina, energia de UGC.
-ÂNGULO DE VENDA: o apelo estético do frasco premium e a praticidade de uso diário na bancada.
-PAR DE PLANOS: 1 (slow 180° orbit -> macro tilt down sobre a textura) conforme par atribuído.
-CONFORMIDADE: modo hands only cortadas no pulso, 20s em 2x10s, zero voz, zero texto, variante preta com rótulo dourado travada nas duas cenas.
+CATEGORIA + CENÁRIO: cuidados masculinos / cabelo -> bancada de ardósia escura de banheiro, respingos sutis de água, luz contrastante e masculina.
+MÉTRICAS: alta conversão em vídeo e preço acessível -> foco na rotina prática de cuidado diário, luz lateral bem desenhada.
+ÂNGULO DE VENDA: o design premium do frasco e a percepção de eficácia (tônico capilar).
+ARCO DE CÂMERA: 1 (slow 180° orbit -> fechando em macro tilt down sobre o rótulo). Como a câmera vai orbitar, a mão PRECISA estar interagindo com o frasco (girando-o) para justificar o movimento e evitar o aspecto de catálogo morto.
+CONFORMIDADE: hands only cortadas no pulso; 1 clipe de 10s com 6 beats; clipe mudo; zero texto de overlay; variante frasco preto travada.
+MARCA NO RÓTULO: "PURO FIO", lido no centro do rótulo, soletrado P-U-R-O F-I-O.
