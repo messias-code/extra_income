@@ -34,16 +34,6 @@ class ChallengeException(Exception):
     pass
 
 
-def debug(page, nome):
-    """Sem tela nesta máquina: screenshot é o único jeito de ver onde o fluxo parou."""
-    caminho = f"debug_flow_{nome}.png"
-    try:
-        page.screenshot(path=caminho, full_page=False)
-        print(f"    [debug] {caminho}  |  url: {page.url}")
-    except Exception as e:
-        print(f"    [debug] falhou screenshot {nome}: {e}")
-
-
 def pausa_humana(minimo=0.5, maximo=1.5):
     time.sleep(random.uniform(minimo, maximo))
 
@@ -60,7 +50,6 @@ def abrir_tela_de_login(page):
     print("Abrindo a landing do Flow...")
     page.goto(URL_ABOUT, wait_until="domcontentloaded")
     page.wait_for_timeout(4000)
-    debug(page, "01_about")
 
     print("Clicando em 'Crie com o Google Flow'...")
     botao = page.locator("button[aria-label='Crie com o Google Flow']").first
@@ -72,7 +61,6 @@ def abrir_tela_de_login(page):
     # (dsh/continue aleatórios), então esperamos o domínio, não o caminho.
     page.wait_for_url("**accounts.google.com/**", timeout=TIMEOUT_PADRAO_MS)
     page.wait_for_timeout(3000)
-    debug(page, "02_signin")
 
 
 def preencher_email(page, login):
@@ -85,7 +73,6 @@ def preencher_email(page, login):
     print("Avançar (e-mail)...")
     page.click("#identifierNext")
     page.wait_for_timeout(6000)
-    debug(page, "03_pos_email")
 
 
 def preencher_senha(page, password):
@@ -94,7 +81,6 @@ def preencher_senha(page, password):
         page.wait_for_selector("input[name='Passwd']", state="visible",
                                timeout=TIMEOUT_PADRAO_MS)
     except PWTimeout:
-        debug(page, "erro_sem_campo_senha")
         raise LoginFailedException(
             "Campo de senha não apareceu. Google provavelmente barrou o navegador "
             "ou pediu verificação antes da senha (veja debug_flow_erro_sem_campo_senha.png)."
@@ -108,7 +94,6 @@ def preencher_senha(page, password):
     print("Avançar (senha)...")
     page.click("#passwordNext")
     page.wait_for_timeout(8000)
-    debug(page, "04_pos_senha")
 
 
 def confirmar_login(page):
@@ -117,7 +102,6 @@ def confirmar_login(page):
     try:
         page.wait_for_url("**flow.google.com/**", timeout=60000)
     except PWTimeout:
-        debug(page, "05_travado")
         if "challenge" in page.url or "signin/v2" in page.url:
             raise ChallengeException(
                 f"Google pediu verificação extra em {page.url}. "
@@ -126,14 +110,12 @@ def confirmar_login(page):
         raise LoginFailedException(f"Não chegou no Flow. Parou em {page.url}")
 
     page.wait_for_timeout(5000)
-    debug(page, "05_logado")
     print(f"Login efetuado com sucesso! URL: {page.url}")
 
 
 def fazer_login(page, login, password):
     if ja_esta_logado(page):
         print(f"Sessão do perfil '{PERFIL_DIR}' ainda válida — login não é necessário.")
-        debug(page, "00_sessao_reaproveitada")
         return
 
     abrir_tela_de_login(page)
@@ -157,13 +139,11 @@ def abrir_projeto(page, nome):
 
     card = page.locator(".project-card").filter(has_text=nome).first
     if card.count() == 0:
-        debug(page, "erro_projeto_nao_achado")
         raise LoginFailedException(f"Projeto '{nome}' não encontrado na home.")
     card.locator("img, video").first.click()
 
     page.wait_for_url("**/project/**", timeout=TIMEOUT_PADRAO_MS)
     page.wait_for_timeout(6000)
-    debug(page, "06_projeto")
     print(f"Dentro do projeto: {page.url}")
 
 
@@ -196,9 +176,7 @@ def renomear_colecao(page, nome):
 
     atual = campo.input_value()
     if atual.strip() != nome:
-        debug(page, "erro_rename")
         raise LoginFailedException(f"Rename não pegou: campo ficou como {atual!r}")
-    debug(page, "07_colecao_renomeada")
     print(f"Coleção '{nome}' pronta: {page.url}")
 
 
@@ -219,7 +197,6 @@ def criar_colecao(page, nome):
         page.locator("[role='menuitem']:has-text('Nova coleção')").click()
         page.wait_for_timeout(6000)
         if not abrir_colecao(page, COLECAO_SEM_TITULO):
-            debug(page, "erro_colecao_nao_criada")
             raise LoginFailedException("Coleção nova não apareceu na grade.")
 
     renomear_colecao(page, nome)
@@ -316,7 +293,6 @@ def enviar_imagens(page, arquivos):
         timeout=TIMEOUT_UPLOAD_MS,
     )
     page.wait_for_timeout(5000)
-    debug(page, "08_imagens_enviadas")
     print("Imagens enviadas.")
 
 
@@ -358,7 +334,6 @@ def conferir_ingredientes(page, esperado):
     )
     chips = page.locator("flow-ingredient-chip").count()
     if chips != esperado:
-        debug(page, "erro_selecao")
         raise LoginFailedException(f"Esperava {esperado} ingredientes, veio {chips}.")
     print(f"{chips} ingredientes no comando.")
 
@@ -399,10 +374,8 @@ def esperar_video(page, total_esperado):
             page.reload(wait_until="domcontentloaded")
             page.wait_for_timeout(12000)
     else:
-        debug(page, "erro_video")
         raise LoginFailedException("Vídeo não ficou pronto no tempo limite.")
     page.wait_for_timeout(6000)
-    debug(page, "11_video")
     print("Vídeo gerado.")
 
 
@@ -441,7 +414,6 @@ def configurar_geracao(page, *opcoes, modelo=None):
         escolher_modelo(page, modelo)
     page.keyboard.press("Escape")
     page.wait_for_timeout(1500)
-    debug(page, "09_configurado")
 
 
 def escrever_prompt(page, texto):
@@ -455,12 +427,10 @@ def escrever_prompt(page, texto):
 def gerar(page):
     botao = page.locator("button[aria-label='Iniciar geração']").first
     if botao.is_disabled():
-        debug(page, "erro_gerar_desabilitado")
         raise LoginFailedException("Botão de gerar continua desabilitado.")
     print("Iniciando a geração...")
     botao.click()
     page.wait_for_timeout(5000)
-    debug(page, "10_gerando")
 
 
 def gerar_imagem(page, pasta, arquivo, ignorar, total_final):
@@ -577,7 +547,6 @@ def main():
                     processar_produto(page, n, projeto_url)
                 except Exception as e:
                     print(f"\n!!! produto {n} falhou: {e}")
-                    debug(page, f"erro_produto_{n}")
                     falhas.append(n)
                     voltar_ao_projeto(page, projeto_url)
 
@@ -587,7 +556,6 @@ def main():
             print(f"\n!!! {e}")
         except Exception as e:
             print(f"\n!!! Erro inesperado: {e}")
-            debug(page, "erro")
         finally:
             context.close()
 
