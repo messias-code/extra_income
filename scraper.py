@@ -376,8 +376,7 @@ def fazer_login(page, login, password):
     # Se o formulario continua na tela, o login nao passou (senha errada,
     # captcha ou conta bloqueada). Melhor falhar aqui do que 3 telas adiante.
     if "login" in page.url and page.locator("#register_email").count() > 0:
-        page.screenshot(path="debug_login.png")
-        raise LoginFailedException(f"Login não completou para {login} (veja debug_login.png).")
+        raise LoginFailedException(f"Login não completou para {login}.")
 
     print("Login efetuado com sucesso!")
 
@@ -426,10 +425,7 @@ def run_scraper(login, password, faltam, ja_no_dia):
             print(f"\n!!! {e}")
         except Exception as e:
             print(f"\n!!! Erro inesperado na conta {login}: {e}")
-            try:
-                page.screenshot(path="debug_erro.png")
-            except Exception:
-                pass
+
         finally:
             context.close()
             browser.close()
