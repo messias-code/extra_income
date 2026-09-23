@@ -5,9 +5,6 @@ venv/
 __pycache__/
 *.py[cod]
 
-# screenshots de depuracao do scraper
-debug_login.png
-debug_erro.png
 
 # credenciais locais (GEMINI_API_KEY) - nunca versionar
 .env
@@ -15,5 +12,3 @@ debug_erro.png
 # perfil persistente do Chromium com a sessao do Google Flow
 .flow_profile/
 
-# screenshots de depuracao do flow_video
-debug_flow_*.png
