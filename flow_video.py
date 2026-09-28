@@ -433,10 +433,10 @@ def gerar(page):
     page.wait_for_timeout(5000)
 
 
-def gerar_imagem(page, pasta, arquivo, ignorar, total_final):
+def gerar_imagem(page, pasta, arquivo, ignorar, total_final, proporcao="9:16"):
     alvo = selecionar_imagens(page, ignorar=ignorar)
     escrever_prompt(page, ler_prompt(pasta, arquivo))
-    configurar_geracao(page, "Imagem", "9:16", "x1", modelo=MODELO_IMAGEM)
+    configurar_geracao(page, "Imagem", proporcao, "x1", modelo=MODELO_IMAGEM)
     conferir_ingredientes(page, alvo)
     gerar(page)
     esperar_geracao(page, total_final)
@@ -474,7 +474,8 @@ def processar_produto(page, n, projeto_url):
     if contar_imagens(page) >= base + 2:
         print("Capa já está na coleção — pulando.")
     else:
-        gerar_imagem(page, pasta, "prompt_capa.md", 1, base + 2)
+        # a capa e post de feed (4:5); o storyboard segue o video (9:16)
+        gerar_imagem(page, pasta, "prompt_capa.md", 1, base + 2, proporcao="4:5")
 
     # o tile conta mesmo sem o <video>: se uma execucao anterior morreu no meio da
     # renderizacao, gerar de novo aqui daria dois videos no mesmo produto

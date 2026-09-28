@@ -45,10 +45,11 @@ a prancha é o mapa da encenação, o prompt é a direção.
 - O produto é travado pelo **token** do bloco `Product Lock` (cor + forma + tipo + marca),
   repetido literalmente em todos os beats, na linha VISUAL e nos seis painéis do storyboard.
   É o que impede a cor e o nome da marca de mudarem no meio do clipe (R14).
-- A capa (`prompt_capa.md`) é a peça de divulgação: produto de um lado, chamada em
-  português do outro (`COMPRE JÁ`, `OFERTA IMPERDÍVEL`…) e uma descrição de até 6 palavras.
-  No máximo 3 linhas e 12 palavras, **sem preço, sem número e sem porcentagem**. O produto
-  é o mesmo das fotos reais; ângulo, cenário e composição mudam.
+- A capa (`prompt_capa.md`) é a arte de divulgação para Instagram, vertical **4:5**, com
+  cara de peça de marca real e nunca de panfleto ou template: título curto de marca, frase
+  de benefício e CTA discreto (3 linhas, até 13 palavras), **sem chamada apelativa, sem
+  preço, sem número e sem porcentagem**. O produto é o mesmo das fotos reais; ângulo,
+  cenário e composição mudam.
 - Nunca invente marca, material, número ou spec que não esteja nas imagens ou no nome do
   produto.
 - Cada comando só termina quando `python check_prompts.py check` retorna **0 erros**.

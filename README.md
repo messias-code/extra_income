@@ -143,8 +143,8 @@ Lê o `prompt_cena.md` de cada produto e escreve **o prompt que gera a prancha**
 **O que faz:**
 Escreve **o prompt da capa do produto** — a imagem que abre o post. Também não gera imagem.
 **Regras da Capa (`prompt_gen_buy.yaml`):**
-- **Produto de um lado** da vertical, inteiro e nítido; **texto em português do outro lado**, na área limpa.
-- Texto curto: chamada da lista fechada (`COMPRE JÁ`, `OFERTA IMPERDÍVEL`, `GARANTA O SEU`…) + descrição de até 6 palavras. No máximo 3 linhas e 12 palavras, cada uma escrita exata e soletrada com hifens.
+- **Arte de divulgação para Instagram, vertical 4:5**, com cara de peça de marca real (elegante, limpa, humana) e nunca de IA genérica, panfleto ou template. Produto protagonista, inteiro, nítido e assentado no cenário com sombra natural; texto na área limpa.
+- Texto em **exatamente 3 linhas**: título de marca (até 4 palavras, soletrado com hifens) + frase de benefício (até 6) + CTA discreto (até 3, ex.: `Confira no link`). Proibido chamada apelativa (`COMPRE JÁ`, `GARANTA O SEU`, `premium`, `exclusivo`…), selo, botão e ícone.
 - **Preço nunca**: sem "R$", sem número, sem porcentagem, sem selo de desconto.
 - Mesmo produto e mesmo rótulo do vídeo (`Subject` e `Label & Brand` copiados palavra por palavra do `prompt_cena.md`), mas **ângulo, enquadramento e cenário diferentes** dos do vídeo e da foto do anúncio.
 - Fundo branco de catálogo e colagem proibidos; texto nunca por cima do produto.

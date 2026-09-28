@@ -100,6 +100,7 @@ NEGATIVO_PROIBIDO_STORY = {"numbers", "numerals", "letters", "words", "labels",
 
 # --- prompt da capa (peca de divulgacao, com texto em pt-BR) ---------------- #
 SECOES_CAPA = [
+    "Art Direction:",
     "Subject:",
     "Label & Brand:",
     "Layout & Composition:",
@@ -119,14 +120,19 @@ NEGATIVE_CAPA_OBRIGATORIO = [
     "price tags", "currency symbols", "percentages", "discount badges",
     "misspelled portuguese words", "gibberish lettering", "extra words",
     "text on top of the product", "misspelled label", "faces", "collage",
-    "duplicated product", "catalogue white background",
+    "duplicated product", "catalogue white background", "flyer layout",
+    "ready-made template look", "round seals", "big buttons", "generic ai look",
+    "pasted-on product",
 ]
 NEGATIVO_PROIBIDO_CAPA = {"captions", "overlay text", "letters", "words", "typography",
                           "text", "labels"}
-# a chamada sai de uma lista fechada: frase inventada e frase que o modelo escreve errado
-CHAMADAS = ["COMPRE JÁ", "COMPRE AGORA", "OFERTA IMPERDÍVEL", "APROVEITE AGORA",
-            "GARANTA O SEU"]
-PALAVRAS_CAPA_MIN, PALAVRAS_CAPA_MAX = 300, 500
+# arte de marca real: titulo + beneficio + CTA discreto, nunca chamada de panfleto
+LIMITES_LINHAS_CAPA = [("titulo", 4), ("frase de beneficio", 6), ("CTA", 3)]
+PALAVRAS_TEXTO_CAPA_MAX = 13
+CHAMADAS_APELATIVAS = ["compre já", "compre ja", "compre agora", "imperdível", "imperdivel",
+                       "aproveite", "garanta o seu", "garanta a sua", "premium", "exclusivo",
+                       "exclusiva", "feito para durar", "última chance", "ultima chance", "!"]
+PALAVRAS_CAPA_MIN, PALAVRAS_CAPA_MAX = 400, 650
 
 
 # --------------------------------------------------------------------------- #
@@ -467,26 +473,28 @@ def validar_storyboard(texto):
 
 
 def validar_texto_da_peca(texto):
-    """As 3 linhas em portugues: pouco texto, escrito exato, e preco nenhum."""
+    """As 3 linhas em portugues: titulo, beneficio e CTA discreto, escritos exatos e
+    sem preco nem chamada apelativa."""
     erros = []
     copy = texto.split("Promo Copy", 1)[1].split("Text Style:", 1)[0] if "Promo Copy" in texto else ""
     linhas = re.findall(r'"([^"]+)"', copy)
     if not linhas:
         erros.append("bloco Promo Copy sem nenhuma linha entre aspas")
         return erros
-    if len(linhas) > 3:
-        erros.append(f"{len(linhas)} linhas de texto na peca: o limite e 3")
+    if len(linhas) != 3:
+        erros.append(f"{len(linhas)} linhas de texto na peca: precisa ser exatamente 3 "
+                     "(titulo, frase de beneficio, CTA)")
     palavras = sum(len(l.split()) for l in linhas)
-    if palavras > 12:
-        erros.append(f"{palavras} palavras na arte: o limite e 12 (gerador erra texto longo)")
-
-    chamada = linhas[0].strip()
-    if chamada not in CHAMADAS:
-        erros.append(f"chamada '{chamada}' fora da lista fechada: " + " | ".join(CHAMADAS))
-    if len(linhas) > 1 and linhas[1].strip().isupper() and linhas[1].strip() == chamada:
-        erros.append("a linha 2 repete a chamada da linha 1")
-    if len(linhas[-1].split()) > 6:
-        erros.append("a descricao curta passa de 6 palavras")
+    if palavras > PALAVRAS_TEXTO_CAPA_MAX:
+        erros.append(f"{palavras} palavras na arte: o limite e {PALAVRAS_TEXTO_CAPA_MAX} "
+                     "(gerador erra texto longo)")
+    for linha, (nome, limite) in zip(linhas, LIMITES_LINHAS_CAPA):
+        if len(linha.split()) > limite:
+            erros.append(f"{nome} '{linha}' passa de {limite} palavras")
+    for l in linhas:
+        for termo in CHAMADAS_APELATIVAS:
+            if termo in l.lower():
+                erros.append(f"chamada apelativa no texto da peca ('{termo}' em '{l}')")
 
     # preco nunca: nem no texto da arte, nem pedido em outro lugar do prompt
     corpo = texto.split("Negative Prompt:")[0]
@@ -500,7 +508,7 @@ def validar_texto_da_peca(texto):
         if termo in " ".join(linhas).lower():
             erros.append(f"o texto da peca fala de preco/desconto ('{termo}')")
     if "spelled" not in copy:
-        erros.append("a chamada nao esta soletrada com hifens: sem isso o modelo escreve errado")
+        erros.append("o titulo nao esta soletrado com hifens: sem isso o modelo escreve errado")
     return erros
 
 
@@ -515,7 +523,7 @@ def validar_capa(texto):
     if not f.startswith("Format:"):
         erros.append("primeira linha nao e a linha 'Format:'")
     else:
-        for exigido in ["single still photograph", "9:16", "promotional cover shot"]:
+        for exigido in ["single still photograph", "4:5", "promotional cover shot"]:
             if exigido not in f:
                 erros.append(f"linha Format sem '{exigido}'")
 
