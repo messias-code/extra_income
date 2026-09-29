@@ -491,6 +491,11 @@ def processar_produto(page, n, projeto_url):
     ser retomado sem regerar (e repagar) o que já ficou pronto."""
     pasta = produto_por_ordem(n)
     print(f"\n===== produto {n} = {pasta} =====")
+    faltando = [a for a in ("prompt_storyboard.md", "prompt_capa.md", "prompt_cena.md")
+                if not os.path.exists(os.path.join(pasta, "prompt_video", a))]
+    if faltando:
+        # sem prompt nao ha o que gerar: criar a colecao aqui so deixaria uma vazia
+        raise FileNotFoundError("sem " + ", ".join(faltando) + " (rode os comandos do Antigravity)")
     criar_colecao(page, f"produto {n}")
 
     arquivos = imagens_do_produto(pasta)
@@ -557,17 +562,28 @@ def abrir_navegador(playwright):
     )
 
 
+USO = """Uso:
+  python3 flow_video.py            so o dia mais recente
+  python3 flow_video.py tudo       todos os produtos, de todos os dias
+  python3 flow_video.py 7          so o produto 7
+  python3 flow_video.py 7 9        a faixa do produto 7 ao 9"""
+
+
 def main():
-    # 'python flow_video.py' faz so o dia mais recente; 'python flow_video.py 7'
-    # faz so o produto 7; 'python flow_video.py 7 9' faz a faixa (usado no atraso
-    # dos dias 18 e 19)
-    if len(sys.argv) > 1:
-        primeiro = int(sys.argv[1])
-        ultimo = int(sys.argv[2]) if len(sys.argv) > 2 else primeiro
-        print(f"Faixa manual: produto {primeiro} ao {ultimo}")
-    else:
+    args = sys.argv[1:]
+    if not args:
         dia, primeiro, ultimo = faixa_do_ultimo_dia()
         print(f"Dia mais recente: {dia} -> produto {primeiro} ao {ultimo}")
+    elif args == ["tudo"]:
+        primeiro, ultimo = 1, len(listar_produtos())
+        print(f"Todos os dias: produto {primeiro} ao {ultimo}")
+    elif len(args) <= 2 and all(a.isdigit() for a in args):
+        primeiro = int(args[0])
+        ultimo = int(args[-1])
+        print(f"Faixa manual: produto {primeiro} ao {ultimo}")
+    else:
+        print(USO)
+        return
 
     login = os.getenv("GOOGLE_LOGIN")
     password = os.getenv("GOOGLE_PASSWORD")

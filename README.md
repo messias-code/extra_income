@@ -8,7 +8,7 @@ O objetivo final é simples: no fim da rotina você tem, para cada produto, **as
 
 ## 🚀 O Fluxo de Trabalho (Ordem de Execução)
 
-A rotina é composta de quatro grandes passos, executados em sequência. E **dia nenhum fica sem prompt**: a fila é o histórico inteiro de `produtos/`, então produto de dia passado que ficou sem algum arquivo volta para a fila e é gerado de novo.
+A rotina é composta de seis passos, executados em sequência. E **dia nenhum fica sem prompt**: a fila é o histórico inteiro de `produtos/`, então produto de dia passado que ficou sem algum arquivo volta para a fila e é gerado de novo.
 
 ### 1. Extração dos Produtos
 **Comando no Terminal:**
@@ -171,6 +171,21 @@ Roda depois dos três comandos. Lê os três prompts de cada produto **como o mo
 5. **Português e texto:** ortografia e acento da capa letra por letra, soletrado igual ao título, limites de palavras, sem preço nem promessa.
 6. **Forma:** `check_prompts.py check --ultima` com 0 erros.
 **Resultado:** os prompts corrigidos no lugar + `prompt_video/revisao.md` (veredito, risco por beat, ajustes feitos e pendências que só você decide). A coluna `REV` do `status` mostra quem já foi revisado.
+
+### 6. Geração no Google Flow
+**Comando no Terminal:**
+```bash
+python3 flow_video.py            # só o dia mais recente (padrão do dia a dia)
+python3 flow_video.py tudo       # todos os produtos, de todos os dias
+python3 flow_video.py 7          # só o produto 7
+python3 flow_video.py 7 9        # a faixa do produto 7 ao 9
+```
+**O que faz:**
+Abre o Flow (headless, perfil `.flow_profile/`), entra no projeto "renda extra" e, para cada produto, cria a coleção `produto N`, sobe as fotos e gera, nesta ordem: **storyboard** (Nano Banana 2, 9:16) -> **capa** (3:4) -> **capa 2** (3:4, se existir o `prompt_capa_2.md`) -> **vídeo** (Veo 3.1 - Quality, 9:16, 720p, 8s, com a prancha como único ingrediente).
+- **Numeração global:** `N` é a posição do produto na fila inteira, em ordem de data: os 10 de `2026-09-18` são 1–10, os de `2026-09-19` são 11–20, e assim por diante. É o mesmo `N` do nome da coleção no Flow.
+- **Retomável:** se a coleção `produto N` já existe, ele entra nela e pula o que já foi gerado. Para **refazer** um produto do zero, renomeie ou apague a coleção antiga no Flow antes de rodar — senão ele vê as imagens antigas e pula.
+- Produto sem `prompt_cena.md`, `prompt_storyboard.md` ou `prompt_capa.md` é pulado e aparece em `Falhas` no fim, sem criar coleção vazia.
+- "Alta demanda" no Flow não cobra: o script espera 5 min e tenta de novo (até 8 vezes).
 
 ---
 
