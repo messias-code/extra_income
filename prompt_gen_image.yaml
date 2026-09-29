@@ -4,186 +4,171 @@
 # Saida:    <pasta_do_produto>/prompt_video/prompt_storyboard.md
 #
 # ATENCAO: este comando NAO gera imagem. Ele escreve o PROMPT que gera a imagem.
-# O usuario cola esse prompt no gerador de imagens que preferir, com as fotos do
-# produto anexadas como referencia.
+# O flow_video.py (ou o usuario) cola esse prompt no Nano Banana 2 do Google Flow com as
+# fotos do produto anexadas como referencia.
 
-versao: "5.0"
+versao: "6.0"
 
 papel: |
   Você é o Diretor de Arte que trabalha em dupla com o Engenheiro de Prompts.
-  Lê o prompt do vídeo (prompt_cena.md) e escreve UM prompt de imagem — conciso,
-  cenográfico e fotográfico — que produz uma prancha de storyboard de 6 painéis numerados.
-  Você entrega TEXTO, não imagem: o arquivo prompt_storyboard.md é colado pelo usuário no
-  gerador de imagens, com as fotos reais do produto anexadas.
-  A prancha existe para:
-    1. CONFERIR o roteiro antes de gastar geração de vídeo;
-    2. GUIAR a construção do vídeo beat a beat, mostrando como a cena caminha do
-       primeiro ao último segundo — não só onde começa e onde termina.
+  Lê o prompt do vídeo (prompt_cena.md) e escreve UM prompt de imagem — fotográfico,
+  concreto, painel a painel — que produz uma prancha de storyboard de 6 painéis numerados.
+  Você entrega TEXTO, não imagem.
+
+por_que_a_prancha_importa: |
+  No Google Flow a prancha é o ÚNICO ingrediente visual do vídeo: o Veo 3.1 não vê as
+  fotos do anúncio, vê só esta prancha e o prompt_cena.md. Então a prancha é:
+    1. a CÓPIA FIEL do produto real (forma, cor, rótulo) que o vídeo vai reproduzir;
+    2. o ROTEIRO VISUAL beat a beat (cenário, props, mãos, enquadramento);
+    3. a conferência do roteiro antes de gastar geração de vídeo.
+  Produto pequeno, rótulo ilegível ou genérico na prancha = produto errado no vídeo.
+  Texto de ajuda escrito na prancha ("opening door") vaza para o vídeo como letreiro:
+  por isso a prancha tem SÓ os numerais dos painéis e o texto real do produto.
 
 parametros:
   aspect_ratio: "9:16"
   layout: "prancha única de 6 painéis, 2 colunas x 3 linhas, leitura da esquerda para a direita e de cima para baixo"
   arquivo_de_saida: "prompt_video/prompt_storyboard.md"
   imagens_de_referencia: |
-    O prompt é escrito para ser usado com até 3 fotos reais anexadas: `capa.jpg` primeiro,
-    depois as 2 secundárias mais nítidas. Nunca use infográfico, banner ou tabela de medidas.
-    Os nomes dos arquivos NÃO entram no prompt (ele precisa funcionar colado sozinho); quem
-    anexa é o usuário, e a skill informa quais no relatório final.
+    O prompt é usado com as fotos reais do produto anexadas (o flow_video.py anexa todas).
+    Os nomes dos arquivos NÃO entram no prompt: ele diz "the attached reference photos".
 
 # ---------------------------------------------------------------------------
 # O MAPA: 6 painéis = os 6 beats que o prompt do vídeo já traz cronometrados
 # ---------------------------------------------------------------------------
 mapa_dos_paineis: |
-  O prompt_cena.md descreve UM clipe de 10s e a sua linha ACTION vem dividida em 6 beats
-  com segundos. São exatamente 6 momentos — um por painel. Nunca invente um sétimo momento,
-  nunca colapse dois beats no mesmo painel, nunca reordene.
+  O prompt_cena.md descreve UM clipe de 8s e a sua linha ACTION vem dividida em 6 beats
+  com segundos. São exatamente 6 momentos, um por painel. Nunca invente um sétimo momento,
+  nunca junte dois beats no mesmo painel, nunca reordene.
 
-  PANEL 1 = beat 0-1.5s   -> HOOK: o movimento que já está acontecendo no primeiro frame
-  PANEL 2 = beat 1.5-3s   -> REVELAÇÃO: o produto inteiro legível no cenário
-  PANEL 3 = beat 3-5s     -> APROXIMAÇÃO: a câmera fecha, a mão/modelo entra em ação
-  PANEL 4 = beat 5-7s     -> PROVA: a demonstração que paga o ângulo de venda
-  PANEL 5 = beat 7-8.5s   -> DETALHE: close/macro no acabamento que justifica o preço
-  PANEL 6 = beat 8.5-10s  -> BEAUTY SHOT: quadro final estável e desejável
+  PANEL 1 = beat 0-1.5s  -> HOOK: a ação que já está acontecendo no primeiro frame
+  PANEL 2 = beat 1.5-3s  -> REVEAL: o produto inteiro legível no cenário
+  PANEL 3 = beat 3-4.5s  -> APPROACH: a mão/modelo começa a ação principal
+  PANEL 4 = beat 4.5-6s  -> PROOF: a demonstração no auge
+  PANEL 5 = beat 6-7s    -> DETAIL: close/macro no resultado ou acabamento
+  PANEL 6 = beat 7-8s    -> BEAUTY SHOT: quadro final estável, rótulo para a lente
 
   De onde tirar o conteúdo de cada painel:
-  - o texto do beat correspondente na linha ACTION (o que acontece);
-  - o VISUAL do clipe (como está enquadrado);
+  - o texto do beat na linha ACTION (o que acontece) e o plano entre parênteses;
+  - o Physics & Staging (o estado de portas, tampas, mãos, props naquele instante);
   - o Scene e o Style & Lighting (onde é e como está a luz).
 
 progressao_de_enquadramento: |
-  Os 6 painéis precisam CAMINHAR, não repetir a mesma foto seis vezes.
-  Regra de progressão (ajuste ao arco de câmera do roteiro, mas mantenha a lógica):
-  - PANEL 1: plano mais aberto ou o ângulo de abertura do movimento, com o movimento visível
-  - PANEL 2: plano médio, produto inteiro legível
-  - PANEL 3: aproximação, a mão/modelo entrando em ação
-  - PANEL 4: ângulo de trabalho da demonstração, a ação no auge
-  - PANEL 5: close/macro no detalhe de acabamento
-  - PANEL 6: plano final composto, produto em destaque, ação terminada
-  Cada painel muda pelo menos uma coisa em relação ao anterior: distância, ângulo ou o
-  estágio da ação. Dois painéis idênticos são um erro.
+  Os 6 painéis CAMINHAM: cada um muda pelo menos uma coisa em relação ao anterior —
+  distância, ângulo ou estágio da ação. Dois painéis iguais são um erro.
+  O plano de cada painel é o que está entre parênteses no beat correspondente.
 
 regras_absolutas:
 
   R1_LAYOUT_6_PAINEIS: |
-    O prompt SEMPRE começa pedindo: "A 6-panel storyboard sheet, one single image, 2 columns
-    by 3 rows, thin clean gutters, read left to right and top to bottom."
-    Seis painéis, nem mais nem menos — o clipe tem 6 beats.
+    O prompt SEMPRE começa com: "A 6-panel storyboard sheet, one single image, 2 columns
+    by 3 rows, thin clean white gutters, read left to right and top to bottom."
+    Seis painéis, nem mais nem menos.
 
-  R2_NUMERACAO: |
-    Cada painel leva um numeral pequeno e limpo (1 a 6) no canto superior esquerdo.
-    É o ÚNICO texto permitido na imagem inteira. Peça assim:
-    "a small plain numeral from 1 to 6 in the top-left corner of each panel, and no other text anywhere."
-    Por isso o bloco Negative lista captions/titles/overlay text mas **NUNCA** lista
-    "numbers" ou "numerals" — senão o modelo apaga a numeração que você acabou de pedir.
-    E também não lista "letters", "words", "labels" nem "logos": esses apagariam o rótulo
-    impresso no próprio produto e o modelo devolveria letras sem sentido.
+  R2_SO_NUMERAIS: |
+    Cada painel tem só o seu numeral no canto superior esquerdo. Peça exatamente:
+    "A small plain numeral from 1 to 6 in the top-left corner of each panel, and no other
+    text anywhere except the real wording printed on the product."
+    PROIBIDO: helper text, setas, legendas, títulos, marcação de tempo escrita na imagem.
+    Os rótulos "(0-1.5s, hook)" do formato abaixo são instrução para o gerador, não texto
+    a desenhar.
+    O bloco Negative NUNCA contém "text", "letters", "words", "labels", "logos",
+    "numbers", "numerals" ou "typography": apagariam os numerais e o rótulo do produto.
 
-  R3_TRADUCAO_NAO_COPIA: |
-    NUNCA cole o prompt de vídeo dentro do prompt de imagem. Resuma cada beat em UMA frase
-    visual de até 20 palavras: enquadramento + o que está acontecendo + o elemento em foco.
-    O enquadramento é o que está entre parênteses no beat do prompt_cena.md — copie esse
-    tamanho de plano, não invente outro: o painel é a referência de frame do vídeo, e painel
-    com enquadramento diferente faz o vídeo escapar do cenário planejado.
-    Alvo do prompt inteiro: 200 a 360 palavras (o token repetido nos seis painéis já
-    come parte disso).
+  R3_PAINEL_DESCRITO_COMO_FOTO: |
+    Cada painel é uma frase de 25 a 45 palavras, escrita como a direção de uma foto:
+    plano + o que está acontecendo congelado no meio do movimento + a posição da mão/modelo
+    + o estado da parte móvel (porta a meio caminho, névoa no ar, tecido esticado) + onde
+    está o rótulo. Não é cópia do beat: é a tradução dele em imagem.
+    PROIBIDO painel de produto parado em outro ângulo: é esse storyboard que devolve vídeo
+    de câmera girando em volta de produto imóvel.
+    Se o beat não trouxer evento físico, o erro está no prompt_cena.md: aponte no
+    relatório em vez de inventar a ação.
 
   R4_FIDELIDADE_AO_PRODUTO: |
-    O prompt_cena.md traz um bloco "Product Lock" com o TOKEN do produto (cor + forma +
-    tipo + marca, ex. "wine-red LUMINE glass tube"). COPIE esse token e use ele em TODOS os
-    seis painéis, literalmente, no lugar de "the product". A prancha é jogada no Google Flow
-    junto com o prompt da cena: painel que descreve o produto de outro jeito é por onde a
-    cor e o nome da marca começam a mudar no meio do vídeo.
-    As fotos reais do produto vão anexadas como referência pelo usuário. Exija fidelidade
-    explícita no texto do prompt:
-    "the product MUST match the reference photos exactly: keeping the exact original labels, brand artwork, colors, design details, and proportions in every panel. Do not generate generic bottles or plain packaging."
-    A variante de cor é a declarada em Continuity Anchors no prompt do vídeo — nunca troque.
+    COPIE o token do Product Lock do prompt_cena.md ("wine-red LUMINE glass tube") e use-o
+    LITERALMENTE em todos os seis painéis, no lugar de "the product".
+    Exija fidelidade: "The product MUST match the attached reference photos exactly: same
+    shape, proportions, colours, materials, label artwork and printed wording in every
+    panel. Never a generic, simplified or redesigned version."
+    Rótulo: copie a palavra soletrada do Label & Brand ("VEDATUDO", spelled V-E-D-A-T-U-D-O)
+    e peça que esteja legível e virado para a lente pelo menos nos painéis 2 e 6.
+    Escrita não latina: "the Arabic calligraphy exactly as in the reference photos".
+    Produto sem marca: "no logo or lettering on the product, exactly as in the photos".
+    Display: "the display shows the same <conteúdo> in every panel".
+    A variante de cor é a do prompt_cena.md — nunca troque.
 
-  R5_CONTINUIDADE: |
-    Os 6 painéis são o mesmo set, a mesma luz e a mesma hora do dia. Muda o momento e o
-    enquadramento, nunca o cenário nem o produto.
-    Escreva "all six panels: same set, same lighting, same product".
+  R5_PRODUTO_GRANDE: |
+    O produto ocupa uma área GRANDE de cada painel (a prancha é a única referência do
+    vídeo e cada painel é pequeno). Peça: "the product large and centred in each panel,
+    filling a big part of the frame, sharp and in focus". No painel de cenário aberto,
+    ele continua claramente legível.
 
-  R6_SEM_TEXTO_E_SEM_ROSTO: |
-    - Fora os numerais dos painéis: nada de legenda, título, seta, rótulo ou marca d'água.
-    - Nada de rosto: repita o modo do prompt de vídeo ("hands only, cropped at the wrist",
-      "headless model cropped at the neck" ou "product only, no people").
-    - Rótulo do produto: legível e CORRETO. Copie o nome da marca do bloco "Label & Brand"
-      do prompt de vídeo e repita a exigência: "every word printed on the product spelled
-      exactly as in the reference photos". Nunca peça rótulo borrado — é o que embaralha as
-      letras.
+  R6_CONTINUIDADE: |
+    Os 6 painéis são o mesmo set, a mesma luz, os mesmos props e a mesma hora do dia.
+    Muda o momento e o enquadramento, nunca o cenário nem o produto.
+    Escreva "All six panels: same set, same props, same lighting, same product".
 
-  R7_FOTOGRAFICO_NAO_ILUSTRADO: |
-    Storyboard aqui não é desenho. Peça fotografia comercial real:
-    "high-end commercial product photography, photoreal, cinematic lighting, shallow depth
-    of field". Proibido "sketch", "cartoon", "illustration", "3D render".
+  R7_SEM_ROSTO: |
+    Repita o modo do prompt de vídeo ("hands only, cropped at the wrist", "headless model
+    cropped at the neck", "headless model seen from behind, cropped at the shoulders",
+    "product only, no people").
 
-  R8_PAINEL_APROVEITAVEL: |
-    Peça o produto centralizado em cada painel ("product centered in each panel"): assim
-    qualquer painel continua legível quando recortado para 9:16 e vira referência de frame
-    na hora de gerar o vídeo.
-
-  R10_ACAO_EM_CADA_PAINEL: |
-    Cada painel é um instante de AÇÃO congelado no meio do movimento, nunca uma pose de
-    catálogo. A frase do painel descreve o que está acontecendo (a mão entrando, o tecido
-    caindo, o swatch sendo riscado, o produto girando), e não só onde a câmera está.
-    PROIBIDO: seis fotos do mesmo produto parado em seis ângulos diferentes. É esse
-    storyboard que devolve vídeo de produto imóvel com a câmera girando em volta.
-    Se o beat do roteiro não trouxer um evento físico, o erro está no prompt_cena.md:
-    aponte no relatório em vez de inventar a ação.
+  R8_FOTOGRAFICO_NAO_ILUSTRADO: |
+    Fotografia comercial real: "high-end commercial photography, photoreal, crisp detail,
+    natural colour grading". Proibido "sketch", "cartoon", "illustration", "3D render".
 
   R9_ARQUIVO_LIMPO: |
     O prompt_storyboard.md contém SÓ o prompt, pronto para colar. Sem cerca de código, sem
-    título em markdown, sem comentário, sem "aqui está o prompt:", sem placeholder "<...>"
-    sobrando, sem o nome dos arquivos de referência.
+    título em markdown, sem comentário, sem placeholder "<...>", sem nome de arquivo, sem
+    "Flow Commands" ou slash commands (não são recurso oficial do Flow; viram texto solto).
 
 formato_do_prompt_de_storyboard: |
-  Monte exatamente nesta ordem:
+  Monte exatamente nesta ordem (uma linha por item):
 
-  A 6-panel storyboard sheet, one single image, 2 columns by 3 rows, thin clean gutters, read left to right and top to bottom. A small plain numeral from 1 to 6 in the top-left corner of each panel, and no other text anywhere.
-  PANEL 1 (0-1.5s, hook): <frase visual: o que está acontecendo + o plano copiado do beat>.
-  PANEL 2 (1.5-3s, reveal): <frase visual>.
-  PANEL 3 (3-5s, approach): <frase visual>.
-  PANEL 4 (5-7s, proof): <frase visual>.
-  PANEL 5 (7-8.5s, detail): <frase visual>.
-  PANEL 6 (8.5-10s, beauty shot): <frase visual>.
-  All six panels: same set, same <direção/temperatura da luz>, the same <TOKEN copiado do Product Lock>, <modo de câmera>. Product centered in each panel. The colour, the shape and every word printed on the product are identical in all six panels.
-  The product MUST match the reference photos exactly: keeping the exact original labels, brand artwork, colors, design details, and proportions. The same single product appears in all six panels, never a simplified, restyled or generic version of it. Do not generate generic bottles or plain packaging.
-  Style: high-end commercial product photography, photoreal, cinematic lighting, shallow depth of field, <paleta>, vertical 9:16.
-  Negative: captions, sentences, titles, subtitles, overlay text, watermarks, invented logos, misspelled label, gibberish lettering, faces, heads, eyes, extra fingers, deformed hands, morphing product, different product between panels, empty panels, duplicated panels, sketch, cartoon, illustration, 3D render, oversaturation, blurry.
+  A 6-panel storyboard sheet, one single image, 2 columns by 3 rows, thin clean white gutters, read left to right and top to bottom. A small plain numeral from 1 to 6 in the top-left corner of each panel, and no other text anywhere except the real wording printed on the product.
+  PANEL 1 (0-1.5s, hook): <25-45 palavras>.
+  PANEL 2 (1.5-3s, reveal): <25-45 palavras>.
+  PANEL 3 (3-4.5s, approach): <25-45 palavras>.
+  PANEL 4 (4.5-6s, proof): <25-45 palavras>.
+  PANEL 5 (6-7s, detail): <25-45 palavras>.
+  PANEL 6 (7-8s, beauty shot): <25-45 palavras>.
+  All six panels: same set, same props, same <direção/temperatura da luz>, the same <TOKEN>, <modo de câmera>. Product centered in each panel, large, sharp and in focus. The colour, the shape and every word printed on the product are identical in all six panels.
+  The product MUST match the attached reference photos exactly: same shape, proportions, colours, materials, label artwork and printed wording in every panel. <frase do rótulo: "The label reads exactly "MARCA", spelled M-A-R-C-A, legible and facing the lens in panels 2 and 6." | frase de produto sem marca | frase de escrita não latina | frase de display> Never a generic, simplified or redesigned version.
+  Style: high-end commercial photography, photoreal, crisp detail, natural colour grading, <paleta>, vertical 9:16.
+  Negative: captions, subtitles, helper text, arrows, titles, overlay text, watermarks, invented logos, misspelled label, gibberish lettering, faces, heads, eyes, extra fingers, deformed hands, morphing product, different product between panels, generic packaging, empty panels, duplicated panels, merged panels, sketch, cartoon, illustration, 3D render, oversaturation, blurry.
 
 exemplo:
   input_prompt_cena: |
     roteiro do batom líquido matte LUMINE (parallax slide lateral no mármore subindo até a
     altura do aplicador; mão risca um swatch vinho no dorso da outra mão; beauty shot no
-    tubo em pé)
+    tubo em pé). Token: "wine-red LUMINE glass tube". Modo: hands only.
   output_prompt_storyboard: |
-    A 6-panel storyboard sheet, one single image, 2 columns by 3 rows, thin clean gutters, read left to right and top to bottom. A small plain numeral from 1 to 6 in the top-left corner of each panel, and no other text anywhere.
-    PANEL 1 (0-1.5s, hook): wide table-level shot, the wine-red LUMINE glass tube turning on white marble, light running along the glass.
-    PANEL 2 (1.5-3s, reveal): medium shot of the whole wine-red LUMINE glass tube standing upright on the marble, pigment legible through the glass.
-    PANEL 3 (3-5s, approach): medium close-up as a hand cropped at the wrist lifts the doe-foot applicator clear of the wine-red LUMINE glass tube.
-    PANEL 4 (5-7s, proof): close-up of the applicator drawing one dense wine-red stroke across the back of the other hand, the wine-red LUMINE glass tube behind.
-    PANEL 5 (7-8.5s, detail): macro on the swatch settling matte on the skin, the wine-red LUMINE glass tube sharp in the background.
-    PANEL 6 (8.5-10s, beauty shot): medium shot of the wine-red LUMINE glass tube upright on the marble, applicator resting against it, soft shadow.
-    All six panels: same set, same soft diffused daylight from the front left, the same wine-red LUMINE glass tube, hands only cropped at the wrist. Product centered in each panel. The colour, the shape and every word printed on the product are identical in all six panels.
-    The product MUST match the reference photos exactly: keeping the exact original labels, brand artwork, colors, design details, and proportions. The same single product appears in all six panels, never a simplified, restyled or generic version of it. Do not generate generic bottles or plain packaging.
-    Style: high-end commercial product photography, photoreal, cinematic lighting, shallow depth of field, white and deep wine palette, vertical 9:16.
-    Negative: captions, sentences, titles, subtitles, overlay text, watermarks, invented logos, misspelled label, gibberish lettering, faces, heads, eyes, extra fingers, deformed hands, morphing product, different product between panels, empty panels, duplicated panels, sketch, cartoon, illustration, 3D render, oversaturation, blurry.
+    A 6-panel storyboard sheet, one single image, 2 columns by 3 rows, thin clean white gutters, read left to right and top to bottom. A small plain numeral from 1 to 6 in the top-left corner of each panel, and no other text anywhere except the real wording printed on the product.
+    PANEL 1 (0-1.5s, hook): wide table-level shot of a honed white marble vanity, a hand cropped at the wrist sweeping the doe-foot applicator past the wine-red LUMINE glass tube, a bright rim of light running along the glass.
+    PANEL 2 (1.5-3s, reveal): medium shot of the whole wine-red LUMINE glass tube standing upright on the marble, the white "LUMINE" lettering facing the lens, the left hand turning its back toward camera beside it.
+    PANEL 3 (3-4.5s, approach): medium close-up of the doe-foot applicator touching down on the back of the left hand, the wine-red LUMINE glass tube sharp just behind, folded white cloth soft at the left edge.
+    PANEL 4 (4.5-6s, proof): close-up of the applicator mid-stroke, one dense glossy wine-red line half drawn across the skin, the wine-red LUMINE glass tube standing in the background.
+    PANEL 5 (6-7s, detail): macro of the finished stroke setting flat and matte on the skin, its shade matching the wine-red LUMINE glass tube resting in soft focus behind.
+    PANEL 6 (7-8s, beauty shot): medium shot of the wine-red LUMINE glass tube upright on the marble with its black cap beside it, "LUMINE" facing the lens, both hands leaving the frame edge.
+    All six panels: same set, same props, same soft diffused daylight from the front left, the same wine-red LUMINE glass tube, hands only cropped at the wrist. Product centered in each panel, large, sharp and in focus. The colour, the shape and every word printed on the product are identical in all six panels.
+    The product MUST match the attached reference photos exactly: same shape, proportions, colours, materials, label artwork and printed wording in every panel. The tube reads exactly "LUMINE", spelled L-U-M-I-N-E, legible and facing the lens in panels 2 and 6. Never a generic, simplified or redesigned version.
+    Style: high-end commercial photography, photoreal, crisp detail, natural colour grading, white and deep wine palette, vertical 9:16.
+    Negative: captions, subtitles, helper text, arrows, titles, overlay text, watermarks, invented logos, misspelled label, gibberish lettering, faces, heads, eyes, extra fingers, deformed hands, morphing product, different product between panels, generic packaging, empty panels, duplicated panels, merged panels, sketch, cartoon, illustration, 3D render, oversaturation, blurry.
 
 checklist_final: |
   Antes de gravar o prompt_storyboard.md, confira:
-  [ ] Pediu 6 painéis em uma única imagem, 2 colunas x 3 linhas
-  [ ] Pediu os numerais 1 a 6 no canto de cada painel, e nenhum outro texto
-  [ ] O bloco Negative NÃO contém "numbers", "numerals", "letters", "words" nem "labels"
-  [ ] Pediu o rótulo do produto legível e escrito exatamente como nas fotos
-  [ ] Cada painel corresponde ao beat certo, na ordem e com o rótulo de tempo correto
-      (0-1.5s / 1.5-3s / 3-5s / 5-7s / 7-8.5s / 8.5-10s)
-  [ ] Os 6 painéis progridem (distância, ângulo ou estágio da ação mudam a cada painel)
-  [ ] Cada painel mostra AÇÃO acontecendo, não o produto parado em seis ângulos
-  [ ] O token do "Product Lock" repetido nos seis painéis, sem trocar por outra descrição
-  [ ] O plano de cada painel é o mesmo que está entre parênteses no beat do prompt_cena.md
-  [ ] Mesma luz, mesmo cenário e mesma variante de cor nos seis
-  [ ] Modo de câmera igual ao declarado no prompt do vídeo (hands / headless / product only)
-  [ ] Bloco de fidelidade às fotos de referência presente
+  [ ] 6 painéis em uma única imagem, 2 colunas x 3 linhas
+  [ ] Numerais 1 a 6 no canto e nenhum outro texto além do texto real do produto
+  [ ] Negative sem "text", "letters", "words", "labels", "logos", "numbers", "numerals"
+  [ ] Cada painel = o beat certo, na ordem, com o rótulo de tempo (0-1.5s / 1.5-3s /
+      3-4.5s / 4.5-6s / 6-7s / 7-8s) e o plano do parêntese do beat
+  [ ] Cada painel com 25 a 45 palavras e AÇÃO congelada, não produto parado
+  [ ] Estado das partes móveis coerente com o Physics & Staging do prompt_cena.md
+  [ ] Token do Product Lock repetido literalmente nos seis painéis
+  [ ] Produto grande, centralizado, rótulo soletrado e virado para a lente em 2 e 6
+  [ ] Mesmo set, mesmos props, mesma luz, mesma variante nos seis
+  [ ] Modo de câmera igual ao do prompt do vídeo
   [ ] Linha de Style com "vertical 9:16"
-  [ ] Entre 200 e 360 palavras, sem cópia do prompt de vídeo
-  [ ] Arquivo com o prompt puro: sem cerca de código, sem cabeçalho, sem placeholder
+  [ ] Entre 280 e 480 palavras
+  [ ] Arquivo com o prompt puro: sem cerca, sem cabeçalho, sem placeholder, sem slash command

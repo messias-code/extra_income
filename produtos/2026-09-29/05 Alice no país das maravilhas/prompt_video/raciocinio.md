@@ -1,0 +1,9 @@
+GROUNDING: livro brochura com capa brilhante: fundo roxo em losangos (arlequim) emoldurado por rosas vermelhas e brancas e folhas verdes; faixa de fita vermelha no topo com "LEWIS CARROLL"; moldura oval dourada com espiral vermelha, branca e roxa, silhueta preta de menina caindo e uma xícara; título "ALICE NO PAÍS DAS MARAVILHAS" em letra preta de conto de fadas na parte branca do oval; relógio dourado no canto superior esquerdo, chave dourada no inferior direito; assinatura da editora em script branco no canto inferior direito; lombada roxa. Só três fotos, todas da capa: miolo e contracapa não aparecem, então as páginas ficam como textura cremosa e ilegível, e a contracapa nunca é mostrada.
+NOME LIMPO: illustrated paperback edition of Alice in Wonderland.
+CATEGORIA + CENÁRIO: livro -> mesa de chá encantada: toalha de veludo verde-escuro, xícara de porcelana desfocada em primeiro plano, pétalas de rosa, chave antiga de latão; luz de abajur quente. Os props ecoam a arte da capa.
+MÉTRICAS: livro barato de clássico, compra por impulso e presente -> vender a capa como objeto bonito e o ritual de abrir um clássico.
+ÂNGULO DE VENDA: um clássico com capa que dá vontade de guardar e de presentear.
+AÇÃO E RISCO: a mão pousa o livro, levanta a capa até meia abertura (páginas creme, texto ilegível) e a solta, e ela cai fechada de novo (N2, livro abrindo). Nunca folhear, nunca página virando sozinha.
+ARCO DE CÂMERA: 5 (rack focus reveal da xícara desfocada para o livro nítido -> push-in na abertura).
+CONFORMIDADE: hands only, cortada no pulso, só a mão direita; 1 clipe de 8s com 6 beats; mudo; zero overlay; capa travada.
+MARCA NO RÓTULO: "LEWIS CARROLL" (L-E-W-I-S C-A-R-R-O-L-L) e "ALICE NO PAÍS DAS MARAVILHAS" (A-L-I-C-E N-O P-A-Í-S D-A-S M-A-R-A-V-I-L-H-A-S), soletrados. A assinatura da editora é descrita e não transcrita, porque a grafia em script na foto é incerta.

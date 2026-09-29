@@ -1,0 +1,11 @@
+A 6-panel storyboard sheet, one single image, 2 columns by 3 rows, thin clean white gutters, read left to right and top to bottom. A small plain numeral from 1 to 6 in the top-left corner of each panel, and no other text anywhere except the real wording printed on the product.
+PANEL 1 (0-1.5s, hook): wide shot in a dressing room with a blush plaster wall, a headless model cropped at the neck turning toward the lens in the black perforated waist cincher over a nude seamless base layer.
+PANEL 2 (1.5-3s, reveal): medium shot, the whole black perforated waist cincher facing the lens, the three hook columns and the white monogram patch sharp.
+PANEL 3 (3-4.5s, approach): medium close-up, both hands smoothing the front of the black perforated waist cincher from top to bottom.
+PANEL 4 (4.5-6s, proof): medium close-up in side profile, the black perforated waist cincher drawing a clean waistline against warm window light.
+PANEL 5 (6-7s, detail): macro of the hook columns and the perforated mesh of the black perforated waist cincher.
+PANEL 6 (7-8s, beauty shot): medium shot in three-quarter view, hands relaxed at the sides, the black perforated waist cincher sharp, the monogram patch toward the lens.
+All six panels: same set, same props, same warm window light from the left, the same black perforated waist cincher, headless model, cropped at the neck. Product centered in each panel, large, sharp and in focus. The colour, the shape and every word printed on the product are identical in all six panels.
+The product MUST match the attached reference photos exactly: same shape, proportions, colours, materials, label artwork and printed wording in every panel. The white script monogram on the patch stays exactly as printed and the hooks stay closed in every panel. Never a generic, simplified or redesigned version.
+Style: high-end commercial photography, photoreal, crisp detail, natural colour grading, black, nude and blush palette, vertical 9:16.
+Negative: captions, subtitles, helper text, arrows, titles, overlay text, watermarks, invented logos, misspelled label, gibberish lettering, faces, heads, eyes, extra fingers, deformed hands, morphing product, different product between panels, generic packaging, empty panels, duplicated panels, merged panels, sketch, cartoon, illustration, 3D render, oversaturation, blurry.

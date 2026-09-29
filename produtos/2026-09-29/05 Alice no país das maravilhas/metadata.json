@@ -1,0 +1,31 @@
+{
+  "titulo_bruto": "Alice no país das maravilhas",
+  "titulo_pasta": "05 Alice no país das maravilhas",
+  "fonte": "Comissao acima de 30",
+  "data": "2026-09-29",
+  "posicao_na_fonte": 10,
+  "url_produto": "https://www.kalodata.com/product/detail?id=1733001148035663634&language=en-US&currency=BRL&region=BR&dateRange=%5B%222026-08-29%22%2C%222026-09-27%22%5D&cateValue=%5B%5D",
+  "metricas": {
+    "coluna_1": "10",
+    "Product Info": "Alice no país das maravilhas R$13.98",
+    "Revenue": "R$23.27k",
+    "Revenue Growth Rate": "-18%",
+    "Item Sold": "1.74k",
+    "Product Rating": "4.8",
+    "Avg. Unit Price": "R$13.41",
+    "Commission Rate": "31%",
+    "Creator Count": "116",
+    "Launch Date": "12/12/2025",
+    "Creator Conversion Rate": "33.62%",
+    "Live Revenue": "R$3.02k",
+    "Video Revenue": "R$20.25k",
+    "Product Card Revenue": "R$0.00",
+    "Action": ""
+  },
+  "imagens": [
+    "capa.jpg",
+    "imagem_1.jpg",
+    "imagem_2.jpg"
+  ],
+  "extraido_em": "2026-09-29 08:09:56"
+}

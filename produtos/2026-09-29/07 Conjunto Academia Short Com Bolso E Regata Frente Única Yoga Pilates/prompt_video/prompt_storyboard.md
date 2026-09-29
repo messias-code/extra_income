@@ -1,0 +1,11 @@
+A 6-panel storyboard sheet, one single image, 2 columns by 3 rows, thin clean white gutters, read left to right and top to bottom. A small plain numeral from 1 to 6 in the top-left corner of each panel, and no other text anywhere except the real wording printed on the product.
+PANEL 1 (0-1.5s, hook): wide shot in a bright pilates studio, a leafy plant blurred in the foreground, a headless model cropped at the neck rising from a squat in the pink halter workout set, a dark phone in the right hand.
+PANEL 2 (1.5-3s, reveal): medium shot, the model standing tall, the whole pink halter workout set visible from the halter straps to mid-thigh.
+PANEL 3 (3-4.5s, approach): medium close-up, the right hand sliding the dark phone, screen off, into the side pocket of the pink halter workout set shorts.
+PANEL 4 (4.5-6s, proof): close-up at hip height, the model in a deep squat, the pink halter workout set smooth and opaque, the phone snug in the thigh pocket.
+PANEL 5 (6-7s, detail): macro of the pocket edge and the smooth matte knit of the pink halter workout set holding the phone.
+PANEL 6 (7-8s, beauty shot): medium shot in three-quarter view from behind, the open back of the pink halter workout set clear and uncovered, halter straps in soft window light.
+All six panels: same set, same props, same soft daylight from the right, the same pink halter workout set, headless model, cropped at the neck. Product centered in each panel, large, sharp and in focus. The colour, the shape and every word printed on the product are identical in all six panels.
+The product MUST match the attached reference photos exactly: same shape, proportions, colours, materials, label artwork and printed wording in every panel. The set is plain pastel pink with no logo, print or tag in every panel. Never a generic, simplified or redesigned version.
+Style: high-end commercial photography, photoreal, crisp detail, natural colour grading, pastel pink, light wood and white palette, vertical 9:16.
+Negative: captions, subtitles, helper text, arrows, titles, overlay text, watermarks, invented logos, misspelled label, gibberish lettering, faces, heads, eyes, extra fingers, deformed hands, morphing product, different product between panels, generic packaging, empty panels, duplicated panels, merged panels, sketch, cartoon, illustration, 3D render, oversaturation, blurry.

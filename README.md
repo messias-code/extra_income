@@ -1,8 +1,8 @@
 # Extra Income - Automação de Vídeos UGC (TikTok Shop)
 
-Este projeto automatiza a pesquisa de produtos em alta no TikTok Shop e a roteirização de vídeos curtos de vendas (UGC) utilizando a inteligência artificial do **Antigravity (AGY)** para criar prompts perfeitos para geradores de vídeo de última geração (como Omni 1.1 Flash / Veo 3.1).
+Este projeto automatiza a pesquisa de produtos em alta no TikTok Shop e a roteirização de vídeos curtos de vendas (UGC) utilizando a inteligência artificial do **Antigravity (AGY)** para criar prompts perfeitos para geradores de vídeo de última geração (hoje o **Veo 3.1 - Quality** no Google Flow).
 
-O objetivo final é simples: no fim da rotina você tem, para cada produto, **as imagens do anúncio + três prompts prontos**: a cena do vídeo, a prancha de storyboard e a capa. Daí é só levar para uma plataforma de geração (Google Flow, por exemplo), jogar as imagens e colar o prompt.
+O objetivo final é simples: no fim da rotina você tem, para cada produto, **as imagens do anúncio + quatro prompts prontos e revisados**: a cena do vídeo, a prancha de storyboard e as duas imagens do carrossel (capa e slide 2). Daí é só levar para o Google Flow (o `flow_video.py` automatiza isso), jogar as imagens e colar o prompt.
 
 **O pipeline só produz texto.** Nenhum comando gera imagem ou vídeo: tudo o que fazemos é criar prompts bons, que entregam ótimos resultados no gerador.
 
@@ -113,8 +113,10 @@ O `.env` aceita várias contas em `KALODATA_LOGINS` (separadas por vírgula, mes
 **O que faz:**
 Aciona uma *Skill* nativa do Antigravity. A IA varre os produtos recém-baixados, visualiza as fotos de cada um, e usa *Subagentes* em paralelo para criar os roteiros de vídeo profissionais.
 **Regras de Roteiro (`prompt_sistema.yaml`):**
-- **Duração:** **uma cena só** — um take contínuo de 10s, escrito em **6 beats cronometrados** (`0-1.5s / 1.5-3s / 3-5s / 5-7s / 7-8.5s / 8.5-10s`). Cada beat vira um painel do storyboard.
+- **Duração:** **uma cena só** — um take contínuo de **8s** (Veo 3.1 - Quality), escrito em **6 beats cronometrados** (`0-1.5s / 1.5-3s / 3-4.5s / 4.5-6s / 6-7s / 7-8s`). Cada beat vira um painel do storyboard. Ritmo de comercial de feed: tempo real, sem câmera lenta.
 - **Ação, não câmera:** cada beat descreve um **evento físico** (a mão entra e gira o frasco, o tecido cai, o swatch é riscado) e termina com o enquadramento entre parênteses. Produto parado com a câmera girando em volta é proibido.
+- **Ação sem deformação:** toda ação é classificada numa **escada de risco** — N1 seguro (girar, deslizar, alisar, andar), N2 com encenação (abrir uma porta, borrifar um spray, água caindo, celular entrando no bolso; no máximo uma por clipe) e N3 proibido (rosquear, zíper, encaixar acessório, digitar, comer). O bloco `Physics & Staging` declara o estado de tudo em 0s, quem mexe e o que nunca se mexe.
+- **Adaptativo:** cenário real com 1 a 3 props e paleta tirada da identidade do próprio produto; arquétipos para casos difíceis (tela com conteúdo fixo, produto instalado, livro, ferramenta de cabelo elétrica (vira **unboxing**: a embalagem real se abre e mostra o kit, sem cabelo em quadro), shapewear, suplemento, rótulo em escrita não latina, conflito título x foto).
 - **Identidade travada:** o bloco `Product Lock` define um **token** do produto (cor + forma + tipo + marca) repetido em todos os beats. É o que impede o gerador de trocar a cor ou reescrever a marca lá pelo segundo 5.
 - **Formato:** Vídeo focado apenas em interações visuais orgânicas (mãos ou *headless models* para roupas).
 - **Sem áudio:** Os clipes saem **mudos** — sem trilha, sem efeito sonoro, sem voz. O som entra depois, na edição.
@@ -133,7 +135,9 @@ Lê o `prompt_cena.md` de cada produto e escreve **o prompt que gera a prancha**
 - Uma única prancha, **6 painéis numerados**, 2 colunas x 3 linhas.
 - Um painel por beat do roteiro, no mesmo enquadramento declarado no beat.
 - Cada painel mostra **ação acontecendo**, não o produto parado em seis ângulos, e repete o token do `Product Lock` para o produto não mudar de painel para painel.
-**Resultado:** `prompt_video/prompt_storyboard.md`. No Google Flow a prancha entra **junto** com o `prompt_cena.md`: ela é o mapa da encenação.
+- **Só os numerais** dos painéis: nada de texto de ajuda, que vazaria para o vídeo como letreiro.
+- Produto grande, fiel às fotos, rótulo legível e virado para a lente nos painéis 2 e 6.
+**Resultado:** `prompt_video/prompt_storyboard.md`. No Google Flow a prancha é o **único ingrediente visual do vídeo** (o Veo não vê as fotos do anúncio): ela é ao mesmo tempo o mapa da encenação e a cópia fiel do produto.
 
 ### 4. Prompt da Capa
 **Comando no chat do Antigravity:**
@@ -141,14 +145,32 @@ Lê o `prompt_cena.md` de cada produto e escreve **o prompt que gera a prancha**
 /start_gen_buy
 ```
 **O que faz:**
-Escreve **o prompt da capa do produto** — a imagem que abre o post. Também não gera imagem.
+Escreve **os prompts do carrossel de 2 imagens** do post — a capa que abre o post e o slide 2. Também não gera imagem.
 **Regras da Capa (`prompt_gen_buy.yaml`):**
-- **Arte de divulgação para Instagram, vertical 4:5**, com cara de peça de marca real (elegante, limpa, humana) e nunca de IA genérica, panfleto ou template. Produto protagonista, inteiro, nítido e assentado no cenário com sombra natural; texto na área limpa.
-- Texto em **exatamente 3 linhas**: título de marca (até 4 palavras, soletrado com hifens) + frase de benefício (até 6) + CTA discreto (até 3, ex.: `Confira no link`). Proibido chamada apelativa (`COMPRE JÁ`, `GARANTA O SEU`, `premium`, `exclusivo`…), selo, botão e ícone.
-- **Preço nunca**: sem "R$", sem número, sem porcentagem, sem selo de desconto.
+- **Post de feed do Instagram (4:5), gerado em tela 3:4** (o Flow não tem 4:5), editado e chamativo, com cara de peça de marca real e nunca de IA genérica, panfleto ou template. Produto e texto no centro, com margem nos quatro lados (o feed recorta para 4:5 e a grade do perfil recorta de novo).
+- **Slide 2 do carrossel (`prompt_capa_2.md`):** mesma família e paleta da capa. Produto com várias peças -> o **kit inteiro em knolling**, cada peça uma vez; produto único -> o detalhe que prova o benefício. Até 5 callouts.
+- **Duas famílias, escolhidas por produto:** **brand editorial** (eletro, gadget, relógio, suplemento, ferramentas, moda masculina, shapewear — tipografia de marca e color grading forte) ou **lifestyle scrapbook** (beleza, perfumaria, cabelo, moda feminina, livro — doodles e escrita à mão).
+- Texto: **3 linhas** — título (até 4 palavras, soletrado com hifens) + frase de benefício (até 6) + CTA discreto (até 3, ex.: `Link na bio`); o scrapbook ganha até 3 callouts curtos apontando partes reais. Português correto e acentuado. Proibido chamada apelativa (`COMPRE JÁ`, `GARANTA O SEU`, `premium`, `exclusivo`…), exclamação, selo e botão.
+- **Preço nunca**: sem "R$", sem número, sem porcentagem no texto da arte. Número impresso no próprio produto (display, "90 CAPS") continua como está.
 - Mesmo produto e mesmo rótulo do vídeo (`Subject` e `Label & Brand` copiados palavra por palavra do `prompt_cena.md`), mas **ângulo, enquadramento e cenário diferentes** dos do vídeo e da foto do anúncio.
 - Fundo branco de catálogo e colagem proibidos; texto nunca por cima do produto.
-**Resultado:** `prompt_video/prompt_capa.md`.
+**Resultado:** `prompt_video/prompt_capa.md` e `prompt_video/prompt_capa_2.md`.
+
+### 5. Revisão dos Prompts
+**Comando no chat do Antigravity:**
+```text
+/prompt_gen_check
+```
+**O que faz:**
+Roda depois dos três comandos. Lê os três prompts de cada produto **como o modelo vai lê-los** e corrige o que estiver errado nos próprios arquivos. O `check_prompts.py` confere a forma; este comando confere o que script nenhum confere.
+**Regras da Revisão (`prompt_gen_check.yaml`) — seis auditorias por produto:**
+1. **Grounding:** cor, peças, rótulo e escala batem com as fotos; nada inventado.
+2. **Deformação beat a beat:** nível de risco de cada ação, objetos declarados desde 0s, partes que não se mexem travadas, mãos, tela fixa, rosto fora de quadro.
+3. **Contradições:** entre blocos da cena (On camera x Negative, Scene x beats, Physics x beats) e entre os três arquivos.
+4. **Força comercial:** hook no primeiro frame, prova real, ritmo, beauty shot, capa chamativa e da família certa.
+5. **Português e texto:** ortografia e acento da capa letra por letra, soletrado igual ao título, limites de palavras, sem preço nem promessa.
+6. **Forma:** `check_prompts.py check --ultima` com 0 erros.
+**Resultado:** os prompts corrigidos no lugar + `prompt_video/revisao.md` (veredito, risco por beat, ajustes feitos e pendências que só você decide). A coluna `REV` do `status` mostra quem já foi revisado.
 
 ---
 
@@ -181,9 +203,10 @@ Os rótulos vêm dos `<th>` da tabela. Dois detalhes que o `scraper.py` trata e 
 - `extracted_products.txt`: O histórico de deduplicação, um título por linha. **Não apague** — é ele que impede o script de baixar duas vezes o mesmo produto. Linhas antigas no formato `tabela<TAB>titulo` continuam sendo lidas normalmente.
 - `prompt_sistema.yaml`: O cérebro da direção de vídeo (tempo, proibições, formatação estrutural e estilos). Se o modelo do gerador de vídeos mudar de regras, é aqui que deve ser ajustado.
 - `prompt_gen_image.yaml`: As regras do prompt da prancha vertical com os 6 painéis de storyboard.
-- `prompt_gen_buy.yaml`: As regras do prompt da capa do produto.
-- `.agents/skills/`: Contém as lógicas das skills `/start_gen_prompts`, `/start_gen_image` e `/start_gen_buy` para o Antigravity interpretar.
-- `check_prompts.py`: `status` mostra o que falta em **todos** os dias; `check` valida os três prompts e a costura entre eles, e só fecha com `0 erros`.
+- `prompt_gen_buy.yaml`: As regras do prompt da capa do produto (as duas famílias).
+- `prompt_gen_check.yaml`: As seis auditorias da revisão.
+- `.agents/skills/`: Contém as lógicas das skills `/start_gen_prompts`, `/start_gen_image`, `/start_gen_buy` e `/prompt_gen_check` para o Antigravity interpretar.
+- `check_prompts.py`: `status` mostra o que falta em **todos** os dias (coluna `REV` = revisado); `check` valida os três prompts e a costura entre eles, e só fecha com `0 erros`. Prompts no formato antigo de 10s aparecem como `[LEGADO]` e não são validados.
 
 ## 🛠️ Preparando o ambiente
 

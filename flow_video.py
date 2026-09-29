@@ -17,8 +17,10 @@ PROJETO_NOME = "renda extra"     # projeto do Flow que guarda todos os produtos
 COLECAO_SEM_TITULO = "Coleção sem título"  # nome que o Flow dá a uma coleção recém-criada
 RAIZ_PRODUTOS = "produtos"       # mesma raiz do scraper.py: produtos/<AAAA-MM-DD>/<NN Titulo>/
 MODELO_IMAGEM = "Nano Banana 2"
-MODELO_VIDEO = "Omni 1.1 Flash"
-TENTATIVAS_VIDEO = 10            # 10 x 2 min: o Omni leva ~3 min, mas a fila varia
+MODELO_VIDEO = "Veo 3.1 - Quality"
+TENTATIVAS_VIDEO = 10            # 10 x 2 min: o Veo 3.1 Quality é mais lento que o Flash e a fila varia
+TENTATIVAS_DEMANDA = 8          # "alta demanda" falha na hora e não cobra: vale insistir
+PAUSA_DEMANDA_S = 300            # 8 x 5 min: espera a fila do Flow esvaziar
 TIMEOUT_UPLOAD_MS = 180000       # 9 fotos de ~100 KB, mas a fila do Flow é lenta
 TIMEOUT_PADRAO_MS = 30000
 USER_AGENT = ("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
@@ -32,6 +34,15 @@ class LoginFailedException(Exception):
 class ChallengeException(Exception):
     """Google pediu verificação extra (2FA, celular, captcha). Só um humano resolve."""
     pass
+
+
+class FlowOcupadoException(Exception):
+    """O Flow recusou a geração por alta demanda. Não cobra; é só tentar de novo."""
+    pass
+
+
+# o tile que falha some no reload, então a falha só é vista enquanto a página não recarrega
+JS_ALTA_DEMANDA = "document.body.innerText.includes('alta demanda')"
 
 
 def pausa_humana(minimo=0.5, maximo=1.5):
@@ -341,10 +352,13 @@ def conferir_ingredientes(page, esperado):
 def esperar_geracao(page, total_esperado):
     print(f"Aguardando a geração terminar ({total_esperado} imagens na grade)...")
     page.wait_for_function(
-        "n => document.querySelectorAll('flow-image-tile img[data-media-id]').length >= n",
+        "n => document.querySelectorAll('flow-image-tile img[data-media-id]').length >= n"
+        " || " + JS_ALTA_DEMANDA,
         arg=total_esperado,
         timeout=600000,
     )
+    if contar_imagens(page) < total_esperado and page.evaluate(JS_ALTA_DEMANDA):
+        raise FlowOcupadoException("Flow com alta demanda.")
     page.wait_for_timeout(6000)
     print(f"Pronto: {contar_imagens(page)} imagens na coleção.")
 
@@ -364,10 +378,13 @@ def esperar_video(page, total_esperado):
         try:
             page.wait_for_function(
                 "n => document.querySelectorAll("
-                "'flow-video-tile img.thumbnail, flow-video-tile video[src]').length >= n",
+                "'flow-video-tile img.thumbnail, flow-video-tile video[src]').length >= n"
+                " || " + JS_ALTA_DEMANDA,
                 arg=total_esperado,
                 timeout=120000,
             )
+            if page.evaluate(JS_ALTA_DEMANDA):
+                raise FlowOcupadoException("Flow com alta demanda.")
             break
         except PWTimeout:
             print(f"    ainda não: recarregando ({tentativa + 1}/{TENTATIVAS_VIDEO})")
@@ -433,6 +450,20 @@ def gerar(page):
     page.wait_for_timeout(5000)
 
 
+def insistir(etapa, *args, **kwargs):
+    """Refaz a etapa inteira: ela começa com selecionar_imagens, que recarrega a
+    página e com isso tira o tile que falhou da grade."""
+    for tentativa in range(1, TENTATIVAS_DEMANDA + 1):
+        try:
+            return etapa(*args, **kwargs)
+        except FlowOcupadoException:
+            if tentativa == TENTATIVAS_DEMANDA:
+                raise
+            print(f"    Flow com alta demanda: nova tentativa em {PAUSA_DEMANDA_S // 60} min "
+                  f"({tentativa}/{TENTATIVAS_DEMANDA})")
+            time.sleep(PAUSA_DEMANDA_S)
+
+
 def gerar_imagem(page, pasta, arquivo, ignorar, total_final, proporcao="9:16"):
     alvo = selecionar_imagens(page, ignorar=ignorar)
     escrever_prompt(page, ler_prompt(pasta, arquivo))
@@ -442,12 +473,12 @@ def gerar_imagem(page, pasta, arquivo, ignorar, total_final, proporcao="9:16"):
     esperar_geracao(page, total_final)
 
 
-def gerar_video(page, pasta):
-    """Ingrediente único: a prancha. Ela é o tile 1 porque a capa, gerada logo
-    antes, entra na frente dela na grade."""
-    alvo = selecionar_imagens(page, ignorar=1, limite=1)
+def gerar_video(page, pasta, capas=1):
+    """Ingrediente único: a prancha. Ela vem logo depois das capas, geradas depois
+    dela e por isso na frente na grade."""
+    alvo = selecionar_imagens(page, ignorar=capas, limite=1)
     escrever_prompt(page, ler_prompt(pasta, "prompt_cena.md"))
-    configurar_geracao(page, "Vídeo", "Elementos", "9:16", "720p", "10s", "x1",
+    configurar_geracao(page, "Vídeo", "Elementos", "9:16", "720p", "8s", "x1",
                        modelo=MODELO_VIDEO)
     conferir_ingredientes(page, alvo)
     gerar(page)
@@ -455,7 +486,7 @@ def gerar_video(page, pasta):
 
 
 def processar_produto(page, n, projeto_url):
-    """Coleção -> fotos -> storyboard -> capa -> vídeo. Cada etapa confere o que já
+    """Coleção -> fotos -> storyboard -> capa -> capa 2 -> vídeo. Cada etapa confere o que já
     existe antes de rodar: um lote de 17 produtos que morre no meio precisa poder
     ser retomado sem regerar (e repagar) o que já ficou pronto."""
     pasta = produto_por_ordem(n)
@@ -469,13 +500,23 @@ def processar_produto(page, n, projeto_url):
     if contar_imagens(page) >= base + 1:
         print("Storyboard já está na coleção — pulando.")
     else:
-        gerar_imagem(page, pasta, "prompt_storyboard.md", 0, base + 1)
+        insistir(gerar_imagem, page, pasta, "prompt_storyboard.md", 0, base + 1)
 
     if contar_imagens(page) >= base + 2:
         print("Capa já está na coleção — pulando.")
     else:
-        # a capa e post de feed (4:5); o storyboard segue o video (9:16)
-        gerar_imagem(page, pasta, "prompt_capa.md", 1, base + 2, proporcao="4:5")
+        # a capa e post de feed (4:5), mas o Flow so gera 3:4: o prompt deixa margem
+        # para o recorte; o storyboard segue o video (9:16)
+        insistir(gerar_imagem, page, pasta, "prompt_capa.md", 1, base + 2, proporcao="3:4")
+
+    # slide 2 do carrossel: opcional, so as fotos entram (pula prancha e capa)
+    capas = 1
+    if os.path.exists(os.path.join(pasta, "prompt_video", "prompt_capa_2.md")):
+        capas = 2
+        if contar_imagens(page) >= base + 3:
+            print("Capa 2 já está na coleção — pulando.")
+        else:
+            insistir(gerar_imagem, page, pasta, "prompt_capa_2.md", 2, base + 3, proporcao="3:4")
 
     # o tile conta mesmo sem o <video>: se uma execucao anterior morreu no meio da
     # renderizacao, gerar de novo aqui daria dois videos no mesmo produto
@@ -483,7 +524,7 @@ def processar_produto(page, n, projeto_url):
         print("Vídeo já está na coleção (ou ainda renderizando) — só aguardando.")
         esperar_video(page, 1)
     else:
-        gerar_video(page, pasta)
+        insistir(gerar_video, page, pasta, capas)
 
     print(f"===== produto {n} concluído =====")
     voltar_ao_projeto(page, projeto_url)
