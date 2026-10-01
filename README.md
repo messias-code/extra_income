@@ -105,7 +105,15 @@ Por isso `fechar_modais()` é chamado em três pontos: ao carregar a tabela (agu
 
 O `.env` aceita várias contas em `KALODATA_LOGINS` (separadas por vírgula, mesma senha em `KALODATA_PASSWORD`). Falha de login levanta `LoginFailedException` e salva `debug_login.png`; qualquer erro inesperado salva `debug_erro.png`. Nenhum dos dois derruba a rodada: o script registra o que já conseguiu e segue para a próxima conta.
 
-### 2. Geração de Roteiros (Prompts de Vídeo)
+### 2. Geração Completa de Todos os Prompts e Vídeo (Recomendado)
+**Comando no chat do Antigravity:**
+```text
+/start_gen_all
+```
+**O que faz:**
+Atua como um maestro e roda toda a esteira de prompts (cena, storyboard e capa) de uma única vez para todos os produtos da fila, faz a revisão final automática e, no final, já dispara o `flow_video.py` para gerar os vídeos no Google Flow. Tudo isso sem pedir nenhuma permissão ou `Ctrl+K`. Use este comando como o fluxo principal de trabalho no dia a dia.
+
+### 3. Geração de Roteiros (Comando Individual)
 **Comando no chat do Antigravity:**
 ```text
 /start_gen_prompts
@@ -139,7 +147,7 @@ Lê o `prompt_cena.md` de cada produto e escreve **o prompt que gera a prancha**
 - Produto grande, fiel às fotos, rótulo legível e virado para a lente nos painéis 2 e 6.
 **Resultado:** `prompt_video/prompt_storyboard.md`. No Google Flow a prancha é o **único ingrediente visual do vídeo** (o Veo não vê as fotos do anúncio): ela é ao mesmo tempo o mapa da encenação e a cópia fiel do produto.
 
-### 4. Prompt da Capa
+### 5. Prompt da Capa (Comando Individual)
 **Comando no chat do Antigravity:**
 ```text
 /start_gen_buy
@@ -156,7 +164,7 @@ Escreve **os prompts do carrossel de 2 imagens** do post — a capa que abre o p
 - Fundo branco de catálogo e colagem proibidos; texto nunca por cima do produto.
 **Resultado:** `prompt_video/prompt_capa.md` e `prompt_video/prompt_capa_2.md`.
 
-### 5. Revisão dos Prompts
+### 6. Revisão dos Prompts (Comando Individual)
 **Comando no chat do Antigravity:**
 ```text
 /prompt_gen_check
@@ -172,7 +180,7 @@ Roda depois dos três comandos. Lê os três prompts de cada produto **como o mo
 6. **Forma:** `check_prompts.py check --ultima` com 0 erros.
 **Resultado:** os prompts corrigidos no lugar + `prompt_video/revisao.md` (veredito, risco por beat, ajustes feitos e pendências que só você decide). A coluna `REV` do `status` mostra quem já foi revisado.
 
-### 6. Geração no Google Flow
+### 7. Geração no Google Flow
 **Comando no Terminal:**
 ```bash
 python3 flow_video.py            # só o dia mais recente (padrão do dia a dia)
