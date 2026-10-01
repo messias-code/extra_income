@@ -1,0 +1,11 @@
+A 6-panel storyboard sheet, one single image, 2 columns by 3 rows, thin clean white gutters, read left to right and top to bottom. A small plain numeral from 1 to 6 in the top-left corner of each panel, and no other text anywhere except the real wording printed on the product.
+PANEL 1 (0-1.5s, hook): wide side shot of the blue and red plastic swing car gliding forward on a bright sunny driveway, the headless model's hands steering the wheel.
+PANEL 2 (1.5-3s, reveal): medium full shot of the whole blue and red plastic swing car rolling past a blurred garden hose, the child seated on the red pad.
+PANEL 3 (3-4.5s, approach): medium shot of the headless model's hands swinging the steering wheel to the left, the blue and red plastic swing car angling slightly.
+PANEL 4 (4.5-6s, proof): medium close-up of the hands swinging the red steering wheel to the right, driving the blue and red plastic swing car forward.
+PANEL 5 (6-7s, detail): close-up of the model's hands gripping the matte red steering wheel of the blue and red plastic swing car, bright sunlight reflecting.
+PANEL 6 (7-8s, beauty shot): medium close-up of the blue and red plastic swing car gliding steadily, the hands maintaining control on the red steering wheel.
+All six panels: same set, same props, same bright sunny daylight from the top right, the same blue and red plastic swing car, headless model cropped at the neck. Product centered in each panel, large, sharp and in focus. The colour, the shape and every word printed on the product are identical in all six panels.
+The product MUST match the attached reference photos exactly: same shape, proportions, colours, materials, label artwork and printed wording in every panel. There is no logo or lettering on the product, exactly as in the photos. Never a generic, simplified or redesigned version.
+Style: high-end commercial photography, photoreal, crisp detail, natural colour grading, vibrant primary blue and red palette, vertical 9:16.
+Negative: captions, subtitles, helper text, arrows, titles, overlay text, watermarks, invented logos, misspelled label, gibberish lettering, faces, heads, eyes, extra fingers, deformed hands, morphing product, different product between panels, generic packaging, empty panels, duplicated panels, merged panels, sketch, cartoon, illustration, 3D render, oversaturation, blurry.
