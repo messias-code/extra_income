@@ -3,6 +3,7 @@ import re
 import json
 import time
 import random
+import argparse
 import requests
 from dotenv import load_dotenv
 from playwright.sync_api import sync_playwright
@@ -434,20 +435,44 @@ def run_scraper(login, password, faltam, ja_no_dia):
     return extraidos
 
 
+PLACEHOLDERS_INVALIDOS = {
+    "email1@gmail.com",
+    "email2@gmail.com",
+    "seu_email_kalodata@gmail.com",
+    "sua_senha_aqui",
+    "sua_senha_kalodata_aqui",
+}
+
+
 def main():
-    logins_str = os.getenv("KALODATA_LOGINS")
-    password = os.getenv("KALODATA_PASSWORD")
+    parser = argparse.ArgumentParser(
+        description="Extrai produtos em alta da Kalodata usando o SEU login e senha."
+    )
+    parser.add_argument(
+        "--login",
+        help="Seu(s) e-mail(s) de login na Kalodata (separados por vírgula). Sobrescreve KALODATA_LOGINS do .env.",
+    )
+    parser.add_argument(
+        "--senha",
+        help="Sua senha da Kalodata. Sobrescreve KALODATA_PASSWORD do .env.",
+    )
+    args = parser.parse_args()
+
+    logins_str = args.login or os.getenv("KALODATA_LOGINS") or os.getenv("KALODATA_LOGIN")
+    password = args.senha or os.getenv("KALODATA_PASSWORD")
 
     if not logins_str or not password:
-        # Tenta o formato antigo para retrocompatibilidade
-        login = os.getenv("KALODATA_LOGIN")
-        if login and password:
-            logins_str = login
-        else:
-            print("Erro: Credenciais não encontradas no .env. Configure KALODATA_LOGINS e KALODATA_PASSWORD.")
-            return
+        print("Erro: Credenciais não encontradas.")
+        print("Configure o SEU login e senha com './start.sh login', no arquivo .env,")
+        print("ou passe direto no comando: python3 scraper.py --login seu@email.com --senha suasenha")
+        return
 
     logins = [l.strip() for l in logins_str.split(",") if l.strip()]
+    if not logins or password.strip() in PLACEHOLDERS_INVALIDOS or any(l in PLACEHOLDERS_INVALIDOS for l in logins):
+        print("Erro: O arquivo .env ainda está com credenciais de exemplo (placeholders).")
+        print("Configure o SEU próprio login e senha rodando './start.sh login'")
+        print("ou execute: python3 scraper.py --login seu@email.com --senha suasenha")
+        return
 
     # o dia pode ja ter produtos de uma rodada anterior: a meta e do dia, nao da rodada
     base_dir = pasta_do_dia()

@@ -2,7 +2,9 @@ import io
 import os
 import sys
 import time
+import shutil
 import random
+import argparse
 from dotenv import load_dotenv
 from playwright.sync_api import sync_playwright, TimeoutError as PWTimeout
 from playwright_stealth import stealth
@@ -124,15 +126,43 @@ def confirmar_login(page):
     print(f"Login efetuado com sucesso! URL: {page.url}")
 
 
+def arquivo_conta_ativa():
+    return os.path.join(PERFIL_DIR, ".conta_ativa")
+
+
+def registrar_conta_ativa(login):
+    os.makedirs(PERFIL_DIR, exist_ok=True)
+    with open(arquivo_conta_ativa(), "w", encoding="utf-8") as f:
+        f.write(login.strip().lower())
+
+
+def garantir_perfil_da_conta(login, forcar_troca=False):
+    """Garante que o .flow_profile pertence ao login informado. Se outra pessoa
+    configurou seu próprio GOOGLE_LOGIN (ou usou --login / --trocar-conta), limpa
+    a sessão anterior para nunca usar a conta de outra pessoa."""
+    if not os.path.isdir(PERFIL_DIR):
+        return
+    marcador = arquivo_conta_ativa()
+    conta_salva = None
+    if os.path.exists(marcador):
+        with open(marcador, "r", encoding="utf-8") as f:
+            conta_salva = f.read().strip().lower()
+    if forcar_troca or (conta_salva and conta_salva != login.strip().lower()):
+        print(f"Trocando sessão do navegador para a conta {login}...")
+        shutil.rmtree(PERFIL_DIR, ignore_errors=True)
+
+
 def fazer_login(page, login, password):
     if ja_esta_logado(page):
-        print(f"Sessão do perfil '{PERFIL_DIR}' ainda válida — login não é necessário.")
+        print(f"Sessão do perfil '{PERFIL_DIR}' ainda válida ({login}) — login não é necessário.")
+        registrar_conta_ativa(login)
         return
 
     abrir_tela_de_login(page)
     preencher_email(page, login)
     preencher_senha(page, password)
     confirmar_login(page)
+    registrar_conta_ativa(login)
 
 
 def abrir_projeto(page, nome):
@@ -563,14 +593,34 @@ def abrir_navegador(playwright):
 
 
 USO = """Uso:
-  python3 flow_video.py            so o dia mais recente
-  python3 flow_video.py tudo       todos os produtos, de todos os dias
-  python3 flow_video.py 7          so o produto 7
-  python3 flow_video.py 7 9        a faixa do produto 7 ao 9"""
+  python3 flow_video.py                                      so o dia mais recente
+  python3 flow_video.py tudo                                 todos os produtos, de todos os dias
+  python3 flow_video.py 7                                    so o produto 7
+  python3 flow_video.py 7 9                                  a faixa do produto 7 ao 9
+  python3 flow_video.py --login EMAIL --senha SENHA          usa seu login e senha na linha de comando
+  python3 flow_video.py --trocar-conta                       limpa sessao antiga e refaz login"""
+
+PLACEHOLDERS_INVALIDOS = {
+    "seu_email_google@gmail.com",
+    "sua_senha_google_aqui",
+    "sua_senha_aqui",
+}
 
 
 def main():
-    args = sys.argv[1:]
+    parser = argparse.ArgumentParser(add_help=False)
+    parser.add_argument("alvo", nargs="*")
+    parser.add_argument("--login", help="Seu e-mail da conta Google (sobrescreve GOOGLE_LOGIN do .env)")
+    parser.add_argument("--senha", help="Sua senha da conta Google (sobrescreve GOOGLE_PASSWORD do .env)")
+    parser.add_argument("--trocar-conta", action="store_true", help="Remove a sessão salva em .flow_profile e faz novo login")
+    parser.add_argument("-h", "--help", action="store_true")
+    parsed, desconhecidos = parser.parse_known_args()
+
+    if parsed.help or desconhecidos:
+        print(USO)
+        return
+
+    args = parsed.alvo
     if not args:
         dia, primeiro, ultimo = faixa_do_ultimo_dia()
         print(f"Dia mais recente: {dia} -> produto {primeiro} ao {ultimo}")
@@ -585,11 +635,21 @@ def main():
         print(USO)
         return
 
-    login = os.getenv("GOOGLE_LOGIN")
-    password = os.getenv("GOOGLE_PASSWORD")
+    login = parsed.login or os.getenv("GOOGLE_LOGIN")
+    password = parsed.senha or os.getenv("GOOGLE_PASSWORD")
     if not login or not password:
-        print("[!] Defina GOOGLE_LOGIN e GOOGLE_PASSWORD no .env")
+        print("[!] Credenciais Google não encontradas.")
+        print("    Configure SEU login e senha com './start.sh login', no arquivo .env,")
+        print("    ou passe direto: python3 flow_video.py --login seu@gmail.com --senha suasenha")
         return
+
+    if login.strip() in PLACEHOLDERS_INVALIDOS or password.strip() in PLACEHOLDERS_INVALIDOS:
+        print("[!] O arquivo .env ainda está com credenciais de exemplo (placeholders).")
+        print("    Configure o SEU próprio login e senha rodando './start.sh login'")
+        print("    ou execute: python3 flow_video.py --login seu@gmail.com --senha suasenha")
+        return
+
+    garantir_perfil_da_conta(login, forcar_troca=parsed.trocar_conta)
 
     with stealth.Stealth().use_sync(sync_playwright()) as playwright:
         context = abrir_navegador(playwright)
