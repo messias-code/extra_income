@@ -1,7 +1,7 @@
 ---
 name: gen-prompts
 description: >-
-  Use this skill when the user types "/start_gen_prompts" or asks to start generating the video prompts.
+  Use this skill when the user types "start_gen_prompts", "/start_gen_prompts", asks to load skill "gen-prompts", or asks to start generating the video prompts.
 ---
 
 # Fluxo de Geração de Prompts de Vídeo (Antigravity)
@@ -40,7 +40,7 @@ e protegida pelo bloco `Physics & Staging`.
 ## Passo 1 — Ver a fila
 
 ```bash
-cd /home/labs/.extra_income && python3 check_prompts.py status
+python3 check_prompts.py status
 ```
 
 A tabela mostra **todas as datas**, não só a de hoje: **dia nenhum pode ficar sem prompt**.
@@ -50,7 +50,7 @@ regere prompt já existente se o usuário pedir.
 
 ## Passo 2 — Carregar as regras
 
-Leia **o arquivo inteiro** `/home/labs/.extra_income/prompt_sistema.yaml`. Ele é a fonte
+Leia **o arquivo inteiro** `prompt_sistema.yaml` na raiz do projeto. Ele é a fonte
 única da verdade: `como_o_flow_usa_este_arquivo`, `leitura_das_imagens`, regras
 absolutas (R1 a R16), `escada_de_risco_da_acao`, presets de categoria, arcos de câmera,
 ritmo dos seis beats, negative prompt canônico, o `gabarito_cena` e os dois exemplos
@@ -102,7 +102,7 @@ girando em volta — o pior resultado que este pipeline já produziu.
 ## Passo 5 — Validar e corrigir (obrigatório)
 
 ```bash
-cd /home/labs/.extra_income && python3 check_prompts.py check
+python3 check_prompts.py check
 ```
 
 - Cada linha `[ERRO]` aponta uma regra quebrada: **corrija o arquivo e rode de novo**.

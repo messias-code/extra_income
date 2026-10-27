@@ -1,7 +1,7 @@
 ---
 name: gen-check
 description: >-
-  Use this skill when the user types "/prompt_gen_check" or "prompt_gen_check" to review and fix the generated prompts of each product.
+  Use this skill when the user types "prompt_gen_check", "/prompt_gen_check", asks to load skill "gen-check", or asks to review and fix the generated prompts of each product.
 ---
 
 # Fluxo de Revisão dos Prompts (Antigravity)
@@ -24,7 +24,7 @@ sentido**, se há **contradição** entre blocos ou entre arquivos, se a peça *
 ## Passo 1 — Ver a fila
 
 ```bash
-cd /home/labs/.extra_income && python3 check_prompts.py status --ultima
+python3 check_prompts.py status --ultima
 ```
 
 Revise todo produto da data mais recente com CENA, STORY e CAPA = `sim`. Produto com
@@ -35,13 +35,13 @@ indicar outra data ou um produto específico, revise só esses.
 
 Leia **inteiros**:
 
-1. `/home/labs/.extra_income/prompt_gen_check.yaml` — as seis auditorias, a política de
+1. `prompt_gen_check.yaml` — as seis auditorias, a política de
    correção e o formato do `revisao.md`;
-2. `/home/labs/.extra_income/prompt_sistema.yaml` — principalmente
+2. `prompt_sistema.yaml` — principalmente
    `como_o_flow_usa_este_arquivo`, `escada_de_risco_da_acao`, `R16_FISICA_E_ENCENACAO` e o
    `negative_prompt`;
-3. `/home/labs/.extra_income/prompt_gen_image.yaml` e
-   `/home/labs/.extra_income/prompt_gen_buy.yaml`.
+3. `prompt_gen_image.yaml` e
+   `prompt_gen_buy.yaml`.
 
 ## Passo 3 — Por produto
 
@@ -57,7 +57,7 @@ Leia **inteiros**:
 ## Passo 4 — Validar (obrigatório)
 
 ```bash
-cd /home/labs/.extra_income && python3 check_prompts.py check --ultima
+python3 check_prompts.py check --ultima
 ```
 
 Repita correção + check até `0 erros`. Zero erros é necessário, não suficiente: a peça

@@ -1,7 +1,7 @@
 ---
 name: gen-all
 description: >-
-  Use this skill when the user types "/start_gen_all" or asks to run all prompt commands in order.
+  Use this skill when the user types "start_gen_all", "/start_gen_all", asks to load skill "gen-all", or asks to run all prompt commands in order.
 ---
 
 # Fluxo de Geração Completo

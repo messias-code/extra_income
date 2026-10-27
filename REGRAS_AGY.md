@@ -1,18 +1,32 @@
 # Regras do Projeto (Extra Income)
 
+*(Nota: Este arquivo é espelhado em `AGENTS.md` para carregamento automático pelo Antigravity).*
+
 Este projeto prepara a matéria-prima para gerar vídeos de IA de produtos do TikTok Shop.
-**Tudo o que o pipeline entrega é PROMPT.** Nenhum comando gera imagem ou vídeo: o usuário
-cola os prompts no Google Flow / no gerador de imagens, com as fotos do produto anexadas.
+**A etapa de IA entrega os PROMPTS** e o script `flow_video.py` automatiza o envio e a geração no Google Flow.
 
-O fluxo tem cinco etapas, nesta ordem:
+## Mapeamento Obrigatório de Skills e Comandos no Antigravity
 
-| Etapa | Onde roda | O que faz | Saída |
+Sempre que o usuário digitar um dos comandos abaixo (com ou sem `/` na frente) ou pedir para executar a etapa correspondente, você **DEVE ler imediatamente o arquivo `SKILL.md` correspondente** antes de agir:
+
+| Comando no Chat (`agy`) | Skill para Carregar (`read_file`) | O que faz | Saída |
 |---|---|---|---|
-| 1. Raspagem | terminal: `python scraper.py` | junta 10 produtos inéditos da Kalodata, de várias listas | `produtos/<AAAA-MM-DD>/<NN produto>/` com `capa.jpg`, `imagem_N.jpg` e `metadata.json` |
-| 2. Cena | Antigravity: `/start_gen_prompts` | escreve o prompt de **um** clipe de 8s (Veo 3.1 - Quality) em 6 beats cronometrados | `prompt_video/prompt_cena.md` + `raciocinio.md` |
-| 3. Storyboard | Antigravity: `/start_gen_image` | escreve o **prompt** da prancha de 6 painéis (1 por beat) | `prompt_video/prompt_storyboard.md` |
-| 4. Capa | Antigravity: `/start_gen_buy` | escreve os **prompts** do carrossel 4:5 (capa + slide 2, gerados em 3:4; brand editorial ou lifestyle scrapbook) | `prompt_video/prompt_capa.md` + `prompt_capa_2.md` |
-| 5. Revisão | Antigravity: `/prompt_gen_check` | audita e corrige os três prompts (deformação, contradição, venda, português) | prompts corrigidos + `prompt_video/revisao.md` |
+| `start_gen_all` ou `/start_gen_all` | `.agents/skills/gen-all/SKILL.md` | Roda toda a esteira em sequência (Cena -> Storyboard -> Capa -> Revisão -> `flow_video.py`) | Todos os prompts + geração no Flow |
+| `start_gen_prompts` ou `/start_gen_prompts` | `.agents/skills/gen-prompts/SKILL.md` | Escreve o prompt de **um** clipe de 8s (Veo 3.1 - Quality) em 6 beats cronometrados | `prompt_video/prompt_cena.md` + `raciocinio.md` |
+| `start_gen_image` ou `/start_gen_image` | `.agents/skills/gen-images/SKILL.md` | Escreve o **prompt** da prancha de 6 painéis (1 por beat) | `prompt_video/prompt_storyboard.md` |
+| `start_gen_buy` ou `/start_gen_buy` | `.agents/skills/gen-buy/SKILL.md` | Escreve os **prompts** do carrossel 4:5 (capa + slide 2, gerados em 3:4) | `prompt_video/prompt_capa.md` + `prompt_capa_2.md` |
+| `prompt_gen_check` ou `/prompt_gen_check` | `.agents/skills/gen-check/SKILL.md` | Audita e corrige os prompts (grounding, deformação, contradição, venda, português) | prompts corrigidos + `prompt_video/revisao.md` |
+
+## Fluxo Completo (Ordem de Execução)
+
+| Etapa | Onde roda | Comando | O que faz |
+|---|---|---|---|
+| 1. Raspagem | Terminal | `python3 scraper.py` | Junta 10 produtos inéditos da Kalodata em `produtos/<AAAA-MM-DD>/<NN produto>/` |
+| 2. Cena | Antigravity (`agy`) | `start_gen_prompts` | Cria `prompt_cena.md` e `raciocinio.md` |
+| 3. Storyboard | Antigravity (`agy`) | `start_gen_image` | Cria `prompt_storyboard.md` |
+| 4. Capa | Antigravity (`agy`) | `start_gen_buy` | Cria `prompt_capa.md` e `prompt_capa_2.md` |
+| 5. Revisão | Antigravity (`agy`) | `prompt_gen_check` | Audita tudo, corrige os prompts e cria `revisao.md` |
+| 6. Geração Flow | Terminal | `python3 flow_video.py` | Sobe as fotos e gera storyboard, capas e vídeo no Google Flow |
 
 No Google Flow, o vídeo recebe **só a prancha do storyboard** como ingrediente, junto com o
 `prompt_cena.md`: a prancha é o mapa da encenação e a única cópia visual do produto que o
@@ -26,11 +40,11 @@ Veo vê; o prompt é a direção.
 - `prompt_gen_image.yaml` — regras do Diretor de Arte (etapa 3).
 - `prompt_gen_buy.yaml` — regras da capa (etapa 4).
 - `prompt_gen_check.yaml` — as seis auditorias da revisão (etapa 5).
-- `.agents/skills/gen-prompts|gen-images|gen-buy|gen-check/SKILL.md` — como executar cada comando
+- `.agents/skills/gen-all|gen-prompts|gen-images|gen-buy|gen-check/SKILL.md` — como executar cada comando
   dentro do Antigravity.
 - `check_prompts.py` — utilitário de conferência, cobrindo **todas as datas**:
-  - `python check_prompts.py status` → o que já existe e o que falta em cada produto
-  - `python check_prompts.py check`  → valida os três prompts e a costura entre eles
+  - `python3 check_prompts.py status` → o que já existe e o que falta em cada produto
+  - `python3 check_prompts.py check`  → valida os três prompts e a costura entre eles
 
 ## Regras fixas
 
@@ -65,5 +79,5 @@ Veo vê; o prompt é a direção.
   escrita em frase.
 - Nunca invente marca, material, número ou spec que não esteja nas imagens ou no nome do
   produto.
-- Cada comando só termina quando `python check_prompts.py check` retorna **0 erros**.
+- Cada comando só termina quando `python3 check_prompts.py check` retorna **0 erros**.
   Prompts antigos de 10s aparecem como `[LEGADO]` e ficam fora da validação.

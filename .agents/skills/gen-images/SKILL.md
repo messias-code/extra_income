@@ -1,7 +1,7 @@
 ---
 name: gen-images
 description: >-
-  Use this skill when the user types "/start_gen_image" or "start_gen_image" to write the storyboard prompt for each product.
+  Use this skill when the user types "start_gen_image", "/start_gen_image", asks to load skill "gen-images", or asks to write the storyboard prompt for each product.
 ---
 
 # Fluxo do Prompt de Storyboard (Antigravity)
@@ -25,7 +25,7 @@ vaza para o vídeo como letreiro: por isso ela leva **só os numerais** dos pain
 ## Passo 1 — Ver a fila
 
 ```bash
-cd /home/labs/.extra_income && python3 check_prompts.py status
+python3 check_prompts.py status
 ```
 
 A tabela cobre **todas as datas**: **dia nenhum pode ficar sem prompt**. Trabalhe em todo
@@ -34,7 +34,7 @@ Produto sem `prompt_cena.md` ainda não é seu — ele precisa de `/start_gen_pr
 
 ## Passo 2 — Carregar as regras
 
-Leia o arquivo inteiro `/home/labs/.extra_income/prompt_gen_image.yaml`: layout, mapa dos
+Leia o arquivo inteiro `prompt_gen_image.yaml` na raiz do projeto: layout, mapa dos
 painéis, regras R1 a R9, o `formato_do_prompt_de_storyboard` e o exemplo. Não escreva nada
 antes de ter lido o formato e o bloco Negative.
 
@@ -63,7 +63,7 @@ antes de ter lido o formato e o bloco Negative.
 ## Passo 4 — Validar e corrigir (obrigatório)
 
 ```bash
-cd /home/labs/.extra_income && python3 check_prompts.py check
+python3 check_prompts.py check
 ```
 
 - Corrija todo erro prefixado com `storyboard:` e rode de novo, até `0 erros`.

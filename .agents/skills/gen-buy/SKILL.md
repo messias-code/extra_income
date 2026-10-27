@@ -1,7 +1,7 @@
 ---
 name: gen-buy
 description: >-
-  Use this skill when the user types "/start_gen_buy" or "start_gen_buy" to write the two carousel prompts of each product (cover and slide 2).
+  Use this skill when the user types "start_gen_buy", "/start_gen_buy", asks to load skill "gen-buy", or asks to write the two carousel prompts of each product (cover and slide 2).
 ---
 
 # Fluxo do Prompt de Capa (Antigravity)
@@ -45,7 +45,7 @@ Ordem dos comandos: `scraper.py` -> `/start_gen_prompts` -> `/start_gen_image` -
 ## Passo 1 — Ver a fila
 
 ```bash
-cd /home/labs/.extra_income && python3 check_prompts.py status
+python3 check_prompts.py status
 ```
 
 A tabela cobre **todas as datas**: **dia nenhum pode ficar sem prompt**. Trabalhe em todo
@@ -55,7 +55,7 @@ passados. Todo produto sai com **os dois** arquivos. Se o `prompt_capa.md` já e
 
 ## Passo 2 — Carregar as regras
 
-Leia o arquivo inteiro `/home/labs/.extra_income/prompt_gen_buy.yaml`: o que é a capa, o
+Leia o arquivo inteiro `prompt_gen_buy.yaml` na raiz do projeto: o que é a capa, o
 bloco `instagram`, as `familias`, o texto da peça, `numeros_no_produto`, as regras
 absolutas, o `gabarito_prompt_capa`, o `negative_prompt_capa`, o `slide_2_carrossel` e os
 dois exemplos (um de cada família). Leia também `aprendizados_de_campo` no
@@ -94,7 +94,7 @@ dois exemplos (um de cada família). Leia também `aprendizados_de_campo` no
 ## Passo 4 — Validar e corrigir (obrigatório)
 
 ```bash
-cd /home/labs/.extra_income && python3 check_prompts.py check
+python3 check_prompts.py check
 ```
 
 - Corrija todo erro prefixado com `capa:` ou `capa 2:` e rode de novo, até `0 erros`.
